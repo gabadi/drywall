@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MAIN_BRANCH="${SWARMFORGE_SCRIPTS_BRANCH:-main}"
+ARCHIVE_URL="${SWARMFORGE_SCRIPTS_URL:-https://github.com/gabadi/swarm-forge/archive/refs/heads/${MAIN_BRANCH}.tar.gz}"
+TMP_DIR=""
+
+cleanup() {
+  if [[ -n "$TMP_DIR" ]]; then
+    rm -rf "$TMP_DIR"
+  fi
+}
+trap cleanup EXIT
+
+if [[ "${1:-}" == "stop" ]]; then
+  STATE_DIR="$SCRIPT_DIR/.swarmforge"
+  CLEANUP_SCRIPT="$SCRIPT_DIR/swarmforge/scripts/swarm-cleanup.sh"
+  if [[ ! -f "$STATE_DIR/tmux-socket" ]]; then
+    echo "No running swarm found (.swarmforge/tmux-socket missing)." >&2
+    exit 1
+  fi
+  if [[ ! -f "$CLEANUP_SCRIPT" ]]; then
+    echo "swarm-cleanup.sh not found — run ./swarm once to bootstrap scripts." >&2
+    exit 1
+  fi
+  _tmux_socket="$(< "$STATE_DIR/tmux-socket")"
+  _sessions=()
+  if [[ -f "$STATE_DIR/sessions.tsv" ]]; then
+    while IFS=$'\t' read -r _ _ _session _; do
+      [[ -n "${_session:-}" ]] && _sessions+=("$_session")
+    done < "$STATE_DIR/sessions.tsv"
+  fi
+  SWARMFORGE_TERMINAL_BACKEND="${SWARMFORGE_TERMINAL_BACKEND:-${SWARMFORGE_TERMINAL:-ghostty}}" \
+    "$CLEANUP_SCRIPT" \
+    "$_tmux_socket" \
+    "$STATE_DIR/window-ids" \
+    "${_sessions[@]+"${_sessions[@]}"}"
+  echo "SwarmForge stopped."
+  exit 0
+fi
+
+if [[ ! -d "$SCRIPT_DIR/swarmforge/scripts" || ! -d "$SCRIPT_DIR/swarmforge/scripts/shared-articles" || ! -d "$SCRIPT_DIR/swarmforge/skills" ]]; then
+  TMP_DIR="$(mktemp -d)"
+  mkdir -p "$SCRIPT_DIR/swarmforge"
+  curl -L "$ARCHIVE_URL" | tar -xz --strip-components=1 -C "$TMP_DIR"
+  if [[ ! -d "$SCRIPT_DIR/swarmforge/scripts" ]]; then
+    cp -R "$TMP_DIR/swarmforge/scripts" "$SCRIPT_DIR/swarmforge/scripts"
+  fi
+  if [[ -d "$TMP_DIR/swarmforge/constitution/articles" ]]; then
+    mkdir -p "$SCRIPT_DIR/swarmforge/scripts/shared-articles"
+    cp -R "$TMP_DIR/swarmforge/constitution/articles/." "$SCRIPT_DIR/swarmforge/scripts/shared-articles/"
+  fi
+  if [[ ! -d "$SCRIPT_DIR/swarmforge/skills" && -d "$TMP_DIR/swarmforge/skills" ]]; then
+    cp -R "$TMP_DIR/swarmforge/skills" "$SCRIPT_DIR/swarmforge/skills"
+  fi
+fi
+
+# Copy shared articles into constitution/articles/ if not already present.
+# Runs unconditionally — projects installed from a pre-packaged branch already
+# ship scripts/shared-articles/ so the download block above is skipped, but the
+# articles still need to land in constitution/articles/ for agent bundles to include them.
+if [[ -d "$SCRIPT_DIR/swarmforge/scripts/shared-articles" ]]; then
+  mkdir -p "$SCRIPT_DIR/swarmforge/constitution/articles"
+  for _article in "$SCRIPT_DIR/swarmforge/scripts/shared-articles"/*.prompt; do
+    _dest="$SCRIPT_DIR/swarmforge/constitution/articles/$(basename "$_article")"
+    [[ ! -f "$_dest" ]] && cp "$_article" "$_dest"
+  done
+fi
+
+# Install local skills immediately so /setup-swarm is available in Claude Code
+# before swarmforge.sh runs and before setup-complete exists.
+if [[ -d "$SCRIPT_DIR/swarmforge/skills" ]]; then
+  mkdir -p "$SCRIPT_DIR/.claude/skills"
+  for _skill_dir in "$SCRIPT_DIR/swarmforge/skills"/*/; do
+    _skill_name="$(basename "$_skill_dir")"
+    cp -R "$_skill_dir" "$SCRIPT_DIR/.claude/skills/$_skill_name"
+  done
+fi
+
+exec "$SCRIPT_DIR/swarmforge/scripts/swarmforge.sh" "$@"

@@ -1,0 +1,5 @@
+# Local Workflow Rules
+
+## QA Handoffs
+- A QA handoff does not interrupt current work. If a QA wake-up arrives while working, ignore it and let `done_with_current.sh` deliver the next queued task or batch after the current work is complete.
+- When a helper-delivered QA task is only an audit/completion notification, acknowledge the printed payload, rely on the handoff audit files for recordkeeping, and do not apply role-specific work to that QA handoff.
