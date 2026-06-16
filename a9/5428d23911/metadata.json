@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "a95428d23911",
+  "strategy": "manual-commit",
+  "branch": "swarmforge-hardender",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".gitignore",
+    "acceptance/scripts/generate_entrypoint.py",
+    "acceptance/scripts/runner-adapter",
+    "features/scaffold_cli.feature",
+    "src/lib.rs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a9/5428d23911/0/metadata.json",
+      "transcript": "/a9/5428d23911/0/full.jsonl",
+      "content_hash": "/a9/5428d23911/0/content_hash.txt",
+      "prompt": "/a9/5428d23911/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 122,
+    "cache_creation_tokens": 82560,
+    "cache_read_tokens": 7676667,
+    "output_tokens": 24672,
+    "api_call_count": 118
+  }
+}
