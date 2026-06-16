@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Run the full acceptance pipeline: parse -> generate -> run
+# Usage: run-acceptance [feature-file ...]
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+cd "$PROJECT_ROOT"
+
+# Default to all feature files
+FEATURES=("${@:-features/scaffold_cli.feature}")
+
+mkdir -p tmp/acceptance/ir
+
+for FEATURE in "${FEATURES[@]}"; do
+    BASENAME=$(basename "$FEATURE" .feature)
+    IR_FILE="tmp/acceptance/ir/${BASENAME}.json"
+
+    echo "==> Parsing: $FEATURE"
+    gherkin-parser "$FEATURE" "$IR_FILE"
+
+    echo "==> Generating: $IR_FILE -> tests/"
+    "$SCRIPT_DIR/acceptance-entrypoint-generator" "$IR_FILE" tests
+done
+
+echo "==> Building release binary"
+cargo build --release
+
+echo "==> Running acceptance tests"
+cargo test --test scaffold_cli_invocation_acceptance_test
