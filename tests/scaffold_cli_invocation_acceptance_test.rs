@@ -11,15 +11,14 @@ use runtime::World;
 use std::collections::HashMap;
 
 #[test]
-fn binary_accepts_path_arguments_and_exits_cleanly_example_1() {
+fn binary_exits_cleanly_with_no_arguments() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("args".to_string(), "./src".to_string());
 
     let result = steps::dispatch("the drywall release binary is built", &mut world, &example);
     assert!(result.success, "step failed [the drywall release binary is built]: {}", result.message);
-    let result = steps::dispatch("the binary is run with the arguments \"<args>\"", &mut world, &example);
-    assert!(result.success, "step failed [the binary is run with the arguments \"<args>\"]: {}", result.message);
+    let result = steps::dispatch("the binary is run with the arguments \"\"", &mut world, &example);
+    assert!(result.success, "step failed [the binary is run with the arguments \"\"]: {}", result.message);
     let result = steps::dispatch("the exit code is 0", &mut world, &example);
     assert!(result.success, "step failed [the exit code is 0]: {}", result.message);
     let result = steps::dispatch("stdout is empty", &mut world, &example);
@@ -27,15 +26,14 @@ fn binary_accepts_path_arguments_and_exits_cleanly_example_1() {
 }
 
 #[test]
-fn binary_accepts_path_arguments_and_exits_cleanly_example_2() {
+fn binary_exits_cleanly_with_a_single_path_argument() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("args".to_string(), "./src ./features".to_string());
 
     let result = steps::dispatch("the drywall release binary is built", &mut world, &example);
     assert!(result.success, "step failed [the drywall release binary is built]: {}", result.message);
-    let result = steps::dispatch("the binary is run with the arguments \"<args>\"", &mut world, &example);
-    assert!(result.success, "step failed [the binary is run with the arguments \"<args>\"]: {}", result.message);
+    let result = steps::dispatch("the binary is run with the arguments \"./src\"", &mut world, &example);
+    assert!(result.success, "step failed [the binary is run with the arguments \"./src\"]: {}", result.message);
     let result = steps::dispatch("the exit code is 0", &mut world, &example);
     assert!(result.success, "step failed [the exit code is 0]: {}", result.message);
     let result = steps::dispatch("stdout is empty", &mut world, &example);
@@ -43,15 +41,14 @@ fn binary_accepts_path_arguments_and_exits_cleanly_example_2() {
 }
 
 #[test]
-fn binary_accepts_path_arguments_and_exits_cleanly_example_3() {
+fn binary_exits_cleanly_with_multiple_path_arguments() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("args".to_string(), "".to_string());
 
     let result = steps::dispatch("the drywall release binary is built", &mut world, &example);
     assert!(result.success, "step failed [the drywall release binary is built]: {}", result.message);
-    let result = steps::dispatch("the binary is run with the arguments \"<args>\"", &mut world, &example);
-    assert!(result.success, "step failed [the binary is run with the arguments \"<args>\"]: {}", result.message);
+    let result = steps::dispatch("the binary is run with the arguments \"./src ./features\"", &mut world, &example);
+    assert!(result.success, "step failed [the binary is run with the arguments \"./src ./features\"]: {}", result.message);
     let result = steps::dispatch("the exit code is 0", &mut world, &example);
     assert!(result.success, "step failed [the exit code is 0]: {}", result.message);
     let result = steps::dispatch("stdout is empty", &mut world, &example);
@@ -59,15 +56,14 @@ fn binary_accepts_path_arguments_and_exits_cleanly_example_3() {
 }
 
 #[test]
-fn binary_accepts_path_arguments_and_exits_cleanly_example_4() {
+fn binary_exits_cleanly_with_a_nonexistent_path_argument() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("args".to_string(), "./does-not-exist".to_string());
 
     let result = steps::dispatch("the drywall release binary is built", &mut world, &example);
     assert!(result.success, "step failed [the drywall release binary is built]: {}", result.message);
-    let result = steps::dispatch("the binary is run with the arguments \"<args>\"", &mut world, &example);
-    assert!(result.success, "step failed [the binary is run with the arguments \"<args>\"]: {}", result.message);
+    let result = steps::dispatch("the binary is run with the arguments \"./does-not-exist\"", &mut world, &example);
+    assert!(result.success, "step failed [the binary is run with the arguments \"./does-not-exist\"]: {}", result.message);
     let result = steps::dispatch("the exit code is 0", &mut world, &example);
     assert!(result.success, "step failed [the exit code is 0]: {}", result.message);
     let result = steps::dispatch("stdout is empty", &mut world, &example);

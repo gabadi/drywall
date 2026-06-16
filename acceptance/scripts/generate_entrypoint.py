@@ -56,9 +56,10 @@ def generate_test_file(ir, output_file, runtime_path, steps_path):
     for scenario in scenarios:
         sname = scenario['name']
         steps = scenario['steps']
-        examples = scenario.get('examples', [{}])
+        raw_examples = scenario.get('examples', [])
+        examples = raw_examples if raw_examples else [{}]
         for idx, example in enumerate(examples, 1):
-            fn_name = f'{rust_fn_name(sname)}_example_{idx}'
+            fn_name = f'{rust_fn_name(sname)}_example_{idx}' if raw_examples else rust_fn_name(sname)
             lines.append('#[test]')
             lines.append(f'fn {fn_name}() {{')
             lines.append('    let mut world = World::new();')
