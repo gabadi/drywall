@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "963fc7ad33f1",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    ".gitignore",
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/main.rs",
+    "swarm",
+    "swarmforge/constitution.prompt",
+    "swarmforge/constitution/articles/engineering.prompt",
+    "swarmforge/constitution/articles/handoffs.prompt",
+    "swarmforge/constitution/articles/local-engineering.prompt",
+    "swarmforge/constitution/articles/local-workflow.prompt",
+    "swarmforge/constitution/articles/project.prompt",
+    "swarmforge/constitution/articles/workflow.prompt",
+    "swarmforge/roles/QA.prompt",
+    "swarmforge/roles/architect.prompt",
+    "swarmforge/roles/cleaner.prompt",
+    "swarmforge/roles/coder.prompt",
+    "swarmforge/roles/curator.prompt",
+    "swarmforge/roles/hardender.prompt",
+    "swarmforge/roles/integrator.prompt",
+    "swarmforge/roles/specifier.prompt",
+    "swarmforge/roles/ux-engineer.prompt",
+    "swarmforge/skills/agent-retro/SKILL.md",
+    "swarmforge/skills/agent-retro/scripts/extract.py",
+    "swarmforge/skills/setup-swarm/SKILL.md",
+    "swarmforge/swarmforge.conf",
+    "swarmforge/templates/feature.feature"
+  ],
+  "sessions": [
+    {
+      "metadata": "/96/3fc7ad33f1/0/metadata.json",
+      "transcript": "/96/3fc7ad33f1/0/full.jsonl",
+      "content_hash": "/96/3fc7ad33f1/0/content_hash.txt",
+      "prompt": "/96/3fc7ad33f1/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 293,
+    "cache_creation_tokens": 48852,
+    "cache_read_tokens": 1348468,
+    "output_tokens": 11613,
+    "api_call_count": 35
+  }
+}

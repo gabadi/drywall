@@ -1,0 +1,27 @@
+Migrate to claude agents, setup the agents like in ../tetris/
+
+---
+
+<task-notification>
+<task-id>bniogumln</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-gabadi-workspace-addi-drywall/000768a0-19d4-4cd7-85d6-416fd1e5825c/tasks/bniogumln.output</output-file>
+<status>completed</status>
+<summary>Background command "Install drywall from local project path" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+Migrate to claude agents, setup the agents like in ../tetris/, check the swarmworge config file, do not need a subagent, its a simple file lookup
+
+---
+
+remove the barch from the hardeer, fable its not available,set opus
+
+---
+
+target its not missing the gitignore?
+
+---
+
+how do i run the hello wold?

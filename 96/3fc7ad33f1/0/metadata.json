@@ -1,0 +1,144 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "963fc7ad33f1",
+  "session_id": "000768a0-19d4-4cd7-85d6-416fd1e5825c",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-16T04:34:15.153252Z",
+  "branch": "main",
+  "checkpoints_count": 5,
+  "files_touched": [
+    ".gitignore",
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/main.rs",
+    "swarm",
+    "swarmforge/constitution.prompt",
+    "swarmforge/constitution/articles/engineering.prompt",
+    "swarmforge/constitution/articles/handoffs.prompt",
+    "swarmforge/constitution/articles/local-engineering.prompt",
+    "swarmforge/constitution/articles/local-workflow.prompt",
+    "swarmforge/constitution/articles/project.prompt",
+    "swarmforge/constitution/articles/workflow.prompt",
+    "swarmforge/roles/QA.prompt",
+    "swarmforge/roles/architect.prompt",
+    "swarmforge/roles/cleaner.prompt",
+    "swarmforge/roles/coder.prompt",
+    "swarmforge/roles/curator.prompt",
+    "swarmforge/roles/hardender.prompt",
+    "swarmforge/roles/integrator.prompt",
+    "swarmforge/roles/specifier.prompt",
+    "swarmforge/roles/ux-engineer.prompt",
+    "swarmforge/skills/agent-retro/SKILL.md",
+    "swarmforge/skills/agent-retro/scripts/extract.py",
+    "swarmforge/skills/setup-swarm/SKILL.md",
+    "swarmforge/swarmforge.conf",
+    "swarmforge/templates/feature.feature"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "41433eb2899c",
+  "token_usage": {
+    "input_tokens": 293,
+    "cache_creation_tokens": 48852,
+    "cache_read_tokens": 1348468,
+    "output_tokens": 11613,
+    "api_call_count": 35
+  },
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-16T04:34:15.140462Z",
+    "agent_lines": 1659,
+    "agent_removed": 19,
+    "human_added": 2904,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 4565,
+    "total_lines_changed": 4584,
+    "agent_percentage": 36.60558464223386,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 13,
+      "user_lines_removed": 0,
+      "agent_lines_added": 4448,
+      "agent_lines_removed": 21,
+      "user_added_per_file": {
+        "target/.rustc_info.json": 1,
+        "target/CACHEDIR.TAG": 3,
+        "target/release/.fingerprint/drywall-55899792f26bce68/bin-drywall": 1,
+        "target/release/.fingerprint/drywall-55899792f26bce68/bin-drywall.json": 1,
+        "target/release/.fingerprint/drywall-55899792f26bce68/invoked.timestamp": 1,
+        "target/release/deps/drywall-55899792f26bce68.d": 5,
+        "target/release/drywall.d": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 13,
+      "user_lines_removed": 0,
+      "agent_lines_added": 4448,
+      "agent_lines_removed": 21,
+      "user_added_per_file": {
+        "target/.rustc_info.json": 1,
+        "target/CACHEDIR.TAG": 3,
+        "target/release/.fingerprint/drywall-55899792f26bce68/bin-drywall": 1,
+        "target/release/.fingerprint/drywall-55899792f26bce68/bin-drywall.json": 1,
+        "target/release/.fingerprint/drywall-55899792f26bce68/invoked.timestamp": 1,
+        "target/release/deps/drywall-55899792f26bce68.d": 5,
+        "target/release/drywall.d": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 13,
+      "user_lines_removed": 0,
+      "agent_lines_added": 4448,
+      "agent_lines_removed": 21,
+      "user_added_per_file": {
+        "target/.rustc_info.json": 1,
+        "target/CACHEDIR.TAG": 3,
+        "target/release/.fingerprint/drywall-55899792f26bce68/bin-drywall": 1,
+        "target/release/.fingerprint/drywall-55899792f26bce68/bin-drywall.json": 1,
+        "target/release/.fingerprint/drywall-55899792f26bce68/invoked.timestamp": 1,
+        "target/release/deps/drywall-55899792f26bce68.d": 5,
+        "target/release/drywall.d": 1
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 113,
+      "user_lines_removed": 2,
+      "agent_lines_added": 4449,
+      "agent_lines_removed": 21,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 88
+      },
+      "user_removed_per_file": {
+        ".gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 113,
+      "user_lines_removed": 0,
+      "agent_lines_added": 4454,
+      "agent_lines_removed": 21,
+      "user_added_per_file": {
+        ".claude/agents/entire-search.md": 25,
+        ".claude/settings.json": 88
+      }
+    }
+  ]
+}
