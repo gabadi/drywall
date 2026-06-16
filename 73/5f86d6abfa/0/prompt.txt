@@ -1,0 +1,9 @@
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
+
+---
+
+check again?
+
+---
+
+[Image #1] what is filing?
