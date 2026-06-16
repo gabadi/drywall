@@ -3,4 +3,15 @@ name = "drywall"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "drywall"
+path = "src/main.rs"
+
+[lib]
+name = "drywall"
+path = "src/lib.rs"
+
 [dependencies]
+tree-sitter = "0.26"
+tree-sitter-rust = "0.24"
+regex = "1"
