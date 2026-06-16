@@ -1,0 +1,9 @@
+/swarm-persona Check the git issue #2, the PRD for extra context is the issue #1
+
+---
+
+ir-dry-checker -> gherkin-ir-dry-checker
+
+---
+
+simplify AGENTS.md, each token counts
