@@ -1,0 +1,78 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "764785d0c6ee",
+  "session_id": "a238fa12-6e38-4f43-bf66-efc530cc68ef",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-16T05:46:44.575797Z",
+  "branch": "swarmforge-coder",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "Cargo.toml",
+    "src/lib.rs",
+    "src/main.rs",
+    "acceptance/runtime/mod.rs",
+    "acceptance/steps/scaffold_cli_steps.rs",
+    "acceptance/scripts/acceptance-entrypoint-generator",
+    "acceptance/scripts/generate_entrypoint.py",
+    "acceptance/scripts/run-acceptance"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "707281f546de",
+  "token_usage": {
+    "input_tokens": 71,
+    "cache_creation_tokens": 63173,
+    "cache_read_tokens": 3093872,
+    "output_tokens": 16121,
+    "api_call_count": 68
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-16T05:35:19.019657Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "707281f546de",
+      "timestamp": "2026-06-16T05:35:19.019657Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-16T05:46:44.562303Z",
+    "agent_lines": 391,
+    "agent_removed": 1,
+    "human_added": 304,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 695,
+    "total_lines_changed": 696,
+    "agent_percentage": 56.32183908045977,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 8,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 8
+      }
+    }
+  ]
+}
