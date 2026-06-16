@@ -120,12 +120,9 @@ def main():
     feature_name = ir.get('name', 'unknown')
     output_file = os.path.join(output_dir, f'{slug(feature_name)}_acceptance_test.rs')
 
-    # Compute relative paths from output file to runtime and steps
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(output_dir + '/'))))
-    # Actually derive from script location: scripts/ is in acceptance/scripts/
+    # Derive paths from script location: scripts/ is in acceptance/scripts/
     script_dir = os.path.dirname(os.path.abspath(__file__))
     acceptance_dir = os.path.dirname(script_dir)  # acceptance/
-    project_root = os.path.dirname(acceptance_dir)  # project root
 
     runtime_abs = os.path.join(acceptance_dir, 'runtime', 'mod.rs')
     steps_abs = os.path.join(acceptance_dir, 'steps', 'scaffold_cli_steps.rs')
