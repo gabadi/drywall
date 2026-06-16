@@ -2,7 +2,7 @@
   "schema_version": 1,
   "feature_path": "features/scaffold_cli.feature",
   "ir_path": "tmp/acceptance/ir/scaffold_cli.json",
-  "implementation_hash": "sha256:f18de127342703a2f198674fb7775cff64540f08a993e2c94dfe20bc163bc9f5",
+  "implementation_hash": "sha256:2048925cee4929ff12bfe3ee1ab18387c27521493b41357b245bedc8e6ceac81",
   "hash_scope": "generated_files",
   "generated_files": [
     "tests/scaffold_cli_invocation_acceptance_test.rs"
