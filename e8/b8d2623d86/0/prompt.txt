@@ -1,0 +1,25 @@
+[Image #1] explain this, its confusing, has sense? seems like no, but i dont know rust, which is the best practices?
+
+---
+
+Why properties tests are test ignored and acceptance is not ignored, thats ethe most strange part
+
+---
+
+ok, what do we need to migrate to nextest?
+
+---
+
+But what about the code itself?
+
+---
+
+apply the migration
+
+---
+
+Regarding rust version, can we use bew install for rust here?
+
+---
+
+how do i update rust

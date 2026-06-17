@@ -1,0 +1,73 @@
+{
+  "cli_version": "0.7.6",
+  "checkpoint_id": "e8b8d2623d86",
+  "session_id": "e1257b49-0c96-419d-85cd-a34520d3fe1e",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-17T02:47:26.791866Z",
+  "branch": "ci/add-github-actions",
+  "checkpoints_count": 7,
+  "save_step_count": 2,
+  "files_touched": [
+    ".github/workflows/ci.yml",
+    "tests/parse_rust_source_property_test.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "0808ca26122b",
+  "checkpoint_transcript_start": 150,
+  "transcript_lines_at_start": 150,
+  "token_usage": {
+    "input_tokens": 34,
+    "cache_creation_tokens": 14091,
+    "cache_read_tokens": 865981,
+    "output_tokens": 11828,
+    "api_call_count": 18
+  },
+  "session_metrics": {
+    "turn_count": 10
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-17T02:47:26.782188Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 14,
+    "total_committed": 0,
+    "total_lines_changed": 14,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 9,
+      "user_lines_removed": 14,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".config/nextest.toml": 2,
+        ".github/workflows/ci.yml": 6,
+        "tests/parse_rust_source_property_test.rs": 1
+      },
+      "user_removed_per_file": {
+        ".github/workflows/ci.yml": 5,
+        "tests/parse_rust_source_property_test.rs": 9
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 9,
+      "agent_lines_removed": 14
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 9,
+      "agent_lines_removed": 14
+    }
+  ]
+}
