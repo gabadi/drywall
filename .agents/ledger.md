@@ -47,3 +47,47 @@ Format: `<date> | <session-id> | <role> | <failure-class> | <verdict> | <one-lin
 2026-06-16 | ec72e255-9882-4c2e-8ef6-ee08578aca9d | ux-engineer | convention-gap | rejected→swarmforge | Clarify UX INTENT comment vs markdown heading — targets swarmforge ux-engineer role prompt
 2026-06-16 | ec72e255-9882-4c2e-8ef6-ee08578aca9d | ux-engineer | convention-gap | ephemeral | Pass-through path (UX INTENT: none → forward to cleaner) executed correctly
 2026-06-16 | ec72e255-9882-4c2e-8ef6-ee08578aca9d | ux-engineer | tool-error | rejected→swarmforge | Double swarm-persona invocation — investigate harness skill replay mechanism
+2026-06-17 | fb292f78-e50e-4fd4-9f73-f5a114cbcd14 | architect | convention-gap | rejected→swarmforge | Post-refactor full verification sequence — targets constitution/local-engineering.prompt
+2026-06-17 | fb292f78-e50e-4fd4-9f73-f5a114cbcd14 | architect | convention-gap | rejected→swarmforge | Export function before writing property test — targets architect role prompt
+2026-06-17 | fb292f78-e50e-4fd4-9f73-f5a114cbcd14 | architect | convention-gap | ephemeral | Advisor call before handoff pattern confirmed; acknowledged
+2026-06-17 | fb292f78-e50e-4fd4-9f73-f5a114cbcd14 | architect | tool-error | rejected→first-occurrence | agent-retro tool_result_sizes returns type names only; first occurrence of skill investigation
+2026-06-17 | fb292f78-e50e-4fd4-9f73-f5a114cbcd14 | architect | convention-gap | ephemeral | GPG workaround stable; already in session memory; inferable from environment
+2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | tool-error | promoted→AGENTS.md | Use bare git (not rtk git) for diff generation; RTK reformats diff and breaks --in-diff
+2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | convention-gap | promoted→backlog | Equivalent mutant j=i+1→i*1 in find_duplicate_pairs: document in code or suppress; route to coder
+2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | wrong-path | rejected→duplicate | llvm-profdata PATH workaround (rustup explicit path) — related items already in ledger/AGENTS.md
+2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | convention-gap | rejected→swarmforge | GENERATED file must be regenerated not hand-merged — targets hardender role prompt
+2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | wrong-path | rejected→swarmforge | cargo-mutants --profile mutation usage — targets hardender role prompt
+2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | convention-gap | ephemeral | Advisor call before mutation work confirmed correct; acknowledged
+2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | convention-gap | ephemeral | Equivalent mutant identification and documentation was correct; acknowledged
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | wrong-path | rejected→swarmforge | Check mergeable after gh pr create — targets integrator role prompt
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | wrong-path | rejected→swarmforge | Check git log for already-merged features before PR — targets integrator role prompt
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | timeout | rejected→swarmforge | CI polling loops need wall-clock timeout — targets integrator role prompt
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | tool-error | rejected→swarmforge | SSH pre-check before git push — targets integrator role prompt (duplicate of 2026-06-16 integrator#2)
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | timeout | rejected→swarmforge | Background until-loops bypass harness timeout block — investigate swarmforge scripts
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | convention-gap | ephemeral | HTTPS fallback for SSH worked cleanly; acknowledged
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | convention-gap | ephemeral | Conflict/already-merged diagnosis was correct; acknowledged
+2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | convention-gap | rejected→swarmforge | git_handoff not note after feature lands — targets integrator role prompt
+2026-06-17 | ab98a5aa-c35b-4929-9bbe-ba608e1308ae | QA | wrong-path | rejected→inferable | llvm-profdata symlink (rustup→Homebrew) — machine-specific env config; inferable from environment
+2026-06-17 | ab98a5aa-c35b-4929-9bbe-ba608e1308ae | QA | convention-gap | rejected→swarmforge | Remove scaffold-era ASSUMED annotations when deferred behavior ships — targets QA role prompt
+2026-06-17 | ab98a5aa-c35b-4929-9bbe-ba608e1308ae | QA | wrong-path | promoted→backlog | generate_entrypoint.py hardcodes scaffold_cli feature path; clobbers metadata for multiple features
+2026-06-17 | ab98a5aa-c35b-4929-9bbe-ba608e1308ae | QA | convention-gap | ephemeral | merge_and_process intent-notation correctly inferred; acknowledged
+2026-06-17 | ab98a5aa-c35b-4929-9bbe-ba608e1308ae | QA | convention-gap | rejected→swarmforge | Run cargo fmt after regenerating acceptance tests — targets QA role prompt
+2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | convention-gap | rejected→swarmforge | Fallback when merge_and_process not in PATH — targets cleaner role prompt or handoffs article
+2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | wrong-path | promoted→AGENTS.md | Coverage command: use explicit rustup toolchain path (Homebrew Rust lacks llvm-profdata)
+2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | convention-gap | rejected→swarmforge | Module split: move functions and tests together in one pass — targets engineering article
+2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | wrong-path | promoted→AGENTS.md | Coverage command explicit rustup path (merged with action 2)
+2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | convention-gap | ephemeral | DRY self-check correctly caught test duplication; acknowledged
+2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | convention-gap | ephemeral | CRAP threshold exclusion for main.rs correct and in AGENTS.md; acknowledged
+2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | tool-error | rejected→swarmforge | GPG/1Password commit signing failure — investigate global git config
+2026-06-17 | 1a7938af-e074-4405-a483-d928715a4d47 | coder | convention-gap | ephemeral | Fork delegation for large implementation worked cleanly; acknowledged
+2026-06-17 | 1a7938af-e074-4405-a483-d928715a4d47 | coder | convention-gap | rejected→swarmforge | Preview git diff before merge to avoid blind --theirs — targets coder role prompt
+2026-06-17 | 1a7938af-e074-4405-a483-d928715a4d47 | coder | convention-gap | ephemeral | Dogfood gate (scenario 3) is self-enforcing; no extra guard needed
+2026-06-17 | 1a7938af-e074-4405-a483-d928715a4d47 | coder | tool-error | rejected→swarmforge | advisor() overload fallback not documented — targets constitution or role prompt
+2026-06-17 | 7ac4552c-bbbc-42b6-942e-1ff1441be247 | specifier | convention-gap | rejected→swarmforge | Post-handoff close-out sequence missing from specifier prompt — targets swarmforge/roles/specifier.prompt
+2026-06-17 | 7ac4552c-bbbc-42b6-942e-1ff1441be247 | specifier | convention-gap | ephemeral | Batch ambiguities into one AskUserQuestion before writing spec; pattern confirmed
+2026-06-17 | 7ac4552c-bbbc-42b6-942e-1ff1441be247 | specifier | convention-gap | promoted→AGENTS.md | drywall output format mirrors dry4go: per-function node counts, lexicographic tie-break
+2026-06-17 | 7ac4552c-bbbc-42b6-942e-1ff1441be247 | specifier | convention-gap | promoted→AGENTS.md | gherkin-ir-dry-checker: pipe JSON report through compact summary to avoid dumping full JSON
+2026-06-17 | 10ade55d-2868-44cd-9c63-2668a7e07468 | specifier | convention-gap | ephemeral | Idle-cycle awake ack handled correctly; acknowledged
+2026-06-17 | eb8eba5a-c8b4-4c90-b8c5-5a3cd1d659a0 | ux-engineer | convention-gap | ephemeral | No-UX-Intent fast-path correctly applied; acknowledged
+2026-06-17 | eb8eba5a-c8b4-4c90-b8c5-5a3cd1d659a0 | ux-engineer | tool-error | rejected→first-occurrence | agent-retro primary path blocked by deny rule on .entire/metadata/**; first occurrence
+2026-06-17 | eb8eba5a-c8b4-4c90-b8c5-5a3cd1d659a0 | ux-engineer | convention-gap | ephemeral | UX INTENT comment vs section heading distinction works correctly; acknowledged
