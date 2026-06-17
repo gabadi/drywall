@@ -1,0 +1,5 @@
+[tools]
+"cargo:cargo-nextest" = "0.9.137"
+"cargo:cargo-llvm-cov" = "0.8.7"
+"cargo:cargo-crap" = "0.2.2"
+"cargo:cargo-mutants" = "27.1.0"

@@ -22,7 +22,7 @@ jobs:
           components: clippy, rustfmt, llvm-tools-preview
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-nextest,cargo-llvm-cov,cargo-crap
+          tool: cargo-nextest@0.9.137,cargo-llvm-cov@0.8.7,cargo-crap@0.2.2
       - uses: actions/cache@v4.2.3
         with:
           path: |
@@ -36,11 +36,11 @@ jobs:
       - name: Clippy
         run: cargo clippy -- -D warnings
       - name: Unit tests
-        run: cargo nextest run --lib --profile ci
+        run: cargo nextest run --profile unit
       - name: Install lcov
         run: sudo apt-get install -y lcov
       - name: Coverage
-        run: cargo llvm-cov --lib --lcov --output-path lcov.info --fail-under-lines 90
+        run: cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info --fail-under-lines 90
       - name: Coverage report
         uses: zgosalvez/github-actions-report-lcov@v4
         if: always()
@@ -53,5 +53,7 @@ jobs:
         run: cargo build --release
       - name: DRY
         run: ./target/release/drywall ./src
-      - name: Integration tests
-        run: cargo nextest run --tests --profile ci
+      - name: Property tests
+        run: cargo nextest run --profile property
+      - name: Acceptance tests
+        run: cargo nextest run --profile acceptance
