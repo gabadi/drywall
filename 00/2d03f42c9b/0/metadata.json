@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "002d03f42c9b",
+  "session_id": "d866bc4a-1f5d-46e7-8ba1-fc19bd24e584",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-17T04:27:36.312969Z",
+  "branch": "ci/add-github-actions",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "tests/scaffold_cli_invocation_acceptance_test.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "099ec72df38e",
+  "token_usage": {
+    "input_tokens": 42,
+    "cache_creation_tokens": 15218,
+    "cache_read_tokens": 126089,
+    "output_tokens": 883,
+    "api_call_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-17T04:27:36.304411Z",
+    "agent_lines": 160,
+    "agent_removed": 32,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 160,
+    "total_lines_changed": 192,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
