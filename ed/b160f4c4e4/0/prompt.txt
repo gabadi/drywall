@@ -1,0 +1,57 @@
+/lending-engineering:extracting-skill-learnings `On the UX/roles discarded items — clarification:` in yolo mode, create it in github issues, not in linear
+
+---
+
+The PR had some updates pull them
+
+---
+
+/Users/gabadi/workspace/addi/drywall/rust-toolchain.toml  not that we have this, do we have any requirement to the coverage comments in the AGETNS.md?
+
+---
+
+1. But rustup does not autoconfigure it? 2. Lets add the relevant commands index in the AGENTS.md
+
+---
+
+| Format check | `cargo fmt --check` | there is not any autofix? | Property + integration tests | `cargo nextest run --tests --profile ci` | we need different for each. maybe integration tests can be renamed to acceptance?
+
+---
+
+no, we need diffeen profiles, Remove | Format check | `cargo fmt --check` |, or maybe are a clear not (never --check)
+
+---
+
+why single thread for acceptance? why hardcode the test instance in CI?
+
+---
+
+did you udate the tests itself? why do we need --filter-expr and --profile?
+
+---
+
+@swarmforge/constitution/articles/engineering.prompt uses any other tool?
+
+---
+
+Why cargo test requires --lib and profile CI?
+
+---
+
+its srange, i dont understand why unit test can simply became a profile or a default profile, the same for llm-cov
+
+---
+
+anyhing to update in /Users/gabadi/workspace/addi/drywall/rust-toolchain.toml?
+
+---
+
+swarmforge/constitution/articles/engineering.prompt what about this file? make a poposal
+
+---
+
+swarmforge/constitution/articles/engineering.prompt what about this file? make a poposal, do not change the scope/size/things in the file, but propose an update if needed
+
+---
+
+swarmforge/constitution/articles/engineering.prompt what about this file? make a poposal, do not change the scope/size/things in the file, but propose an update if needed. Why (cargo-nextest, cargo-llvm-cov, cargo-crap) cant be added in the toolchain? any alternative to prevent depending on the global cargo?
