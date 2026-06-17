@@ -1,0 +1,1 @@
+taiki-e/install-action@v2 check too, all pined, in github actions must be hash. Regarding CI, cant we use mise too?
