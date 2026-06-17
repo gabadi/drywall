@@ -23,62 +23,18 @@ fn structural_duplicate_across_files_is_reported_example_1() {
     example.insert("exit_code".to_string(), "1".to_string());
     example.insert("min_score".to_string(), "0.82".to_string());
 
-    let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with structure \"<structure>\" and identifiers \"<left_ids>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with structure \"<structure>\" and identifiers \"<left_ids>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a function with structure \"<structure>\" and identifiers \"<right_ids>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<right_file>\" containing a function with structure \"<structure>\" and identifiers \"<right_ids>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust file \"<left_file>\" containing a function with structure \"<structure>\" and identifiers \"<left_ids>\"", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<left_file>\" containing a function with structure \"<structure>\" and identifiers \"<left_ids>\"]: {}", result.message);
+    let result = steps::dispatch("a Rust file \"<right_file>\" containing a function with structure \"<structure>\" and identifiers \"<right_ids>\"", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<right_file>\" containing a function with structure \"<structure>\" and identifiers \"<right_ids>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "stdout reports a duplicate pair for \"<left_file>\" and \"<right_file>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [stdout reports a duplicate pair for \"<left_file>\" and \"<right_file>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the reported score is at least \"<min_score>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the reported score is at least \"<min_score>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
+    let result = steps::dispatch("stdout reports a duplicate pair for \"<left_file>\" and \"<right_file>\"", &mut world, &example);
+    assert!(result.success, "step failed [stdout reports a duplicate pair for \"<left_file>\" and \"<right_file>\"]: {}", result.message);
+    let result = steps::dispatch("the reported score is at least \"<min_score>\"", &mut world, &example);
+    assert!(result.success, "step failed [the reported score is at least \"<min_score>\"]: {}", result.message);
 }
 
 #[test]
@@ -92,48 +48,16 @@ fn unrelated_functions_produce_no_pair_example_1() {
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
 
-    let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with structure \"<left_structure>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with structure \"<left_structure>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a function with structure \"<right_structure>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<right_file>\" containing a function with structure \"<right_structure>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust file \"<left_file>\" containing a function with structure \"<left_structure>\"", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<left_file>\" containing a function with structure \"<left_structure>\"]: {}", result.message);
+    let result = steps::dispatch("a Rust file \"<right_file>\" containing a function with structure \"<right_structure>\"", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<right_file>\" containing a function with structure \"<right_structure>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("no duplicate pair is reported", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [no duplicate pair is reported]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [no duplicate pair is reported]: {}", result.message);
 }
 
 #[test]
@@ -143,38 +67,14 @@ fn dogfood_run_on_own_source_exits_clean_example_1() {
     example.insert("path".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
 
-    let result = steps::dispatch(
-        "the drywall project source directory at \"<path>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the drywall project source directory at \"<path>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<path>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<path>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("the drywall project source directory at \"<path>\"", &mut world, &example);
+    assert!(result.success, "step failed [the drywall project source directory at \"<path>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<path>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<path>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("no duplicate pair is reported", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [no duplicate pair is reported]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [no duplicate pair is reported]: {}", result.message);
 }
 
 #[test]
@@ -188,48 +88,16 @@ fn function_below_a_size_gate_is_not_a_candidate_example_1() {
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
 
-    let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a structurally identical function",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}", result.message);
+    let result = steps::dispatch("a Rust file \"<right_file>\" containing a structurally identical function", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("no duplicate pair is reported", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [no duplicate pair is reported]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [no duplicate pair is reported]: {}", result.message);
 }
 
 #[test]
@@ -243,48 +111,16 @@ fn function_below_a_size_gate_is_not_a_candidate_example_2() {
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
 
-    let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a structurally identical function",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}", result.message);
+    let result = steps::dispatch("a Rust file \"<right_file>\" containing a structurally identical function", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("no duplicate pair is reported", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [no duplicate pair is reported]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [no duplicate pair is reported]: {}", result.message);
 }
 
 #[test]
@@ -296,42 +132,14 @@ fn pairs_are_sorted_by_score_descending_example_1() {
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "1".to_string());
 
-    let result = steps::dispatch(
-        "a duplicate pair scoring \"<high_score>\" and a duplicate pair scoring \"<low_score>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a duplicate pair scoring \"<high_score>\" and a duplicate pair scoring \"<low_score>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a duplicate pair scoring \"<high_score>\" and a duplicate pair scoring \"<low_score>\"", &mut world, &example);
+    assert!(result.success, "step failed [a duplicate pair scoring \"<high_score>\" and a duplicate pair scoring \"<low_score>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the pair scoring \"<high_score>\" is reported before the pair scoring \"<low_score>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the pair scoring \"<high_score>\" is reported before the pair scoring \"<low_score>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
+    let result = steps::dispatch("the pair scoring \"<high_score>\" is reported before the pair scoring \"<low_score>\"", &mut world, &example);
+    assert!(result.success, "step failed [the pair scoring \"<high_score>\" is reported before the pair scoring \"<low_score>\"]: {}", result.message);
 }
 
 #[test]
@@ -343,42 +151,14 @@ fn threshold_flag_gates_reporting_example_1() {
     example.insert("exit_code".to_string(), "0".to_string());
     example.insert("reported".to_string(), "false".to_string());
 
-    let result = steps::dispatch(
-        "a duplicate pair scoring \"<pair_score>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a duplicate pair scoring \"<pair_score>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a duplicate pair scoring \"<pair_score>\"", &mut world, &example);
+    assert!(result.success, "step failed [a duplicate pair scoring \"<pair_score>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the pair is reported equals \"<reported>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the pair is reported equals \"<reported>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
+    let result = steps::dispatch("the pair is reported equals \"<reported>\"", &mut world, &example);
+    assert!(result.success, "step failed [the pair is reported equals \"<reported>\"]: {}", result.message);
 }
 
 #[test]
@@ -390,42 +170,14 @@ fn threshold_flag_gates_reporting_example_2() {
     example.insert("exit_code".to_string(), "1".to_string());
     example.insert("reported".to_string(), "true".to_string());
 
-    let result = steps::dispatch(
-        "a duplicate pair scoring \"<pair_score>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a duplicate pair scoring \"<pair_score>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a duplicate pair scoring \"<pair_score>\"", &mut world, &example);
+    assert!(result.success, "step failed [a duplicate pair scoring \"<pair_score>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the pair is reported equals \"<reported>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the pair is reported equals \"<reported>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
+    let result = steps::dispatch("the pair is reported equals \"<reported>\"", &mut world, &example);
+    assert!(result.success, "step failed [the pair is reported equals \"<reported>\"]: {}", result.message);
 }
 
 #[test]
@@ -440,52 +192,16 @@ fn size_gate_flags_override_defaults_example_1() {
     example.insert("exit_code".to_string(), "1".to_string());
     example.insert("reported".to_string(), "true".to_string());
 
-    let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a structurally identical function",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}", result.message);
+    let result = steps::dispatch("a Rust file \"<right_file>\" containing a structurally identical function", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the pair is reported equals \"<reported>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the pair is reported equals \"<reported>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
+    let result = steps::dispatch("the pair is reported equals \"<reported>\"", &mut world, &example);
+    assert!(result.success, "step failed [the pair is reported equals \"<reported>\"]: {}", result.message);
 }
 
 #[test]
@@ -500,52 +216,16 @@ fn size_gate_flags_override_defaults_example_2() {
     example.insert("exit_code".to_string(), "1".to_string());
     example.insert("reported".to_string(), "true".to_string());
 
-    let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a structurally identical function",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<left_file>\" containing a function with \"<lines>\" source lines and \"<nodes>\" normalized nodes]: {}", result.message);
+    let result = steps::dispatch("a Rust file \"<right_file>\" containing a structurally identical function", &mut world, &example);
+    assert!(result.success, "step failed [a Rust file \"<right_file>\" containing a structurally identical function]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the pair is reported equals \"<reported>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the pair is reported equals \"<reported>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
+    let result = steps::dispatch("the pair is reported equals \"<reported>\"", &mut world, &example);
+    assert!(result.success, "step failed [the pair is reported equals \"<reported>\"]: {}", result.message);
 }
 
 #[test]
@@ -556,48 +236,16 @@ fn json_output_format_example_1() {
     example.insert("args".to_string(), "--format json ./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
 
-    let result = steps::dispatch(
-        "a Rust source set producing \"<pair_count>\" duplicate pairs",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust source set producing \"<pair_count>\" duplicate pairs]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust source set producing \"<pair_count>\" duplicate pairs", &mut world, &example);
+    assert!(result.success, "step failed [a Rust source set producing \"<pair_count>\" duplicate pairs]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("stdout is valid JSON", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [stdout is valid JSON]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the JSON contains \"<pair_count>\" pair objects",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the JSON contains \"<pair_count>\" pair objects]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [stdout is valid JSON]: {}", result.message);
+    let result = steps::dispatch("the JSON contains \"<pair_count>\" pair objects", &mut world, &example);
+    assert!(result.success, "step failed [the JSON contains \"<pair_count>\" pair objects]: {}", result.message);
 }
 
 #[test]
@@ -608,48 +256,16 @@ fn json_output_format_example_2() {
     example.insert("args".to_string(), "--format json ./src".to_string());
     example.insert("exit_code".to_string(), "1".to_string());
 
-    let result = steps::dispatch(
-        "a Rust source set producing \"<pair_count>\" duplicate pairs",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [a Rust source set producing \"<pair_count>\" duplicate pairs]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    let result = steps::dispatch("a Rust source set producing \"<pair_count>\" duplicate pairs", &mut world, &example);
+    assert!(result.success, "step failed [a Rust source set producing \"<pair_count>\" duplicate pairs]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("stdout is valid JSON", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [stdout is valid JSON]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the JSON contains \"<pair_count>\" pair objects",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the JSON contains \"<pair_count>\" pair objects]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [stdout is valid JSON]: {}", result.message);
+    let result = steps::dispatch("the JSON contains \"<pair_count>\" pair objects", &mut world, &example);
+    assert!(result.success, "step failed [the JSON contains \"<pair_count>\" pair objects]: {}", result.message);
 }
 
 #[test]
@@ -661,33 +277,13 @@ fn unreadable_or_unparsable_input_is_an_error_example_1() {
     example.insert("exit_code".to_string(), "2".to_string());
 
     let result = steps::dispatch("the input condition \"<condition>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the input condition \"<condition>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the input condition \"<condition>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("stderr is not empty", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [stderr is not empty]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [stderr is not empty]: {}", result.message);
 }
 
 #[test]
@@ -699,31 +295,11 @@ fn unreadable_or_unparsable_input_is_an_error_example_2() {
     example.insert("exit_code".to_string(), "2".to_string());
 
     let result = steps::dispatch("the input condition \"<condition>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the input condition \"<condition>\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "I run drywall with the arguments \"<args>\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [I run drywall with the arguments \"<args>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the input condition \"<condition>\"]: {}", result.message);
+    let result = steps::dispatch("I run drywall with the arguments \"<args>\"", &mut world, &example);
+    assert!(result.success, "step failed [I run drywall with the arguments \"<args>\"]: {}", result.message);
     let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is \"<exit_code>\"]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [the exit code is \"<exit_code>\"]: {}", result.message);
     let result = steps::dispatch("stderr is not empty", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [stderr is not empty]: {}",
-        result.message
-    );
+    assert!(result.success, "step failed [stderr is not empty]: {}", result.message);
 }
