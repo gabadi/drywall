@@ -32,8 +32,8 @@ jobs:
       - name: Unit tests
         run: cargo test --lib
       - name: Property tests
-        run: cargo test --test parse_rust_source_property_test -- --include-ignored
+        run: cargo test --tests -- --ignored
       - name: Build release binary
         run: cargo build --release
       - name: Acceptance tests
-        run: cargo test --test scaffold_cli_invocation_acceptance_test
+        run: cargo test --tests
