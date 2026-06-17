@@ -1,0 +1,4 @@
+Consult the project `AGENTS.md` for profile
+names, thresholds, and flags. remove. Remove drywall from  For Rust projects, prefer `cargo nextest` with project-defined profiles over `cargo test`. Use `cargo llvm-cov` for coverage, `cargo cra
+p` for CRAP analysis, `cargo mutants` for mutation testing, `drywall ./src` for DRY analysis. Consult the project `AGENTS.md` for profile
+names, thresholds, and flags.

@@ -1,0 +1,73 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "f379f3f916a3",
+  "session_id": "fb43a566-1bed-48e7-ad75-e1eec0531272",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-17T03:58:05.446959Z",
+  "branch": "ci/add-github-actions",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "swarmforge/constitution/articles/engineering.prompt"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "11c8546c0a6b",
+  "checkpoint_transcript_start": 779,
+  "transcript_lines_at_start": 779,
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 1042,
+    "cache_read_tokens": 221424,
+    "output_tokens": 968,
+    "api_call_count": 2
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-lending-engineering:extracting-skill-learnings-2026-06-17T02:12:26.437819Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "lending-engineering:extracting-skill-learnings"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "c29aa87aa89f",
+      "timestamp": "2026-06-17T02:12:26.437819Z",
+      "native": {
+        "command": "/lending-engineering:extracting-skill-learnings"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/lending-engineering:extracting-skill-learnings",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 28
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-17T03:58:05.404632Z",
+    "agent_lines": 1,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1,
+    "total_lines_changed": 2,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

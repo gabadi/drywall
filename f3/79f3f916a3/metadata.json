@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "f379f3f916a3",
+  "strategy": "manual-commit",
+  "branch": "ci/add-github-actions",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "swarmforge/constitution/articles/engineering.prompt"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f3/79f3f916a3/0/metadata.json",
+      "transcript": "/f3/79f3f916a3/0/full.jsonl",
+      "content_hash": "/f3/79f3f916a3/0/content_hash.txt",
+      "prompt": "/f3/79f3f916a3/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 1042,
+    "cache_read_tokens": 221424,
+    "output_tokens": 968,
+    "api_call_count": 2
+  }
+}
