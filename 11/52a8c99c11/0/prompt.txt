@@ -1,0 +1,21 @@
+Not or/optional, be more specific, why ot in the commands lists
+
+---
+
+no, put mise install as other command for the project
+
+---
+
+one extra question, Why drywall works as a command line vs other tools as cargo? whats the advantage of each option?
+
+---
+
+CARP only reads code once the coverage runs
+
+---
+
+ok, and how drywall solves this? chec the PRD in github
+
+---
+
+and can we support both?
