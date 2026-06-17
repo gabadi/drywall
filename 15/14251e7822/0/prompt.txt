@@ -1,0 +1,5 @@
+its possible to use caching for the env? has sense?
+
+---
+
+i mean in CI
