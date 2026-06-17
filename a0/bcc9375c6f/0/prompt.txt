@@ -1,0 +1,51 @@
+Run cargo nextest run --profile property
+warning: variable does not need to be mutable
+  --> tests/scaffold_cli_invocation_acceptance_test.rs:16:9
+   |
+16 |     let mut example: HashMap<String, String> = HashMap::new();
+   |         ----^^^^^^^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> tests/scaffold_cli_invocation_acceptance_test.rs:57:9
+   |
+57 |     let mut example: HashMap<String, String> = HashMap::new();
+   |         ----^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> tests/scaffold_cli_invocation_acceptance_test.rs:98:9
+   |
+98 |     let mut example: HashMap<String, String> = HashMap::new();
+   |         ----^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> tests/scaffold_cli_invocation_acceptance_test.rs:139:9
+    |
+139 |     let mut example: HashMap<String, String> = HashMap::new();
+    |         ----^^^^^^^
+    |         |
+    |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> tests/scaffold_cli_invocation_acceptance_test.rs:180:9
+    |
+180 |     let mut example: HashMap<String, String> = HashMap::new();
+    |         ----^^^^^^^
+    |         |
+    |         help: remove this `mut`
+ do not fix befoe explining to me, but why do we have those warings in CI?
+
+---
+
+i'll change the point, why do we have warnings here in general?
+
+---
+
+whats yours take? its something to fix? if its something to fix lets have it properly solved
