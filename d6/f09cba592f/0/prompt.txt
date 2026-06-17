@@ -1,0 +1,7 @@
+Remvove install with `mise install` (see `.mise.toml`); fom swarmforge/constitution/articles/engineering.prompt/. 
+ - For Rust projects, use `cargo nextest run --profile unit` for unit tests and `cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info` for coverage. Run `cargo crap --lcov lcov.info --exclude 'acceptance/**'` for CRAP analysis. Run `cargo mutants` for mutation testing. Run `drywall ./src` for DRY analysis. this seems to have too many details that are not ment to be there, reframe. Maybe we only need the profiling instruction?
+
+---
+
+Remvove install with `mise install` (see `.mise.toml`); fom swarmforge/constitution/articles/engineering.prompt/. 
+ - For Rust projects, use `cargo nextest run --profile unit` for unit tests and `cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info` for coverage. Run `cargo crap --lcov lcov.info --exclude 'acceptance/**'` for CRAP analysis. Run `cargo mutants` for mutation testing. Run `drywall ./src` for DRY analysis. this seems to have too many details that are not ment to be there, reframe. Maybe we only need the profiling instruction?. but everything else its not more for the local aGENTS.md? `## Rust engineering workflow` do we need this?## Rust coverage and CRAP and this?
