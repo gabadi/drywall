@@ -15,6 +15,12 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 
 `findings: []` = already normalized. Also installed: `gherkin-parser`, `gherkin-mutator`.
 
+## Rust engineering workflow
+
+Always run `cargo clippy -- -D warnings` before submitting manual trait implementations or significant refactors. Clippy catches unnecessary impls and common patterns automatically.
+
+Always run `cargo build --release` before running acceptance tests. The acceptance step dispatcher executes the compiled binary at `target/release/drywall` — the tests will silently use a stale binary or fail to find it if the build step is skipped.
+
 ## Rust coverage and CRAP
 
 `cargo-llvm-cov` is NOT installed in this environment (no rustup; Homebrew Rust). CRAP must run without coverage data; scores in acceptance step files will be inflated — CC≤6 in `acceptance/**` files is acceptable without coverage.
