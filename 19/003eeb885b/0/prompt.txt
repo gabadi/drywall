@@ -1,0 +1,5 @@
+run: cargo test --test parse_rust_source_property_test -- --include-ignored what i dont get about this, what will happend when we add more property tesgts?
+
+---
+
+scaffold_cli_invocation_acceptance_test the same for this. Maybe can we use profiles? has sense?
