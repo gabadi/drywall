@@ -1,6 +1,6 @@
-# mutation-stamp: sha256=ced0cd7295f56b51e8cdd001af082d39cb730d110167c33eacfc744c3504add8
+# mutation-stamp: sha256=5f39921aa82798cd2518b8c90d29e320c8e5d13317eb2a37d74164d9e4f81613
 # acceptance-mutation-manifest-begin
-# {"version":1,"tested_at":"2026-06-16T06:30:32.749709Z","feature_name":"Scaffold CLI invocation","feature_path":"features/scaffold_cli.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
+# {"version":1,"tested_at":"2026-06-17T07:08:06.668228Z","feature_name":"Scaffold CLI invocation","feature_path":"features/scaffold_cli.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
 # acceptance-mutation-manifest-end
 
 Feature: Scaffold CLI invocation
@@ -68,7 +68,7 @@ Feature: Scaffold CLI invocation
     When the binary is run with the arguments "./does-not-exist"
     Then the exit code is 0
     And stdout is empty
-    And stderr contains no panic text
+    And stderr is empty
 
   # scaffold-cli-5
   Scenario: Minimal Rust source parses without error

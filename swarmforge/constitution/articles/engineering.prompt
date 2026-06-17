@@ -1,20 +1,20 @@
 # Engineering Rules
 
 ## Startup Tools
-- On startup, procure the latest CRAP, mutation, and DRY tools for the project language directly from the listed repositories and get them ready to run.
-- Do not rely on stale cached, vendored, or preinstalled copies when a fresh install/build is possible in the current environment.
+- On startup, procure the latest CRAP, mutation, and DRY tools for the project language directly from the listed `github.com/unclebob/...` repositories and get them ready to run.
+- Do not rely on stale cached, vendored, or preinstalled copies when a fresh GitHub install/build is possible in the current environment.
 - Language tool table:
   - Go: install with `go install`; mutation `github.com/unclebob/mutate4go`, CRAP `github.com/unclebob/crap4go`, DRY `github.com/unclebob/dry4go`.
   - Clojure: install with Clojure CLI/deps.edn; mutation `github.com/unclebob/clj-mutate`, CRAP `github.com/unclebob/crap4clj`, DRY `github.com/unclebob/dry4clj`.
   - Java: install with Maven (`mvn`); mutation `github.com/unclebob/mutate4java`, CRAP `github.com/unclebob/crap4java`, DRY `github.com/unclebob/dry4java`.
-  - Rust: install with `cargo install`; mutation `cargo-mutants` (`cargo install cargo-mutants`), CRAP `cargo-crap` (`cargo install cargo-crap`), DRY `github.com/gabadi/drywall` (`cargo install --git https://github.com/gabadi/drywall`, SELF, Chicken-and-egg).
+  - Rust: install with `cargo install`; mutation `cargo-mutants`, CRAP `cargo-crap`, DRY `github.com/gabadi/drywall` (SELF, Chicken-and-egg), test runner `cargo-nextest`, coverage `cargo-llvm-cov`.
 
 ## Language Defaults
 - For Clojure projects, prefer Babashka where possible.
 - For Clojure projects, prefer Speclj for unit and behavior tests.
 - For Clojure or Babashka projects using Speclj, use `github.com/unclebob/speclj-structure-check` to validate test syntax. If a Speclj spec file changed, run the structure check before executing the relevant test command.
 - For Java projects, avoid using Maven to run tests; build dedicated test runners and run those instead.
-- For Rust projects, use `cargo test` for unit tests and `cargo llvm-cov --lcov --output-path lcov.info` for coverage. Run `cargo crap --lcov lcov.info` for CRAP analysis. Run `cargo mutants` for mutation testing. Run `drywall ./src` for DRY analysis.
+- For Rust projects, prefer `cargo nextest` with project-defined profiles over `cargo test`. Use `cargo llvm-cov` for coverage, `cargo crap` for CRAP analysis, `cargo mutants` for mutation testing.
 
 ## Design And Testability
 - Work in small, reviewable increments.
