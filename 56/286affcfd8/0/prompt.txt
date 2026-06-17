@@ -1,0 +1,21 @@
+and the tests run locally?
+
+---
+
+did you update the pr?
+
+---
+
+[Image #2] whats this?
+
+---
+
+explain the changes in nextest
+
+---
+
+explain the changes in AGENTS.md file
+
+---
+
+Arent we missing some kind of dry/crap check in CI too? like the things htat we already run in eng.prompt?
