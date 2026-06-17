@@ -1,4 +1,4 @@
-use drywall::{FunctionInfo, find_duplicate_pairs};
+use drywall::{FunctionInfo, find_duplicate_pairs, jaccard};
 use proptest::prelude::*;
 
 fn make_fn(file: &str, start: usize, end: usize, hashes: Vec<u64>) -> FunctionInfo {
@@ -16,14 +16,14 @@ proptest! {
         a in prop::collection::vec(0u64..1000, 0..20),
         b in prop::collection::vec(0u64..1000, 0..20),
     ) {
-        let score_ab = drywall_jaccard(&a, &b);
-        let score_ba = drywall_jaccard(&b, &a);
+        let score_ab = jaccard(&a, &b);
+        let score_ba = jaccard(&b, &a);
         prop_assert!((score_ab - score_ba).abs() < 1e-9);
     }
 
     #[test]
     fn jaccard_identity_nonempty(a in prop::collection::vec(1u64..1000, 1..20)) {
-        let score = drywall_jaccard(&a, &a);
+        let score = jaccard(&a, &a);
         prop_assert!((score - 1.0).abs() < 1e-9);
     }
 
@@ -32,7 +32,7 @@ proptest! {
         a in prop::collection::vec(0u64..1000, 0..20),
         b in prop::collection::vec(0u64..1000, 0..20),
     ) {
-        let score = drywall_jaccard(&a, &b);
+        let score = jaccard(&a, &b);
         prop_assert!(score >= 0.0 && score <= 1.0);
     }
 
@@ -77,19 +77,4 @@ proptest! {
         let pairs = find_duplicate_pairs(&[f1, f2], 0.0, 1, 1);
         prop_assert_eq!(pairs.len(), 0, "same-location pair must be excluded");
     }
-}
-
-fn drywall_jaccard(a: &[u64], b: &[u64]) -> f64 {
-    use std::collections::HashSet;
-    if a.is_empty() && b.is_empty() {
-        return 1.0;
-    }
-    let set_a: HashSet<u64> = a.iter().copied().collect();
-    let set_b: HashSet<u64> = b.iter().copied().collect();
-    let intersection = set_a.intersection(&set_b).count();
-    let union = set_a.union(&set_b).count();
-    if union == 0 {
-        return 0.0;
-    }
-    intersection as f64 / union as f64
 }
