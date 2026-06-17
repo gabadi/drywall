@@ -16,10 +16,10 @@ jobs:
       - uses: actions/checkout@v4.2.2
       - uses: dtolnay/rust-toolchain@1.88.0
         with:
-          components: clippy, rustfmt
+          components: clippy, rustfmt, llvm-tools-preview
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-nextest
+          tool: cargo-nextest,cargo-llvm-cov,cargo-crap
       - uses: actions/cache@v4.2.3
         with:
           path: |
@@ -34,7 +34,13 @@ jobs:
         run: cargo clippy -- -D warnings
       - name: Unit tests
         run: cargo nextest run --lib --profile ci
+      - name: Coverage
+        run: cargo llvm-cov --lib --lcov --output-path lcov.info
+      - name: CRAP
+        run: cargo crap --lcov lcov.info --exclude 'acceptance/**'
       - name: Build release binary
         run: cargo build --release
+      - name: DRY
+        run: ./target/release/drywall ./src
       - name: Integration tests
         run: cargo nextest run --tests --profile ci
