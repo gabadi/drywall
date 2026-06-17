@@ -1,3 +1,76 @@
+use clap::Parser;
+use drywall::{format_json, format_text, run, Config, OutputFormat, RunResult};
+use std::process;
+
+#[derive(Parser)]
+#[command(name = "drywall", about = "Detect duplicate Rust functions")]
+struct Cli {
+    #[arg(help = "Paths to scan (files or directories)")]
+    paths: Vec<String>,
+
+    #[arg(long, default_value = "0.82", help = "Jaccard similarity threshold")]
+    threshold: f64,
+
+    #[arg(long, default_value = "4", help = "Minimum source lines")]
+    min_lines: usize,
+
+    #[arg(long, default_value = "20", help = "Minimum normalized AST nodes")]
+    min_nodes: usize,
+
+    #[arg(long, default_value = "text", help = "Output format: text or json")]
+    format: String,
+
+    #[arg(long, help = "Force language (only 'rust' supported)")]
+    lang: Option<String>,
+
+    #[arg(long, help = "Exclude glob patterns (repeatable)")]
+    exclude: Vec<String>,
+}
+
 fn main() {
-    let _args: Vec<String> = std::env::args().skip(1).collect();
+    let cli = Cli::parse();
+
+    let format = match cli.format.as_str() {
+        "json" => OutputFormat::Json,
+        "text" => OutputFormat::Text,
+        other => {
+            eprintln!("error: unknown format '{}'; use 'text' or 'json'", other);
+            process::exit(2);
+        }
+    };
+
+    if let Some(lang) = &cli.lang {
+        if lang != "rust" {
+            eprintln!("error: unsupported language '{}'; only 'rust' is supported", lang);
+            process::exit(2);
+        }
+    }
+
+    let config = Config {
+        threshold: cli.threshold,
+        min_lines: cli.min_lines,
+        min_nodes: cli.min_nodes,
+        format,
+        excludes: cli.exclude,
+    };
+
+    match run(&cli.paths, &config) {
+        RunResult::Clean => {
+            if matches!(config.format, OutputFormat::Json) {
+                println!("[]");
+            }
+            process::exit(0);
+        }
+        RunResult::Duplicates(pairs) => {
+            match config.format {
+                OutputFormat::Text => print!("{}", format_text(&pairs)),
+                OutputFormat::Json => println!("{}", format_json(&pairs)),
+            }
+            process::exit(1);
+        }
+        RunResult::Error(msg) => {
+            eprintln!("error: {}", msg);
+            process::exit(2);
+        }
+    }
 }

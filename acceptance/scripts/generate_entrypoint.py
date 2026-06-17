@@ -56,13 +56,15 @@ def generate_test_file(ir, output_file, runtime_path, steps_path):
     for scenario in scenarios:
         sname = scenario['name']
         steps = scenario['steps']
-        examples = scenario.get('examples', [{}])
+        raw_examples = scenario.get('examples', [])
+        examples = raw_examples if raw_examples else [{}]
         for idx, example in enumerate(examples, 1):
-            fn_name = f'{rust_fn_name(sname)}_example_{idx}'
+            fn_name = f'{rust_fn_name(sname)}_example_{idx}' if raw_examples else rust_fn_name(sname)
             lines.append('#[test]')
             lines.append(f'fn {fn_name}() {{')
+            mut_kw = 'mut ' if example else ''
             lines.append('    let mut world = World::new();')
-            lines.append('    let mut example: HashMap<String, String> = HashMap::new();')
+            lines.append(f'    let {mut_kw}example: HashMap<String, String> = HashMap::new();')
             for k, v in example.items():
                 ek = escape_rust_str(k)
                 ev = escape_rust_str(v)
@@ -97,12 +99,23 @@ def sha256_file(path):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print('usage: acceptance-entrypoint-generator <json-ir> <generated-test-output-dir>', file=sys.stderr)
-        sys.exit(2)
+    import argparse
+    parser = argparse.ArgumentParser(
+        prog='acceptance-entrypoint-generator',
+        description='Generate a Rust acceptance test file from a Gherkin JSON IR',
+    )
+    parser.add_argument('ir_file', help='JSON IR file from gherkin-parser')
+    parser.add_argument('output_dir', help='Directory for generated test file')
+    parser.add_argument(
+        '--steps',
+        default=None,
+        help='Steps file name (basename, no path) to use; defaults to scaffold_cli_steps.rs',
+    )
+    args = parser.parse_args()
 
-    ir_file = sys.argv[1]
-    output_dir = sys.argv[2]
+    ir_file = args.ir_file
+    output_dir = args.output_dir
+    steps_filename = args.steps or 'scaffold_cli_steps.rs'
 
     if not os.path.isfile(ir_file):
         print(f'error: IR file not found: {ir_file}', file=sys.stderr)
@@ -120,15 +133,12 @@ def main():
     feature_name = ir.get('name', 'unknown')
     output_file = os.path.join(output_dir, f'{slug(feature_name)}_acceptance_test.rs')
 
-    # Compute relative paths from output file to runtime and steps
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(output_dir + '/'))))
-    # Actually derive from script location: scripts/ is in acceptance/scripts/
+    # Derive paths from script location: scripts/ is in acceptance/scripts/
     script_dir = os.path.dirname(os.path.abspath(__file__))
     acceptance_dir = os.path.dirname(script_dir)  # acceptance/
-    project_root = os.path.dirname(acceptance_dir)  # project root
 
     runtime_abs = os.path.join(acceptance_dir, 'runtime', 'mod.rs')
-    steps_abs = os.path.join(acceptance_dir, 'steps', 'scaffold_cli_steps.rs')
+    steps_abs = os.path.join(acceptance_dir, 'steps', steps_filename)
 
     output_file_abs = os.path.abspath(output_file)
     runtime_rel = os.path.relpath(runtime_abs, os.path.dirname(output_file_abs))

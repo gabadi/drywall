@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 pub type Example = HashMap<String, String>;
 
+#[derive(Default)]
 pub struct World {
     pub binary_path: Option<String>,
     pub exit_code: Option<i32>,
@@ -11,12 +12,7 @@ pub struct World {
 
 impl World {
     pub fn new() -> Self {
-        World {
-            binary_path: None,
-            exit_code: None,
-            stdout: None,
-            stderr: None,
-        }
+        Self::default()
     }
 }
 
