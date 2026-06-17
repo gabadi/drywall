@@ -1,5 +1,8 @@
 use clap::Parser;
-use drywall::{format_json, format_text, run, Config, OutputFormat, RunResult};
+use drywall::{
+    Config, OutputFormat, RunResult, format_json, format_text, parse_output_format, run,
+    validate_lang,
+};
 use std::process;
 
 #[derive(Parser)]
@@ -30,20 +33,17 @@ struct Cli {
 fn main() {
     let cli = Cli::parse();
 
-    let format = match cli.format.as_str() {
-        "json" => OutputFormat::Json,
-        "text" => OutputFormat::Text,
-        other => {
-            eprintln!("error: unknown format '{}'; use 'text' or 'json'", other);
+    let format = match parse_output_format(&cli.format) {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("error: {}", e);
             process::exit(2);
         }
     };
 
-    if let Some(lang) = &cli.lang {
-        if lang != "rust" {
-            eprintln!("error: unsupported language '{}'; only 'rust' is supported", lang);
-            process::exit(2);
-        }
+    if let Some(lang) = &cli.lang && let Err(e) = validate_lang(lang) {
+        eprintln!("error: {}", e);
+        process::exit(2);
     }
 
     let config = Config {
