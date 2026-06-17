@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "0d92693af06f",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "tmp/handoff-rust-dup-detect.txt"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0d/92693af06f/0/metadata.json",
+      "transcript": "/0d/92693af06f/0/full.jsonl",
+      "content_hash": "/0d/92693af06f/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 926,
+    "cache_creation_tokens": 9232,
+    "cache_read_tokens": 1073646,
+    "output_tokens": 4262,
+    "api_call_count": 13
+  }
+}
