@@ -15,6 +15,10 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 
 `findings: []` = already normalized. Also installed: `gherkin-parser`, `gherkin-mutator`.
 
+## Setup
+
+Run `mise install` once to install the Rust toolchain and all project tools (nextest, llvm-cov, crap, mutants). Requires mise to be activated in the shell (`eval "$(mise activate zsh)"` in `.zshrc`); without activation, prefix commands with `mise exec --`.
+
 ## Command index
 
 | Purpose | Command |
