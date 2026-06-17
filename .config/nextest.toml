@@ -9,3 +9,7 @@ fail-fast = false
 [profile.acceptance]
 default-filter = "binary(~acceptance)"
 fail-fast = false
+
+[profile.mutation]
+default-filter = "binary(~mutation_hardening) | kind(lib)"
+fail-fast = false

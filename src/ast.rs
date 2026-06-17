@@ -9,7 +9,9 @@ pub fn make_parser() -> tree_sitter::Parser {
 }
 
 pub fn parse_source_tree(source: &str) -> Result<tree_sitter::Tree, &'static str> {
-    let tree = make_parser().parse(source, None).ok_or("parse returned None")?;
+    let tree = make_parser()
+        .parse(source, None)
+        .ok_or("parse returned None")?;
     if tree.root_node().has_error() {
         return Err("parse error");
     }
@@ -48,7 +50,9 @@ pub fn extract_let_declaration(
     file: &str,
     functions: &mut Vec<FunctionInfo>,
 ) {
-    if let Some(val) = find_child_by_field(node, "value") && val.kind() == "closure_expression" {
+    if let Some(val) = find_child_by_field(node, "value")
+        && val.kind() == "closure_expression"
+    {
         functions.push(make_function_info(node, source, file));
     }
     for child in children_of(node) {

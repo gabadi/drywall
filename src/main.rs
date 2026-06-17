@@ -41,7 +41,9 @@ fn main() {
         }
     };
 
-    if let Some(lang) = &cli.lang && let Err(e) = validate_lang(lang) {
+    if let Some(lang) = &cli.lang
+        && let Err(e) = validate_lang(lang)
+    {
         eprintln!("error: {}", e);
         process::exit(2);
     }

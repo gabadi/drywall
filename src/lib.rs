@@ -1,10 +1,11 @@
-mod ast;
+pub mod ast;
 mod core;
 mod scan;
 
 pub use core::{
     Config, DuplicatePair, FunctionInfo, OutputFormat, PairEndpoint, RunResult,
-    find_duplicate_pairs, format_json, format_text, jaccard, parse_output_format, validate_lang,
+    find_duplicate_pairs, format_json, format_text, jaccard, parse_output_format, source_lines,
+    validate_lang,
 };
 pub use scan::collect_rust_files;
 
