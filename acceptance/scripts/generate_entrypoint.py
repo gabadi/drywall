@@ -62,8 +62,9 @@ def generate_test_file(ir, output_file, runtime_path, steps_path):
             fn_name = f'{rust_fn_name(sname)}_example_{idx}' if raw_examples else rust_fn_name(sname)
             lines.append('#[test]')
             lines.append(f'fn {fn_name}() {{')
+            mut_kw = 'mut ' if example else ''
             lines.append('    let mut world = World::new();')
-            lines.append('    let mut example: HashMap<String, String> = HashMap::new();')
+            lines.append(f'    let {mut_kw}example: HashMap<String, String> = HashMap::new();')
             for k, v in example.items():
                 ek = escape_rust_str(k)
                 ev = escape_rust_str(v)
