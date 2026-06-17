@@ -43,6 +43,7 @@ Feature: Scaffold CLI invocation
     When the binary is run with the arguments ""
     Then the exit code is 0
     And stdout is empty
+    And stderr is empty
 
   # scaffold-cli-1
   Scenario: Binary exits cleanly with a single path argument
@@ -50,6 +51,7 @@ Feature: Scaffold CLI invocation
     When the binary is run with the arguments "./src"
     Then the exit code is 0
     And stdout is empty
+    And stderr is empty
 
   # scaffold-cli-1
   Scenario: Binary exits cleanly with multiple path arguments
@@ -57,11 +59,13 @@ Feature: Scaffold CLI invocation
     When the binary is run with the arguments "./src ./features"
     Then the exit code is 0
     And stdout is empty
+    And stderr is empty
 
-  # scaffold-cli-1
-  # ASSUMED: nonexistent paths tolerated at scaffold stage; path validation is later behavior.
-  Scenario: Binary exits cleanly with a nonexistent path argument
+  # scaffold-cli-5
+  Scenario: Minimal Rust source parses without error
     Given the drywall release binary is built
-    When the binary is run with the arguments "./does-not-exist"
+    And a minimal Rust source directory exists at "./tmp/qa-minimal"
+    When the binary is run with the arguments "./tmp/qa-minimal"
     Then the exit code is 0
     And stdout is empty
+    And stderr is empty

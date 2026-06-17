@@ -6,6 +6,9 @@ pub fn dispatch(step_text: &str, world: &mut World, example: &Example) -> StepRe
     if try_step_given_binary_built(step_text, world, example).is_some() {
         return StepResult::ok();
     }
+    if let Some(result) = try_step_minimal_rust_dir(step_text, world, example) {
+        return result;
+    }
     if let Some(result) = try_step_run_with_args(step_text, world, example) {
         return result;
     }
@@ -13,6 +16,12 @@ pub fn dispatch(step_text: &str, world: &mut World, example: &Example) -> StepRe
         return result;
     }
     if let Some(result) = try_step_stdout_empty(step_text, world, example) {
+        return result;
+    }
+    if let Some(result) = try_step_stderr_empty(step_text, world, example) {
+        return result;
+    }
+    if let Some(result) = try_step_stderr_no_panic(step_text, world, example) {
         return result;
     }
     StepResult::fail(format!("unsupported step: {}", step_text))
@@ -133,4 +142,62 @@ fn try_step_stdout_empty(
     } else {
         StepResult::fail(format!("expected empty stdout, got: {:?}", stdout))
     })
+}
+
+fn try_step_stderr_empty(
+    step_text: &str,
+    world: &mut World,
+    _example: &Example,
+) -> Option<StepResult> {
+    if step_text != "stderr is empty" {
+        return None;
+    }
+    let stderr = match &world.stderr {
+        Some(s) => s.clone(),
+        None => return Some(StepResult::fail("stderr not yet recorded")),
+    };
+    Some(if stderr.is_empty() {
+        StepResult::ok()
+    } else {
+        StepResult::fail(format!("expected empty stderr, got: {:?}", stderr))
+    })
+}
+
+fn try_step_stderr_no_panic(
+    step_text: &str,
+    world: &mut World,
+    _example: &Example,
+) -> Option<StepResult> {
+    if step_text != "stderr contains no panic text" {
+        return None;
+    }
+    let stderr = match &world.stderr {
+        Some(s) => s.clone(),
+        None => return Some(StepResult::fail("stderr not yet recorded")),
+    };
+    Some(if stderr.contains("panicked at") || stderr.contains("stack backtrace") {
+        StepResult::fail(format!("stderr contains panic text: {:?}", stderr))
+    } else {
+        StepResult::ok()
+    })
+}
+
+fn try_step_minimal_rust_dir(
+    step_text: &str,
+    _world: &mut World,
+    _example: &Example,
+) -> Option<StepResult> {
+    static PATTERN: &str = "a minimal Rust source directory exists at \"./tmp/qa-minimal\"";
+    if step_text != PATTERN {
+        return None;
+    }
+    let dir = std::path::Path::new("./tmp/qa-minimal");
+    if let Err(e) = std::fs::create_dir_all(dir) {
+        return Some(StepResult::fail(format!("failed to create tmp/qa-minimal: {}", e)));
+    }
+    let lib_path = dir.join("lib.rs");
+    if let Err(e) = std::fs::write(&lib_path, "pub fn answer() -> i32 { 42 }\n") {
+        return Some(StepResult::fail(format!("failed to write lib.rs: {}", e)));
+    }
+    Some(StepResult::ok())
 }
