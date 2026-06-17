@@ -1,0 +1,96 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "d63edc2a5f23",
+  "session_id": "1a7938af-e074-4405-a483-d928715a4d47",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-17T05:14:53.539628Z",
+  "branch": "swarmforge-coder",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".agents/ledger.md",
+    ".cargo/config.toml",
+    ".config/nextest.toml",
+    ".github/workflows/ci.yml",
+    ".gitignore",
+    ".mise.toml",
+    "AGENTS.md",
+    "Cargo.lock",
+    "Cargo.toml",
+    "acceptance/runtime/mod.rs",
+    "acceptance/scripts/generate_entrypoint.py",
+    "acceptance/scripts/runner-adapter",
+    "acceptance/steps/scaffold_cli_steps.rs",
+    "features/duplicate_detection.feature",
+    "features/duplicate_detection.qa.md",
+    "features/scaffold_cli.feature",
+    "rust-toolchain.toml",
+    "src/lib.rs",
+    "src/main.rs",
+    "swarm",
+    "swarmforge/constitution/articles/engineering.prompt",
+    "swarmforge/constitution/articles/handoffs.prompt",
+    "swarmforge/roles/coder.prompt",
+    "tests/metadata/features-scaffold-cli-feature.json",
+    "tests/parse_rust_source_property_test.rs",
+    "tests/scaffold_cli_invocation_acceptance_test.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "d77300fdafab",
+  "token_usage": {
+    "input_tokens": 23,
+    "cache_creation_tokens": 53707,
+    "cache_read_tokens": 844194,
+    "output_tokens": 3135,
+    "api_call_count": 21
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-17T05:12:59.212005Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "d77300fdafab",
+      "timestamp": "2026-06-17T05:12:59.212005Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-17T05:14:53.527764Z",
+    "agent_lines": 1527,
+    "agent_removed": 121,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1527,
+    "total_lines_changed": 1648,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 8,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 8
+      }
+    }
+  ]
+}
