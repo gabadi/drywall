@@ -15,14 +15,11 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 
 `findings: []` = already normalized. Also installed: `gherkin-parser`, `gherkin-mutator`.
 
-## Setup
-
-`mise install` (once per machine). Activate mise in shell or prefix commands with `mise exec --`.
-
 ## Command index
 
 | Purpose | Command |
 |---------|---------|
+| Install tools (once per machine) | `mise install` |
 | Format | `cargo fmt` |
 | Lint | `cargo clippy -- -D warnings` |
 | Unit tests | `cargo nextest run --profile unit` |
