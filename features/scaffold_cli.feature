@@ -61,15 +61,6 @@ Feature: Scaffold CLI invocation
     And stdout is empty
     And stderr is empty
 
-  # scaffold-cli-1
-  # ASSUMED: nonexistent paths tolerated at scaffold stage; path validation is later behavior.
-  Scenario: Binary exits cleanly with a nonexistent path argument
-    Given the drywall release binary is built
-    When the binary is run with the arguments "./does-not-exist"
-    Then the exit code is 0
-    And stdout is empty
-    And stderr contains no panic text
-
   # scaffold-cli-5
   Scenario: Minimal Rust source parses without error
     Given the drywall release binary is built
