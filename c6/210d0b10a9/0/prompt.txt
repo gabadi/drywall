@@ -1,0 +1,15 @@
+on llm-cov, did you check running it now?
+
+---
+
+why do we have them doucmented twice? cant we simply fix the env?
+
+---
+
+why do we have them doucmented twice? cant we simply fix the env? or add to mise?
+
+---
+
+no, wht if you dong have this? [env]
+LLVM_COV = "{{ exec(command='brew --prefix') }}/opt/llvm/bin/llvm-cov"
+LLVM_PROFDATA = "{{ exec(command='brew --prefix') }}/opt/llvm/bin/llvm-profdata" at all? can't we simply install mise and fix this?
