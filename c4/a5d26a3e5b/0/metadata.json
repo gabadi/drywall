@@ -1,0 +1,74 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "c4a5d26a3e5b",
+  "session_id": "e1630652-fc8c-43c3-8e9e-e1d89202c14d",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-17T06:39:25.526251Z",
+  "branch": "swarmforge-hardender",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "features/scaffold_cli.feature",
+    "src/lib.rs",
+    "tests/scaffold_cli_invocation_acceptance_test.rs",
+    "tests/metadata/features-scaffold-cli-feature.json"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "07df1ca648bc",
+  "token_usage": {
+    "input_tokens": 26,
+    "cache_creation_tokens": 33699,
+    "cache_read_tokens": 947271,
+    "output_tokens": 9376,
+    "api_call_count": 24
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-17T06:35:41.670713Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "07df1ca648bc",
+      "timestamp": "2026-06-17T06:35:41.670713Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-17T06:39:25.515224Z",
+    "agent_lines": 335,
+    "agent_removed": 36,
+    "human_added": 3486,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 3821,
+    "total_lines_changed": 3910,
+    "agent_percentage": 9.48849104859335,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 8,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 8
+      }
+    }
+  ]
+}
