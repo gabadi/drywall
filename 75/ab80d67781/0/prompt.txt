@@ -1,0 +1,9 @@
+Is it possible that mise takes more time than direct install of the libs?
+
+---
+
+Is it possible that mise takes more time than direct install of the tooling?
+
+---
+
+ok, go back to taiki-e/install-action if will be faster
