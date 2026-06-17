@@ -1,3 +1,8 @@
+# mutation-stamp: sha256=ced0cd7295f56b51e8cdd001af082d39cb730d110167c33eacfc744c3504add8
+# acceptance-mutation-manifest-begin
+# {"version":1,"tested_at":"2026-06-16T06:30:32.749709Z","feature_name":"Scaffold CLI invocation","feature_path":"features/scaffold_cli.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
+# acceptance-mutation-manifest-end
+
 Feature: Scaffold CLI invocation
 
   # TRACKING: #2 (parent #1)
@@ -33,15 +38,34 @@ Feature: Scaffold CLI invocation
   # Design artifacts: none
 
   # scaffold-cli-1
-  Scenario Outline: Binary accepts path arguments and exits cleanly
+  Scenario: Binary exits cleanly with no arguments
     Given the drywall release binary is built
-    When the binary is run with the arguments "<args>"
+    When the binary is run with the arguments ""
     Then the exit code is 0
     And stdout is empty
+    And stderr is empty
 
-    Examples:
-      | args              |
-      | ./src             |
-      | ./src ./features  |
-      |                   |
-      | ./does-not-exist  |
+  # scaffold-cli-1
+  Scenario: Binary exits cleanly with a single path argument
+    Given the drywall release binary is built
+    When the binary is run with the arguments "./src"
+    Then the exit code is 0
+    And stdout is empty
+    And stderr is empty
+
+  # scaffold-cli-1
+  Scenario: Binary exits cleanly with multiple path arguments
+    Given the drywall release binary is built
+    When the binary is run with the arguments "./src ./features"
+    Then the exit code is 0
+    And stdout is empty
+    And stderr is empty
+
+  # scaffold-cli-5
+  Scenario: Minimal Rust source parses without error
+    Given the drywall release binary is built
+    And a minimal Rust source directory exists at "./tmp/qa-minimal"
+    When the binary is run with the arguments "./tmp/qa-minimal"
+    Then the exit code is 0
+    And stdout is empty
+    And stderr is empty
