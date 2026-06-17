@@ -16,4 +16,10 @@ mod tests {
         let source = "fn main() {}";
         assert!(parse_rust_source(source));
     }
+
+    #[test]
+    fn invalid_rust_source_returns_false() {
+        let source = "this is not valid rust @@@@";
+        assert!(!parse_rust_source(source));
+    }
 }
