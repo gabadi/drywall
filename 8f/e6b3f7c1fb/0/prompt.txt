@@ -1,0 +1,1 @@
+## Setup this is for each worktree? can't do we  this with less tokens usage?
