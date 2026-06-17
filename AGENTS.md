@@ -17,7 +17,7 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 
 ## Setup
 
-Run `mise install` once to install the Rust toolchain and all project tools (nextest, llvm-cov, crap, mutants). Requires mise to be activated in the shell (`eval "$(mise activate zsh)"` in `.zshrc`); without activation, prefix commands with `mise exec --`.
+`mise install` (once per machine). Activate mise in shell or prefix commands with `mise exec --`.
 
 ## Command index
 
