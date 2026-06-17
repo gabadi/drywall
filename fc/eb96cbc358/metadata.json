@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.7.6",
+  "checkpoint_id": "fceb96cbc358",
+  "strategy": "manual-commit",
+  "branch": "ci/add-github-actions",
+  "checkpoints_count": 5,
+  "files_touched": [
+    ".github/workflows/ci.yml",
+    "rust-toolchain.toml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fc/eb96cbc358/0/metadata.json",
+      "transcript": "/fc/eb96cbc358/0/full.jsonl",
+      "content_hash": "/fc/eb96cbc358/0/content_hash.txt",
+      "prompt": "/fc/eb96cbc358/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 29,
+    "cache_creation_tokens": 65369,
+    "cache_read_tokens": 1128874,
+    "output_tokens": 4807,
+    "api_call_count": 18
+  }
+}

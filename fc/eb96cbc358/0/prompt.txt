@@ -1,0 +1,48 @@
+coverage do we have any minimal? CRAP do we have any target? do we have anything in the project prompts?
+
+---
+
+coverage 90? cargo crap under 6? WDYT? are we creating reports for the PRs actions? ?at least coverage? any existing action? anuy ohter action to add report? do we need a web researc h subagent?
+
+---
+
+<task-notification>
+<task-id>a60263b3a832d8cf1</task-id>
+<tool-use-id>toolu_01TZZq9b4FxJgrxWegLGfece</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-gabadi-workspace-addi-drywall/e1257b49-0c96-419d-85cd-a34520d3fe1e/tasks/a60263b3a832d8cf1.output</output-file>
+<status>completed</status>
+<summary>Agent "Research cargo-crap, llvm-cov thresholds and PR coverage actions" came to rest</summary>
+<note>A task-notification fires each time this agent comes to rest with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**Task:** Research cargo-crap flags, llvm-cov thresholds, and GitHub Actions for PR coverage reports.
+
+---
+
+**1. cargo-crap flags**
+- `--threshold &lt;N&gt;` — sets the CRAP score limit (default: 30)
+- `--fail-above` — exits 1 if any function exceeds `--threshold` (must be explicitly added; without it the check is informational only)
+- For CRAP &lt; 6: `cargo crap --lcov lcov.info --exclude 'acceptance/**' --threshold 6 --fail-above`
+
+**2. cargo-llvm-cov threshold flags** — yes, confirmed:
+- `--fail-under-lines &lt;MIN&gt;` — exits 1 if line coverage &lt; MIN%
+- `--fail-under-functions &lt;MIN&gt;` — exits 1 if function coverage &lt; MIN%
+- `--fail-under-regions &lt;MIN&gt;` — exits 1 if region coverage &lt; MIN%
+- For 90%: `cargo llvm-cov --lib --lcov --output-path lcov.info --fail-under-lines 90`
+
+**3. PR coverage report action**
+- **Recommendation: `zgosalvez/github-actions-report-lcov@v4`** — no external service, posts comment to PR from lcov file, supports minimum coverage fail, updates existing comments rather than spamming. Latest stable is v7.0.12 but the docs example pins `@v4`. Needs `permissions: pull-requests: write`.
+- Codecov requires signup and external account — overkill for this.
+- `romeovs/lcov-reporter-action` is older and less maintained.</result>
+<usage><subagent_tokens>73923</subagent_tokens><tool_uses>6</tool_uses><duration_ms>41041</duration_ms></usage>
+</task-notification>
+
+---
+
+[Image #3] is this version ok?
+
+---
+
+run rustc --version
+
+---
+
+use rustc 1.96.0, apply all the findings
