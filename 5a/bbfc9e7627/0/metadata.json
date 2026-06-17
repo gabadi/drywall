@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.7.6",
+  "checkpoint_id": "5abbfc9e7627",
+  "session_id": "e1257b49-0c96-419d-85cd-a34520d3fe1e",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-17T02:22:49.293348Z",
+  "branch": "ci/add-github-actions",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "rust-toolchain.toml"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "bd3bd5b1ccbb",
+  "token_usage": {
+    "input_tokens": 15,
+    "cache_creation_tokens": 15348,
+    "cache_read_tokens": 305025,
+    "output_tokens": 2445,
+    "api_call_count": 11
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-17T02:22:49.289526Z",
+    "agent_lines": 3,
+    "agent_removed": 0,
+    "human_added": 160,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 163,
+    "total_lines_changed": 195,
+    "agent_percentage": 1.5384615384615385,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
