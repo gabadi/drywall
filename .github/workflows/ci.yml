@@ -8,13 +8,16 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+permissions:
+  pull-requests: write
+
 jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: dtolnay/rust-toolchain@1.88.0
+      - uses: dtolnay/rust-toolchain@1.96.0
         with:
           components: clippy, rustfmt, llvm-tools-preview
       - uses: taiki-e/install-action@v2
@@ -35,9 +38,15 @@ jobs:
       - name: Unit tests
         run: cargo nextest run --lib --profile ci
       - name: Coverage
-        run: cargo llvm-cov --lib --lcov --output-path lcov.info
+        run: cargo llvm-cov --lib --lcov --output-path lcov.info --fail-under-lines 90
+      - name: Coverage report
+        uses: zgosalvez/github-actions-report-lcov@v4
+        if: always()
+        with:
+          coverage-files: lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: CRAP
-        run: cargo crap --lcov lcov.info --exclude 'acceptance/**'
+        run: cargo crap --lcov lcov.info --exclude 'acceptance/**' --threshold 6 --fail-above
       - name: Build release binary
         run: cargo build --release
       - name: DRY
