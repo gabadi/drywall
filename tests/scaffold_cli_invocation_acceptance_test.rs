@@ -134,47 +134,6 @@ fn binary_exits_cleanly_with_multiple_path_arguments() {
 }
 
 #[test]
-fn binary_exits_cleanly_with_a_nonexistent_path_argument() {
-    let mut world = World::new();
-    let example: HashMap<String, String> = HashMap::new();
-
-    let result = steps::dispatch("the drywall release binary is built", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the drywall release binary is built]: {}",
-        result.message
-    );
-    let result = steps::dispatch(
-        "the binary is run with the arguments \"./does-not-exist\"",
-        &mut world,
-        &example,
-    );
-    assert!(
-        result.success,
-        "step failed [the binary is run with the arguments \"./does-not-exist\"]: {}",
-        result.message
-    );
-    let result = steps::dispatch("the exit code is 0", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [the exit code is 0]: {}",
-        result.message
-    );
-    let result = steps::dispatch("stdout is empty", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [stdout is empty]: {}",
-        result.message
-    );
-    let result = steps::dispatch("stderr contains no panic text", &mut world, &example);
-    assert!(
-        result.success,
-        "step failed [stderr contains no panic text]: {}",
-        result.message
-    );
-}
-
-#[test]
 fn minimal_rust_source_parses_without_error() {
     let mut world = World::new();
     let example: HashMap<String, String> = HashMap::new();

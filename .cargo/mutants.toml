@@ -1,0 +1,15 @@
+# Mutations excluded from the mutation profile (unit + hardening tests only).
+#
+# src/main.rs — CLI arg-passthrough glue; mutations to field deletions in the
+# Config literal are only detectable by acceptance tests (which require a
+# prebuilt binary the mutation sandbox cannot produce). All four fields
+# (threshold, min_lines, min_nodes, excludes) are covered by acceptance
+# scenarios: threshold_flag_gates_reporting, size_gate_flags_override_defaults,
+# and exclude_flag_suppresses_matching_files_from_scanning.
+exclude_globs = ["src/main.rs"]
+
+# core.rs:132 — `for j in (i + 1)..` mutated to `(i * 1)..`.
+# When i=0: i*1=0, so j starts at 0. candidates[0] is_same_location with
+# itself → skipped. j proceeds to 1, 2, ... producing the same pairs as i+1.
+# The mutation is semantically equivalent; no unit test can distinguish it.
+exclude_re = ["replace \\+ with \\* in find_duplicate_pairs"]

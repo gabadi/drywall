@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 # Acceptance entrypoint generator for drywall
-# Usage: acceptance-entrypoint-generator <json-ir> <generated-test-output-dir>
+# Usage: acceptance-entrypoint-generator [--steps <steps-file>] <json-ir> <generated-test-output-dir>
 
 set -euo pipefail
 
-if [[ $# -ne 2 ]]; then
-    echo "usage: acceptance-entrypoint-generator <json-ir> <generated-test-output-dir>" >&2
-    exit 2
-fi
-
-exec python3 "$(dirname "$0")/generate_entrypoint.py" "$1" "$2"
+exec python3 "$(dirname "$0")/generate_entrypoint.py" "$@"

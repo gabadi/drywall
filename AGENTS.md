@@ -26,7 +26,7 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 | Property tests | `cargo nextest run --profile property` |
 | Acceptance tests | `cargo nextest run --profile acceptance` |
 | Coverage (≥90% lines) | `mise exec -- cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info --fail-under-lines 90` |
-| CRAP (threshold ≤6) | `cargo crap --lcov lcov.info --exclude 'acceptance/**' --threshold 6 --fail-above` |
+| CRAP (threshold ≤6) | `cargo crap --lcov lcov.info --exclude 'acceptance/**' --exclude 'src/main.rs' --threshold 6 --fail-above` |
 | Build release binary | `cargo build --release` |
 | DRY self-check | `./target/release/drywall ./src` |
 
