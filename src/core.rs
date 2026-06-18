@@ -9,7 +9,7 @@ pub struct FunctionInfo {
     pub node_hashes: Vec<u64>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct PairEndpoint {
     pub file: String,
     pub start_line: usize,
@@ -17,7 +17,7 @@ pub struct PairEndpoint {
     pub nodes: usize,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct DuplicatePair {
     pub score: f64,
     pub left: PairEndpoint,
@@ -188,6 +188,74 @@ pub fn format_text(pairs: &[DuplicatePair]) -> String {
 
 pub fn format_json(pairs: &[DuplicatePair]) -> String {
     serde_json::to_string_pretty(pairs).unwrap_or_else(|_| "[]".to_string())
+}
+
+pub struct CliResult {
+    pub exit_code: i32,
+    pub stdout: String,
+    pub stderr: String,
+}
+
+fn cli_error(msg: String) -> CliResult {
+    CliResult {
+        exit_code: 2,
+        stdout: String::new(),
+        stderr: format!("error: {}", msg),
+    }
+}
+
+fn format_run_output(format: &OutputFormat, pairs: Vec<DuplicatePair>) -> String {
+    match format {
+        OutputFormat::Text => format_text(&pairs),
+        OutputFormat::Json => format_json(&pairs),
+    }
+}
+
+fn clean_output(format: &OutputFormat) -> String {
+    if matches!(format, OutputFormat::Json) {
+        "[]".to_string()
+    } else {
+        String::new()
+    }
+}
+
+fn run_result_to_cli(result: RunResult, format: &OutputFormat) -> CliResult {
+    match result {
+        RunResult::Clean => CliResult {
+            exit_code: 0,
+            stdout: clean_output(format),
+            stderr: String::new(),
+        },
+        RunResult::Duplicates(pairs) => CliResult {
+            exit_code: 1,
+            stdout: format_run_output(format, pairs),
+            stderr: String::new(),
+        },
+        RunResult::Error(msg) => cli_error(msg),
+    }
+}
+
+pub fn execute_cli(
+    paths: &[String],
+    format_str: &str,
+    lang: Option<&str>,
+    config: Config,
+    run_fn: impl Fn(&[String], &Config) -> RunResult,
+) -> CliResult {
+    let format = match parse_output_format(format_str) {
+        Ok(f) => f,
+        Err(e) => return cli_error(e),
+    };
+
+    if let Some(lang) = lang
+        && let Err(e) = validate_lang(lang)
+    {
+        return cli_error(e);
+    }
+
+    let config = Config { format, ..config };
+    let result = run_fn(paths, &config);
+    run_result_to_cli(result, &config.format)
 }
 
 #[cfg(test)]
@@ -367,6 +435,145 @@ mod tests {
         };
         let pairs = find_duplicate_pairs(&[f1, f2], 0.5, 1, 1);
         assert_eq!(pairs.len(), 0, "same-location pair should be skipped");
+    }
+
+    #[test]
+    fn execute_cli_invalid_format_returns_exit_2() {
+        let result = execute_cli(
+            &[".".to_string()],
+            "xml",
+            None,
+            Config::default(),
+            |_, _| RunResult::Clean,
+        );
+        assert_eq!(result.exit_code, 2);
+        assert!(result.stderr.contains("error:"));
+        assert!(result.stdout.is_empty());
+    }
+
+    #[test]
+    fn execute_cli_invalid_lang_returns_exit_2() {
+        let result = execute_cli(
+            &[".".to_string()],
+            "text",
+            Some("python"),
+            Config::default(),
+            |_, _| RunResult::Clean,
+        );
+        assert_eq!(result.exit_code, 2);
+        assert!(result.stderr.contains("error:"));
+    }
+
+    #[test]
+    fn execute_cli_clean_text_returns_exit_0_empty_stdout() {
+        let result = execute_cli(
+            &[".".to_string()],
+            "text",
+            None,
+            Config::default(),
+            |_, _| RunResult::Clean,
+        );
+        assert_eq!(result.exit_code, 0);
+        assert!(result.stdout.is_empty());
+        assert!(result.stderr.is_empty());
+    }
+
+    #[test]
+    fn execute_cli_clean_json_returns_exit_0_empty_array() {
+        let result = execute_cli(
+            &[".".to_string()],
+            "json",
+            None,
+            Config::default(),
+            |_, _| RunResult::Clean,
+        );
+        assert_eq!(result.exit_code, 0);
+        assert_eq!(result.stdout.trim(), "[]");
+        assert!(result.stderr.is_empty());
+    }
+
+    #[test]
+    fn execute_cli_duplicates_returns_exit_1_with_text_output() {
+        let pair = DuplicatePair {
+            score: 0.9,
+            left: PairEndpoint {
+                file: "a.rs".to_string(),
+                start_line: 1,
+                end_line: 5,
+                nodes: 10,
+            },
+            right: PairEndpoint {
+                file: "b.rs".to_string(),
+                start_line: 1,
+                end_line: 5,
+                nodes: 10,
+            },
+        };
+        let result = execute_cli(
+            &[".".to_string()],
+            "text",
+            None,
+            Config::default(),
+            move |_, _| RunResult::Duplicates(vec![pair.clone()]),
+        );
+        assert_eq!(result.exit_code, 1);
+        assert!(result.stdout.contains("DUPLICATE"));
+        assert!(result.stderr.is_empty());
+    }
+
+    #[test]
+    fn execute_cli_duplicates_json_returns_exit_1_with_json_output() {
+        let pair = DuplicatePair {
+            score: 0.9,
+            left: PairEndpoint {
+                file: "a.rs".to_string(),
+                start_line: 1,
+                end_line: 5,
+                nodes: 10,
+            },
+            right: PairEndpoint {
+                file: "b.rs".to_string(),
+                start_line: 1,
+                end_line: 5,
+                nodes: 10,
+            },
+        };
+        let result = execute_cli(
+            &[".".to_string()],
+            "json",
+            None,
+            Config::default(),
+            move |_, _| RunResult::Duplicates(vec![pair.clone()]),
+        );
+        assert_eq!(result.exit_code, 1);
+        assert!(result.stdout.contains("score"));
+        assert!(result.stderr.is_empty());
+    }
+
+    #[test]
+    fn execute_cli_error_returns_exit_2_with_stderr() {
+        let result = execute_cli(
+            &[".".to_string()],
+            "text",
+            None,
+            Config::default(),
+            |_, _| RunResult::Error("something went wrong".to_string()),
+        );
+        assert_eq!(result.exit_code, 2);
+        assert!(result.stderr.contains("error:"));
+        assert!(result.stdout.is_empty());
+    }
+
+    #[test]
+    fn execute_cli_valid_lang_rust_proceeds() {
+        let result = execute_cli(
+            &[".".to_string()],
+            "text",
+            Some("rust"),
+            Config::default(),
+            |_, _| RunResult::Clean,
+        );
+        assert_eq!(result.exit_code, 0);
     }
 
     #[test]

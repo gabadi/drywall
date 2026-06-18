@@ -1,8 +1,5 @@
 use clap::Parser;
-use drywall::{
-    Config, OutputFormat, RunResult, format_json, format_text, parse_output_format, run,
-    validate_lang,
-};
+use drywall::{Config, execute_cli, run};
 use std::process;
 
 #[derive(Parser)]
@@ -32,47 +29,15 @@ struct Cli {
 
 fn main() {
     let cli = Cli::parse();
-
-    let format = match parse_output_format(&cli.format) {
-        Ok(f) => f,
-        Err(e) => {
-            eprintln!("error: {}", e);
-            process::exit(2);
-        }
-    };
-
-    if let Some(lang) = &cli.lang
-        && let Err(e) = validate_lang(lang)
-    {
-        eprintln!("error: {}", e);
-        process::exit(2);
-    }
-
     let config = Config {
         threshold: cli.threshold,
         min_lines: cli.min_lines,
         min_nodes: cli.min_nodes,
-        format,
         excludes: cli.exclude,
+        ..Config::default()
     };
-
-    match run(&cli.paths, &config) {
-        RunResult::Clean => {
-            if matches!(config.format, OutputFormat::Json) {
-                println!("[]");
-            }
-            process::exit(0);
-        }
-        RunResult::Duplicates(pairs) => {
-            match config.format {
-                OutputFormat::Text => print!("{}", format_text(&pairs)),
-                OutputFormat::Json => println!("{}", format_json(&pairs)),
-            }
-            process::exit(1);
-        }
-        RunResult::Error(msg) => {
-            eprintln!("error: {}", msg);
-            process::exit(2);
-        }
-    }
+    let result = execute_cli(&cli.paths, &cli.format, cli.lang.as_deref(), config, run);
+    print!("{}", result.stdout);
+    eprint!("{}", result.stderr);
+    process::exit(result.exit_code);
 }
