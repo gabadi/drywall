@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "feature_path": "features/scaffold_cli.feature",
-  "ir_path": "tmp/acceptance/ir/duplicate_detection.json",
-  "implementation_hash": "sha256:fb64f838298093e17f208799c3b0b3206dd94936208cbf0241473454a09b451a",
+  "ir_path": "/tmp/dup-ir.json",
+  "implementation_hash": "sha256:48778f019d08af5cde8ae54df372fa04c6c13629a4bcb35fb3e94c10fc4ea58e",
   "hash_scope": "generated_files",
   "generated_files": [
     "tests/rust_duplicate_detection_acceptance_test.rs"
