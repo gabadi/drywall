@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "feature_path": "features/scaffold_cli.feature",
-  "ir_path": "tmp/acceptance/ir/scaffold_cli.json",
-  "implementation_hash": "sha256:12570f83cea2d8f019f8cfa64cecba75dc8d41ddf4eb9efc790bfc820017cf07",
+  "ir_path": "/tmp/dup-ir.json",
+  "implementation_hash": "sha256:48778f019d08af5cde8ae54df372fa04c6c13629a4bcb35fb3e94c10fc4ea58e",
   "hash_scope": "generated_files",
   "generated_files": [
-    "tests/scaffold_cli_invocation_acceptance_test.rs"
+    "tests/rust_duplicate_detection_acceptance_test.rs"
   ]
 }

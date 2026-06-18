@@ -9,24 +9,34 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
+# Steps file mapping: feature-basename -> steps filename
+declare -A STEPS_MAP
+STEPS_MAP["scaffold_cli"]="scaffold_cli_steps.rs"
+STEPS_MAP["duplicate_detection"]="duplicate_detection_steps.rs"
+
 # Default to all feature files
-FEATURES=("${@:-features/scaffold_cli.feature}")
+if [[ $# -eq 0 ]]; then
+    FEATURES=("features/scaffold_cli.feature" "features/duplicate_detection.feature")
+else
+    FEATURES=("$@")
+fi
 
 mkdir -p tmp/acceptance/ir
 
 for FEATURE in "${FEATURES[@]}"; do
     BASENAME=$(basename "$FEATURE" .feature)
     IR_FILE="tmp/acceptance/ir/${BASENAME}.json"
+    STEPS_FILE="${STEPS_MAP[$BASENAME]:-scaffold_cli_steps.rs}"
 
     echo "==> Parsing: $FEATURE"
     gherkin-parser "$FEATURE" "$IR_FILE"
 
-    echo "==> Generating: $IR_FILE -> tests/"
-    "$SCRIPT_DIR/acceptance-entrypoint-generator" "$IR_FILE" tests
+    echo "==> Generating: $IR_FILE -> tests/ (steps: $STEPS_FILE)"
+    "$SCRIPT_DIR/acceptance-entrypoint-generator" --steps "$STEPS_FILE" "$IR_FILE" tests
 done
 
 echo "==> Building release binary"
 cargo build --release
 
 echo "==> Running acceptance tests"
-cargo test --test scaffold_cli_invocation_acceptance_test
+cargo nextest run --profile acceptance

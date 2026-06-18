@@ -99,12 +99,23 @@ def sha256_file(path):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print('usage: acceptance-entrypoint-generator <json-ir> <generated-test-output-dir>', file=sys.stderr)
-        sys.exit(2)
+    import argparse
+    parser = argparse.ArgumentParser(
+        prog='acceptance-entrypoint-generator',
+        description='Generate a Rust acceptance test file from a Gherkin JSON IR',
+    )
+    parser.add_argument('ir_file', help='JSON IR file from gherkin-parser')
+    parser.add_argument('output_dir', help='Directory for generated test file')
+    parser.add_argument(
+        '--steps',
+        default=None,
+        help='Steps file name (basename, no path) to use; defaults to scaffold_cli_steps.rs',
+    )
+    args = parser.parse_args()
 
-    ir_file = sys.argv[1]
-    output_dir = sys.argv[2]
+    ir_file = args.ir_file
+    output_dir = args.output_dir
+    steps_filename = args.steps or 'scaffold_cli_steps.rs'
 
     if not os.path.isfile(ir_file):
         print(f'error: IR file not found: {ir_file}', file=sys.stderr)
@@ -127,7 +138,7 @@ def main():
     acceptance_dir = os.path.dirname(script_dir)  # acceptance/
 
     runtime_abs = os.path.join(acceptance_dir, 'runtime', 'mod.rs')
-    steps_abs = os.path.join(acceptance_dir, 'steps', 'scaffold_cli_steps.rs')
+    steps_abs = os.path.join(acceptance_dir, 'steps', steps_filename)
 
     output_file_abs = os.path.abspath(output_file)
     runtime_rel = os.path.relpath(runtime_abs, os.path.dirname(output_file_abs))
