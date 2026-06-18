@@ -25,14 +25,15 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 | Unit tests | `cargo nextest run --profile unit` |
 | Property tests | `cargo nextest run --profile property` |
 | Acceptance tests | `cargo nextest run --profile acceptance` |
-| Coverage (≥90% lines) | `~/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info --fail-under-lines 90` |
+| Coverage (≥90% lines) | `mise exec -- cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info --fail-under-lines 90` |
 | CRAP (threshold ≤6) | `cargo crap --lcov lcov.info --exclude 'acceptance/**' --threshold 6 --fail-above` |
 | Build release binary | `cargo build --release` |
 | DRY self-check | `./target/release/drywall ./src` |
 
 ## Tooling notes
 
-- **Coverage/llvm-cov**: use the explicit rustup cargo path (`~/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo llvm-cov`) — the system Homebrew Rust does not include `llvm-profdata` (because AGENTS.md "coverage" command fails with `llvm-profdata not found`).
-- **Diff for tools**: use bare `git` (not `rtk git`) when generating patch files for tools like `cargo-mutants --in-diff`; RTK reformats `git diff` output and breaks unified-diff parsing.
-- **drywall output format**: mirrors dry4go — per-function node counts; sort order ties unspecified upstream; drywall pins lexicographic tie-break for deterministic mutation testing.
-- **gherkin-ir-dry-checker output**: pipe the JSON report through a compact summary (e.g. `python3 -c "import json,sys; r=json.load(sys.stdin); print(f'findings: {len(r[\"findings\"])}')"`) rather than dumping full JSON into context.
+- **gherkin-ir-dry-checker output**: use `rtk json <report>` to read the JSON report compactly rather than dumping full JSON into context.
+
+## drywall output format
+
+drywall output mirrors dry4go: per-function node counts, one function per line. Sort order for ties is unspecified upstream; drywall pins lexicographic tie-break to guarantee deterministic output for mutation testing.
