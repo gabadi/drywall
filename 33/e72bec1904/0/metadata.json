@@ -1,0 +1,141 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "33e72bec1904",
+  "session_id": "ce721c08-06c6-4bd9-8d50-78117c86f318",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-18T04:28:00.09875Z",
+  "branch": "swarmforge-hardender",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".cargo/mutants.toml",
+    "features/duplicate_detection.feature",
+    "tests/metadata/features-scaffold-cli-feature.json",
+    "tests/rust_duplicate_detection_acceptance_test.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "8bb37e82270c",
+  "token_usage": {
+    "input_tokens": 111,
+    "cache_creation_tokens": 86806,
+    "cache_read_tokens": 6178742,
+    "output_tokens": 17083,
+    "api_call_count": 108
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-18T03:51:42.952109Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "8bb37e82270c",
+      "timestamp": "2026-06-18T03:51:42.952109Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-18T04:28:00.077159Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 163,
+    "human_removed": 372,
+    "total_committed": 0,
+    "total_lines_changed": 535,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 18969,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 8,
+        "build/acceptance-mutation/base/feature.json": 283,
+        "build/acceptance-mutation/mutations/m1/feature.json": 283,
+        "build/acceptance-mutation/mutations/m10/feature.json": 283,
+        "build/acceptance-mutation/mutations/m11/feature.json": 283,
+        "build/acceptance-mutation/mutations/m12/feature.json": 283,
+        "build/acceptance-mutation/mutations/m13/feature.json": 283,
+        "build/acceptance-mutation/mutations/m14/feature.json": 283,
+        "build/acceptance-mutation/mutations/m15/feature.json": 283,
+        "build/acceptance-mutation/mutations/m16/feature.json": 283,
+        "build/acceptance-mutation/mutations/m17/feature.json": 283,
+        "build/acceptance-mutation/mutations/m18/feature.json": 283,
+        "build/acceptance-mutation/mutations/m19/feature.json": 283,
+        "build/acceptance-mutation/mutations/m2/feature.json": 283,
+        "build/acceptance-mutation/mutations/m20/feature.json": 283,
+        "build/acceptance-mutation/mutations/m21/feature.json": 283,
+        "build/acceptance-mutation/mutations/m22/feature.json": 283,
+        "build/acceptance-mutation/mutations/m23/feature.json": 283,
+        "build/acceptance-mutation/mutations/m24/feature.json": 283,
+        "build/acceptance-mutation/mutations/m25/feature.json": 283,
+        "build/acceptance-mutation/mutations/m26/feature.json": 283,
+        "build/acceptance-mutation/mutations/m27/feature.json": 283,
+        "build/acceptance-mutation/mutations/m28/feature.json": 283,
+        "build/acceptance-mutation/mutations/m29/feature.json": 283,
+        "build/acceptance-mutation/mutations/m3/feature.json": 283,
+        "build/acceptance-mutation/mutations/m30/feature.json": 283,
+        "build/acceptance-mutation/mutations/m31/feature.json": 283,
+        "build/acceptance-mutation/mutations/m32/feature.json": 283,
+        "build/acceptance-mutation/mutations/m33/feature.json": 283,
+        "build/acceptance-mutation/mutations/m34/feature.json": 283,
+        "build/acceptance-mutation/mutations/m35/feature.json": 283,
+        "build/acceptance-mutation/mutations/m36/feature.json": 283,
+        "build/acceptance-mutation/mutations/m37/feature.json": 283,
+        "build/acceptance-mutation/mutations/m38/feature.json": 283,
+        "build/acceptance-mutation/mutations/m39/feature.json": 283,
+        "build/acceptance-mutation/mutations/m4/feature.json": 283,
+        "build/acceptance-mutation/mutations/m40/feature.json": 283,
+        "build/acceptance-mutation/mutations/m41/feature.json": 283,
+        "build/acceptance-mutation/mutations/m42/feature.json": 283,
+        "build/acceptance-mutation/mutations/m43/feature.json": 283,
+        "build/acceptance-mutation/mutations/m44/feature.json": 283,
+        "build/acceptance-mutation/mutations/m45/feature.json": 283,
+        "build/acceptance-mutation/mutations/m46/feature.json": 283,
+        "build/acceptance-mutation/mutations/m47/feature.json": 283,
+        "build/acceptance-mutation/mutations/m48/feature.json": 283,
+        "build/acceptance-mutation/mutations/m49/feature.json": 283,
+        "build/acceptance-mutation/mutations/m5/feature.json": 283,
+        "build/acceptance-mutation/mutations/m50/feature.json": 283,
+        "build/acceptance-mutation/mutations/m51/feature.json": 283,
+        "build/acceptance-mutation/mutations/m52/feature.json": 283,
+        "build/acceptance-mutation/mutations/m53/feature.json": 283,
+        "build/acceptance-mutation/mutations/m54/feature.json": 283,
+        "build/acceptance-mutation/mutations/m55/feature.json": 283,
+        "build/acceptance-mutation/mutations/m56/feature.json": 283,
+        "build/acceptance-mutation/mutations/m57/feature.json": 283,
+        "build/acceptance-mutation/mutations/m58/feature.json": 283,
+        "build/acceptance-mutation/mutations/m59/feature.json": 283,
+        "build/acceptance-mutation/mutations/m6/feature.json": 283,
+        "build/acceptance-mutation/mutations/m60/feature.json": 283,
+        "build/acceptance-mutation/mutations/m61/feature.json": 283,
+        "build/acceptance-mutation/mutations/m62/feature.json": 283,
+        "build/acceptance-mutation/mutations/m63/feature.json": 283,
+        "build/acceptance-mutation/mutations/m64/feature.json": 283,
+        "build/acceptance-mutation/mutations/m65/feature.json": 283,
+        "build/acceptance-mutation/mutations/m66/feature.json": 283,
+        "build/acceptance-mutation/mutations/m7/feature.json": 283,
+        "build/acceptance-mutation/mutations/m8/feature.json": 283,
+        "build/acceptance-mutation/mutations/m9/feature.json": 283
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "33e72bec1904",
+  "strategy": "manual-commit",
+  "branch": "swarmforge-hardender",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".cargo/mutants.toml",
+    "features/duplicate_detection.feature",
+    "tests/metadata/features-scaffold-cli-feature.json",
+    "tests/rust_duplicate_detection_acceptance_test.rs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/33/e72bec1904/0/metadata.json",
+      "transcript": "/33/e72bec1904/0/full.jsonl",
+      "content_hash": "/33/e72bec1904/0/content_hash.txt",
+      "prompt": "/33/e72bec1904/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 111,
+    "cache_creation_tokens": 86806,
+    "cache_read_tokens": 6178742,
+    "output_tokens": 17083,
+    "api_call_count": 108
+  }
+}
