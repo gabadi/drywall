@@ -1,0 +1,102 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "b8c57719d7d7",
+  "session_id": "927f81d3-0fa0-44a2-8b39-7dd733d459b2",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-19T08:08:44.379335Z",
+  "branch": "swarmforge-cleaner",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "src/scan.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "58768c79837a",
+  "token_usage": {
+    "input_tokens": 60,
+    "cache_creation_tokens": 68976,
+    "cache_read_tokens": 3567052,
+    "output_tokens": 10152,
+    "api_call_count": 57
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-19T08:00:19.037768Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "58768c79837a",
+      "timestamp": "2026-06-19T08:00:19.037768Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01Enz8oh57QgS6YJJFTf23rE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "58768c79837a",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 21,
+        "end": 22,
+        "entry_ids": [
+          "0350d9fc-0969-4f3d-8e19-5a29095d9169"
+        ],
+        "tool_use_id": "toolu_01Enz8oh57QgS6YJJFTf23rE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01Enz8oh57QgS6YJJFTf23rE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-19T08:08:44.349742Z",
+    "agent_lines": 241,
+    "agent_removed": 35,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 241,
+    "total_lines_changed": 276,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 7,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 7
+      }
+    }
+  ]
+}
