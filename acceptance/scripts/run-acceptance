@@ -13,10 +13,11 @@ cd "$PROJECT_ROOT"
 declare -A STEPS_MAP
 STEPS_MAP["scaffold_cli"]="scaffold_cli_steps.rs"
 STEPS_MAP["duplicate_detection"]="duplicate_detection_steps.rs"
+STEPS_MAP["cli_surface"]="cli_surface_steps.rs"
 
 # Default to all feature files
 if [[ $# -eq 0 ]]; then
-    FEATURES=("features/scaffold_cli.feature" "features/duplicate_detection.feature")
+    FEATURES=("features/scaffold_cli.feature" "features/duplicate_detection.feature" "features/cli_surface.feature")
 else
     FEATURES=("$@")
 fi
