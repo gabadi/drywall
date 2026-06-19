@@ -111,11 +111,22 @@ def main():
         default=None,
         help='Steps file name (basename, no path) to use; defaults to scaffold_cli_steps.rs',
     )
+    parser.add_argument(
+        '--feature-path',
+        default=None,
+        help='Original feature file path for metadata (e.g. features/foo.feature); '
+             'defaults to ir_file basename with .json replaced by .feature under features/',
+    )
     args = parser.parse_args()
 
     ir_file = args.ir_file
     output_dir = args.output_dir
     steps_filename = args.steps or 'scaffold_cli_steps.rs'
+    if args.feature_path:
+        feature_path = args.feature_path
+    else:
+        base = os.path.splitext(os.path.basename(ir_file))[0]
+        feature_path = f'features/{base}.feature'
 
     if not os.path.isfile(ir_file):
         print(f'error: IR file not found: {ir_file}', file=sys.stderr)
@@ -153,7 +164,6 @@ def main():
     print(f'Generated: {output_file}')
 
     # Write metadata
-    feature_path = 'features/scaffold_cli.feature'
     meta_filename = metadata_filename(feature_path)
     metadata_file = os.path.join(output_dir, 'metadata', meta_filename)
     impl_hash = sha256_file(output_file)
