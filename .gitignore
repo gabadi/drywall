@@ -6,6 +6,7 @@ target/
 swarmforge/scripts/
 tmp/
 .claude/skills/swarm-persona/
+.claude/local.md
 lcov.info
 mutants.out/
 mutants.out.old/
