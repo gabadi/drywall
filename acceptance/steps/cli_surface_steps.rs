@@ -93,6 +93,15 @@ fn resolve_arg_paths(args_str: &str) -> Vec<String> {
     result
 }
 
+#[allow(dead_code)]
+pub fn reset_test_state() {
+    FIXTURE_DIR.with(|d| *d.borrow_mut() = None);
+    FIXTURE_ROOT.with(|r| *r.borrow_mut() = None);
+    HAS_GIT_WORK_TREE.with(|f| *f.borrow_mut() = false);
+    GIT_ABSENT.with(|f| *f.borrow_mut() = false);
+    DOGFOOD_MODE.with(|f| *f.borrow_mut() = false);
+}
+
 pub fn dispatch(step_text: &str, world: &mut World, example: &Example) -> StepResult {
     let step = resolve_params(step_text, example);
     let s = step.as_str();

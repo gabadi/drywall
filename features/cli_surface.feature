@@ -1,3 +1,7 @@
+# acceptance-mutation-manifest-begin
+# {"version":1,"tested_at":"2026-06-19T09:08:30.367156Z","feature_name":"CLI surface exclusions auto built-in gitignore and repeatable exclude","feature_path":"features/cli_surface.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[{"index":7,"name":"Gitignore-awareness silently no-ops when git is unavailable","scenario_hash":"d10229fca5e2fbc096c6da871fc846ce4f6cdae5f0fecbfd60eb8533381b63c7","mutation_count":4,"result":{"Total":4,"Killed":4,"Survived":0,"Errors":0},"tested_at":"2026-06-19T08:58:24.804693Z"},{"index":6,"name":"Dogfood run stays clean with gitignore-awareness on","scenario_hash":"e75851245d002b0e3b635e7b8098ebd3d302f36ccbdccc6e17ded1c9777be9ad","mutation_count":2,"result":{"Total":2,"Killed":2,"Survived":0,"Errors":0},"tested_at":"2026-06-19T08:45:32.882029Z"}]}
+# acceptance-mutation-manifest-end
+
 Feature: CLI surface exclusions auto built-in gitignore and repeatable exclude
 
   # TRACKING: #4 (parent #1)
@@ -148,17 +152,20 @@ Feature: CLI surface exclusions auto built-in gitignore and repeatable exclude
 
   # cli-surface-5
   # --exclude is repeatable: a file matching ANY supplied pattern is suppressed.
+  # A witness file (never excluded) ensures each exclusion pattern is independently detectable:
+  # if either exclude breaks, the escaped file pairs with the witness and exit becomes 1.
   Scenario Outline: Repeated exclude flags union their patterns
-    Given a Rust file "<left_file>" containing a function with structure "accumulate_sum" and identifiers "a,b,sum"
-    And a Rust file "<right_file>" containing a function with structure "accumulate_sum" and identifiers "x,y,total"
+    Given a Rust file "<witness_file>" containing a function with structure "accumulate_sum" and identifiers "a,b,sum"
+    And a Rust file "<left_file>" containing a function with structure "accumulate_sum" and identifiers "x,y,total"
+    And a Rust file "<right_file>" containing a function with structure "accumulate_sum" and identifiers "p,q,res"
     When I run drywall with the arguments "<args>"
     Then the exit code is "<exit_code>"
     And no duplicate pair is reported
 
     Examples:
-      | left_file    | right_file  | args                                                   | exit_code |
-      | src/alpha.rs | src/beta.rs | --exclude **/alpha.rs --exclude **/beta.rs ./src       | 0         |
-      | src/alpha.rs | gen/beta.rs | --exclude **/gen/** --exclude **/legacy/** ./src ./gen | 0         |
+      | witness_file | left_file    | right_file  | args                                                 | exit_code |
+      | src/gamma.rs | src/alpha.rs | src/beta.rs | --exclude **/alpha.rs --exclude **/beta.rs ./src     | 0         |
+      | src/gamma.rs | src/alpha.rs | gen/beta.rs | --exclude **/alpha.rs --exclude **/gen/** ./src ./gen | 0         |
 
   # cli-surface-6
   # When git is available in a work tree, a gitignored twin is not scanned, so no pair forms.

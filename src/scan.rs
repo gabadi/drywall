@@ -293,6 +293,27 @@ mod tests {
     }
 
     #[test]
+    fn should_skip_glob_star_suffix_does_not_match_different_suffix() {
+        // *x/beta.rs should NOT match src/beta.rs (src ends in c, not x)
+        let gs = build_glob_set(&["*x/beta.rs".to_string()]).unwrap();
+        assert!(!should_skip(std::path::Path::new("src/beta.rs"), &gs));
+        assert!(should_skip(std::path::Path::new("srcx/beta.rs"), &gs));
+    }
+
+    #[test]
+    fn should_skip_two_patterns_union() {
+        // Both **/alpha.rs AND **/beta.rs must match their respective targets
+        let gs =
+            build_glob_set(&["**/alpha.rs".to_string(), "**/beta.rs".to_string()]).unwrap();
+        assert!(should_skip(std::path::Path::new("src/alpha.rs"), &gs));
+        assert!(should_skip(std::path::Path::new("src/beta.rs"), &gs));
+        // Breaking one: only **/alpha.rs — beta.rs should NOT be skipped
+        let gs_one = build_glob_set(&["**/alpha.rs".to_string()]).unwrap();
+        assert!(should_skip(std::path::Path::new("src/alpha.rs"), &gs_one));
+        assert!(!should_skip(std::path::Path::new("src/beta.rs"), &gs_one));
+    }
+
+    #[test]
     fn process_file_valid_rust_adds_functions() {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("test.rs");
