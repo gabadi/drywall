@@ -1,0 +1,179 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "0b3793804b05",
+  "session_id": "a725829a-6422-415d-acad-f104095e9764",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-19T09:13:19.460332Z",
+  "branch": "swarmforge-hardender",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "acceptance/scripts/runner-adapter-cli-surface",
+    "acceptance/steps/cli_surface_steps.rs",
+    "features/cli_surface.feature",
+    "src/scan.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "4c90176db554",
+  "token_usage": {
+    "input_tokens": 326,
+    "cache_creation_tokens": 242383,
+    "cache_read_tokens": 33035796,
+    "output_tokens": 77257,
+    "api_call_count": 322
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-19T08:27:19.400595Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "4c90176db554",
+      "timestamp": "2026-06-19T08:27:19.400595Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01KbQVChjzaW7Buq6UicJuGJ",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "4c90176db554",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 21,
+        "end": 22,
+        "entry_ids": [
+          "f2da36cf-bed0-4805-9a19-f12f5d0399a3"
+        ],
+        "tool_use_id": "toolu_01KbQVChjzaW7Buq6UicJuGJ"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01KbQVChjzaW7Buq6UicJuGJ"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-19T09:13:19.423914Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 840,
+    "human_modified": 76,
+    "human_removed": 0,
+    "total_committed": 840,
+    "total_lines_changed": 916,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 21384,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 8,
+        "build/acceptance-mutation/base/feature.json": 314,
+        "build/acceptance-mutation/mutations/m1/feature.json": 283,
+        "build/acceptance-mutation/mutations/m10/feature.json": 283,
+        "build/acceptance-mutation/mutations/m11/feature.json": 283,
+        "build/acceptance-mutation/mutations/m12/feature.json": 283,
+        "build/acceptance-mutation/mutations/m13/feature.json": 283,
+        "build/acceptance-mutation/mutations/m14/feature.json": 283,
+        "build/acceptance-mutation/mutations/m15/feature.json": 283,
+        "build/acceptance-mutation/mutations/m16/feature.json": 283,
+        "build/acceptance-mutation/mutations/m17/feature.json": 283,
+        "build/acceptance-mutation/mutations/m18/feature.json": 283,
+        "build/acceptance-mutation/mutations/m19/feature.json": 283,
+        "build/acceptance-mutation/mutations/m2/feature.json": 283,
+        "build/acceptance-mutation/mutations/m20/feature.json": 283,
+        "build/acceptance-mutation/mutations/m21/feature.json": 283,
+        "build/acceptance-mutation/mutations/m22/feature.json": 283,
+        "build/acceptance-mutation/mutations/m23/feature.json": 283,
+        "build/acceptance-mutation/mutations/m24/feature.json": 283,
+        "build/acceptance-mutation/mutations/m25/feature.json": 283,
+        "build/acceptance-mutation/mutations/m26/feature.json": 283,
+        "build/acceptance-mutation/mutations/m27/feature.json": 283,
+        "build/acceptance-mutation/mutations/m28/feature.json": 283,
+        "build/acceptance-mutation/mutations/m29/feature.json": 283,
+        "build/acceptance-mutation/mutations/m3/feature.json": 283,
+        "build/acceptance-mutation/mutations/m30/feature.json": 283,
+        "build/acceptance-mutation/mutations/m31/feature.json": 283,
+        "build/acceptance-mutation/mutations/m32/feature.json": 283,
+        "build/acceptance-mutation/mutations/m33/feature.json": 283,
+        "build/acceptance-mutation/mutations/m34/feature.json": 283,
+        "build/acceptance-mutation/mutations/m35/feature.json": 283,
+        "build/acceptance-mutation/mutations/m36/feature.json": 283,
+        "build/acceptance-mutation/mutations/m37/feature.json": 283,
+        "build/acceptance-mutation/mutations/m38/feature.json": 283,
+        "build/acceptance-mutation/mutations/m39/feature.json": 283,
+        "build/acceptance-mutation/mutations/m4/feature.json": 283,
+        "build/acceptance-mutation/mutations/m40/feature.json": 283,
+        "build/acceptance-mutation/mutations/m41/feature.json": 283,
+        "build/acceptance-mutation/mutations/m42/feature.json": 283,
+        "build/acceptance-mutation/mutations/m43/feature.json": 283,
+        "build/acceptance-mutation/mutations/m44/feature.json": 283,
+        "build/acceptance-mutation/mutations/m45/feature.json": 283,
+        "build/acceptance-mutation/mutations/m46/feature.json": 283,
+        "build/acceptance-mutation/mutations/m47/feature.json": 283,
+        "build/acceptance-mutation/mutations/m48/feature.json": 283,
+        "build/acceptance-mutation/mutations/m49/feature.json": 283,
+        "build/acceptance-mutation/mutations/m5/feature.json": 283,
+        "build/acceptance-mutation/mutations/m50/feature.json": 283,
+        "build/acceptance-mutation/mutations/m51/feature.json": 283,
+        "build/acceptance-mutation/mutations/m52/feature.json": 283,
+        "build/acceptance-mutation/mutations/m53/feature.json": 283,
+        "build/acceptance-mutation/mutations/m54/feature.json": 283,
+        "build/acceptance-mutation/mutations/m55/feature.json": 283,
+        "build/acceptance-mutation/mutations/m56/feature.json": 283,
+        "build/acceptance-mutation/mutations/m57/feature.json": 283,
+        "build/acceptance-mutation/mutations/m58/feature.json": 283,
+        "build/acceptance-mutation/mutations/m59/feature.json": 283,
+        "build/acceptance-mutation/mutations/m6/feature.json": 283,
+        "build/acceptance-mutation/mutations/m60/feature.json": 283,
+        "build/acceptance-mutation/mutations/m61/feature.json": 314,
+        "build/acceptance-mutation/mutations/m62/feature.json": 314,
+        "build/acceptance-mutation/mutations/m63/feature.json": 314,
+        "build/acceptance-mutation/mutations/m64/feature.json": 314,
+        "build/acceptance-mutation/mutations/m65/feature.json": 314,
+        "build/acceptance-mutation/mutations/m66/feature.json": 314,
+        "build/acceptance-mutation/mutations/m67/feature.json": 314,
+        "build/acceptance-mutation/mutations/m68/feature.json": 314,
+        "build/acceptance-mutation/mutations/m69/feature.json": 314,
+        "build/acceptance-mutation/mutations/m7/feature.json": 283,
+        "build/acceptance-mutation/mutations/m70/feature.json": 314,
+        "build/acceptance-mutation/mutations/m71/feature.json": 314,
+        "build/acceptance-mutation/mutations/m72/feature.json": 314,
+        "build/acceptance-mutation/mutations/m73/feature.json": 314,
+        "build/acceptance-mutation/mutations/m8/feature.json": 283,
+        "build/acceptance-mutation/mutations/m9/feature.json": 283
+      }
+    }
+  ]
+}
