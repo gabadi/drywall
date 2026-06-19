@@ -1,7 +1,7 @@
 use crate::ast::{extract_functions, parse_source_tree};
 use crate::core::FunctionInfo;
 use globset::{Glob, GlobSet, GlobSetBuilder};
-use std::path::{Path, PathBuf};
+use std::path::{Component, Path, PathBuf};
 use std::process::Command;
 use walkdir::WalkDir;
 
@@ -17,7 +17,7 @@ const BUILTIN_EXCLUDED_DIRS: &[&str] = &[
 
 pub fn is_builtin_excluded(path: &Path) -> bool {
     path.components().any(|c| {
-        if let std::path::Component::Normal(name) = c {
+        if let Component::Normal(name) = c {
             BUILTIN_EXCLUDED_DIRS.contains(&name.to_str().unwrap_or(""))
         } else {
             false
@@ -100,16 +100,16 @@ pub fn collect_from_single_file(
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
-    if is_builtin_excluded(path) {
-        return;
-    }
-    if !should_skip(path, exclude_set) && is_rust_file(path) && !is_git_ignored(path) {
+    if should_scan_file(path, exclude_set) {
         process_file(path, functions, errors);
     }
 }
 
 fn should_scan_file(path: &Path, exclude_set: &GlobSet) -> bool {
-    is_rust_file(path) && !should_skip(path, exclude_set) && !is_git_ignored(path)
+    !is_builtin_excluded(path)
+        && is_rust_file(path)
+        && !should_skip(path, exclude_set)
+        && !is_git_ignored(path)
 }
 
 fn process_entry(
