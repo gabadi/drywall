@@ -1,0 +1,21 @@
+We have items in @.agents/backlog.md , make a proposal
+
+---
+
+item 2 fix,  item 1: lets frame it properly, whats there? check that we have added a criteria in the hardener as a github issue in gabadi/swarm-forge to handlle this
+
+---
+
+not clear, dont we need to  generate/run all of them?
+
+---
+
+again, whats the conclusion for this mutation based on issue #51
+
+---
+
+focus in this muttion, dont we need to apply anything on it?
+
+---
+
+focus in this muttion, dont we need to apply anything on it? the outcome more than the root couse here
