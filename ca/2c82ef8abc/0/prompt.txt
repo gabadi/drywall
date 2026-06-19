@@ -1,0 +1,5 @@
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
+
+---
+
+Check if yours changes are ok, we had a handoff that wshouldn;t have been here
