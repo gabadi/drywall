@@ -1,7 +1,7 @@
 use crate::ast::{extract_functions, parse_source_tree};
 use crate::core::FunctionInfo;
 use globset::{Glob, GlobSet, GlobSetBuilder};
-use std::path::{Component, Path, PathBuf};
+use std::path::{Component, Path};
 use std::process::Command;
 use walkdir::WalkDir;
 
@@ -160,25 +160,6 @@ pub fn process_file(path: &Path, functions: &mut Vec<FunctionInfo>, errors: &mut
             errors.push(format!("{} in {}", msg, path.display()));
         }
     }
-}
-
-pub fn collect_rust_files(paths: &[String]) -> Vec<PathBuf> {
-    let mut files = Vec::new();
-    for p in paths {
-        let path = Path::new(p);
-        if path.is_file() {
-            files.push(path.to_path_buf());
-        } else {
-            for entry in WalkDir::new(path).sort_by_file_name().into_iter().flatten() {
-                if entry.file_type().is_file()
-                    && entry.path().extension().and_then(|x| x.to_str()) == Some("rs")
-                {
-                    files.push(entry.path().to_path_buf());
-                }
-            }
-        }
-    }
-    files
 }
 
 #[cfg(test)]
@@ -359,29 +340,6 @@ fn beta(b: i32) -> i32 {
         process_file(&path, &mut functions, &mut errors);
         assert_eq!(functions.len(), 0);
         assert!(!errors.is_empty());
-    }
-
-    #[test]
-    fn collect_rust_files_from_directory_finds_rs_files() {
-        let dir = tempfile::tempdir().unwrap();
-        std::fs::write(dir.path().join("a.rs"), "fn a() {}").unwrap();
-        std::fs::write(dir.path().join("b.rs"), "fn b() {}").unwrap();
-        std::fs::write(dir.path().join("c.txt"), "not rust").unwrap();
-        let paths = vec![dir.path().to_string_lossy().to_string()];
-        let files = collect_rust_files(&paths);
-        assert_eq!(files.len(), 2);
-        assert!(files.iter().all(|f| f.extension().unwrap() == "rs"));
-    }
-
-    #[test]
-    fn collect_rust_files_from_file_path_returns_that_file() {
-        let dir = tempfile::tempdir().unwrap();
-        let path = dir.path().join("single.rs");
-        std::fs::write(&path, "fn x() {}").unwrap();
-        let paths = vec![path.to_string_lossy().to_string()];
-        let files = collect_rust_files(&paths);
-        assert_eq!(files.len(), 1);
-        assert_eq!(files[0], path);
     }
 
     #[test]
