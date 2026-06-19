@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "5cc8ae356a42",
+  "strategy": "manual-commit",
+  "branch": "swarmforge-QA",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "acceptance/scripts/run-acceptance",
+    "acceptance/scripts/runner-adapter-cli-surface",
+    "acceptance/steps/cli_surface_steps.rs",
+    "features/cli_surface.feature",
+    "features/cli_surface.qa.md",
+    "src/lib.rs",
+    "src/scan.rs",
+    "tests/cli_surface_exclusions_auto_built_in_gitignore_and_repeatable_exclude_acceptance_test.rs",
+    "tests/metadata/features-cli-surface-feature.json",
+    "tests/metadata/features-duplicate-detection-feature.json",
+    "tests/metadata/features-scaffold-cli-feature.json",
+    "tests/scan_property_test.rs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5c/c8ae356a42/0/metadata.json",
+      "transcript": "/5c/c8ae356a42/0/full.jsonl",
+      "content_hash": "/5c/c8ae356a42/0/content_hash.txt",
+      "prompt": "/5c/c8ae356a42/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 19967,
+    "cache_read_tokens": 451317,
+    "output_tokens": 1485,
+    "api_call_count": 13
+  }
+}
