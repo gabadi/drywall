@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "1d3f78bc4299",
+  "session_id": "298dd241-a367-4e73-bdec-87a06231a90b",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-19T00:03:10.065768Z",
+  "branch": "fix/acceptance-feature-path",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "40b9e880a89a",
+  "token_usage": {
+    "input_tokens": 180,
+    "cache_creation_tokens": 30714,
+    "cache_read_tokens": 888262,
+    "output_tokens": 10748,
+    "api_call_count": 21
+  },
+  "session_metrics": {
+    "turn_count": 4
+  }
+}
