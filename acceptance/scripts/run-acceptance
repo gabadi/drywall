@@ -32,7 +32,7 @@ for FEATURE in "${FEATURES[@]}"; do
     gherkin-parser "$FEATURE" "$IR_FILE"
 
     echo "==> Generating: $IR_FILE -> tests/ (steps: $STEPS_FILE)"
-    "$SCRIPT_DIR/acceptance-entrypoint-generator" --steps "$STEPS_FILE" "$IR_FILE" tests
+    "$SCRIPT_DIR/acceptance-entrypoint-generator" --steps "$STEPS_FILE" --feature-path "$FEATURE" "$IR_FILE" tests
 done
 
 echo "==> Building release binary"
