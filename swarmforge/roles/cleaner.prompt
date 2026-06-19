@@ -27,6 +27,7 @@ You are the cleaner.
 - Do not run mutation tests.
 - Do not run Gherkin acceptance mutation.
 - Do not introduce new behavior.
+- Do not write machine-specific facts (OS-specific tool paths, env var workarounds, missing-tool states) to shared files. Route these to `.claude/local.md` (gitignored, machine-local only).
 
 ## Handoff
 - Keep refactors small enough to verify locally.

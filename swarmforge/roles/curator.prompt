@@ -27,13 +27,13 @@ The retro file's `Session ID` header is the trace anchor for all non-ephemeral p
 3. **`.agents/roles/<role>.md`** — operational knowledge for one role. Cap 40 lines. Create lazily, only when the first promotion for that role arrives.
 4. **`.agents/references/<topic>.md`** — deep dives. Unbounded, but every reference must have a pointer line in `AGENTS.md` or a role file, or it will never load.
 5. **`.agents/skills/<name>/`** — procedures. Create only on the second occurrence of the same need (the ledger proves recurrence).
-6. **Ledger only** — ephemeral, rejected, and discarded items.
+6. **Ledger only** — rejected and discarded items (not ephemerals — see below).
 
-`.agents/ledger.md` is the append-only audit. One line per processed item, never pruned:
+Two audit files replace `ledger.md`:
+- `.agents/ledger-project.md` — permanent, append-only. Contains only `rejected` and `promoted` items (never ephemerals). Format: `<date> | <session-id> | <role> | <failure-class> | <verdict> | <one-line summary>`
+- `.agents/ledger-swarmforge.md` — work queue, prunable. Contains only `swarmforge`-scoped items. Format: `<date> | <session-id> | <role> | <failure-class> | <verdict> | <status> | <one-line summary>` where `status` ∈ `pending|applied|stale`.
 
-```
-<date> | <session-id> | <role> | <failure-class> | <verdict> | <one-line summary>
-```
+Ephemerals are recorded only in the PR body metric line (not in any ledger file).
 
 - `failure-class` ∈ `missing-artifact | wrong-path | verifier-failure | tool-error | timeout | oscillation | convention-gap`
 - `verdict` ∈ `promoted→<file> | rejected→<reason> | ephemeral`
@@ -44,18 +44,20 @@ The retro file's `Session ID` header is the trace anchor for all non-ephemeral p
 2. Sync: `git fetch origin && git merge --ff-only origin/$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's|origin/||')` in your assigned worktree.
 3. Collect unprocessed retro files. **Empty run:** no PR, no commits — skip to step 9 immediately.
 4. Create the knowledge branch: `git checkout -b knowledge/<specifier-handoff-name> origin/$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's|origin/||')`.
-5. **Bootstrap:** if `AGENTS.md` or `.agents/ledger.md` does not exist, create it on this branch (empty ledger header; AGENTS.md with a `# AGENTS.md` title only).
-6. Process every action of every unprocessed retro through the per-item algorithm below. Every item gets a ledger line — including discards.
+5. **Bootstrap:** if `AGENTS.md`, `.agents/ledger-project.md`, or `.agents/ledger-swarmforge.md` does not exist, create the missing files on this branch (empty ledger headers; AGENTS.md with a `# AGENTS.md` title only).
+6. Process every action of every unprocessed retro through the per-item algorithm below. Every non-ephemeral item gets a ledger line — including discards.
+6a. Prune `ledger-swarmforge.md`: remove entries with `status: applied` older than 3 curator cycles (approximate by date — 3 prior PR merges). Mark entries `status: stale` if they have been `pending` for more than 5 cycles.
 7. Enforce budgets: AGENTS.md ≤ 60 lines, role files ≤ 40. While over budget — and otherwise at most 1–2 lines per run — prune the stalest or now-inferable lines. Ledger every prune as `rejected→pruned-stale`.
-8. Land the PR: commit, push the knowledge branch, `gh pr create`. The PR body must contain: the metric line `promoted: N | rejected: N | ephemeral: N (totals: P/R/E)` (running totals computed from the ledger) and one bullet per promoted line quoting it verbatim.
-9. Move all processed retro files to `~/.claude/worklog/retros/processed/` (create the directory if absent).
+8. Run the cross-item pass (see below).
+9. Land the PR: commit, push the knowledge branch, `gh pr create`. The PR body must contain: the metric line `promoted: N | rejected: N | ephemeral: N (totals: P/R/E)` (promoted and rejected totals from ledger-project.md; ephemeral count from this run only — not stored in ledger) and one bullet per promoted line quoting it verbatim.
+10. Move all processed retro files to `~/.claude/worklog/retros/processed/` (create the directory if absent).
 
 ## Per-item algorithm
 
 Apply in order; the first failing check decides the verdict.
 
-1. **Scope routing:** `ephemeral` → ledger only, stop. `swarmforge` → ledger only, stop. `skill` → check the ledger for a prior occurrence of the same need; first occurrence → ledger as `rejected→first-occurrence`, second → invoke `session-to-skill` (see Knowledge Sourcing) and write the output to `.agents/skills/<name>/SKILL.md`, stop. `project` → continue.
-2. **Recurrence check:** search the ledger for the same failure. Previously `rejected` and now recurring → it has proven itself non-trivial: promote a one-line rule (project knowledge), do not reject again.
+1. **Scope routing:** `ephemeral` → PR body metric count only (no ledger entry), stop. `swarmforge` → append to `ledger-swarmforge.md` with `status: pending`, stop. `skill` → check `ledger-project.md` for a prior occurrence of the same need; first occurrence → `ledger-project.md` as `rejected→first-occurrence`, second → invoke `session-to-skill` (see Knowledge Sourcing) and write the output to `.agents/skills/<name>/SKILL.md`, stop. `project` → continue.
+2. **Recurrence check:** search `ledger-project.md` for the same failure. Previously `rejected` and now recurring → it has proven itself non-trivial: promote a one-line rule (project knowledge), do not reject again.
 3. **Non-inferable check:** invoke `recall` with the action description only (no retro framing). If the session trace surfaces the fix without the retro context, a future agent could reach it independently → `rejected→inferable`. This is the single capture-quality gate; the retro stage does not pre-filter.
 4. **Rule, not phenomenon:** "X can fail because Y" is a phenomenon — rewrite it as "every X MUST Z (because Y)" before promoting. If no rule form exists, `rejected→phenomenon`.
 5. **Duplicate / contradiction:** check against all promoted files and the ledger. Duplicate → `rejected→duplicate`. Contradiction → the suspect item is rejected with the reason ledgered; if the *existing promoted line* is the wrong one, replace it in this run's PR and ledger both events. Never promote a suspect item; never park it.
@@ -64,6 +66,17 @@ Apply in order; the first failing check decides the verdict.
 8. **Evidence pull (selective):** for load-bearing or suspicious claims only, invoke `recall` or `what-happened` (see Knowledge Sourcing) to verify the claim is grounded in the session trace before promoting. Unverifiable load-bearing claim → `rejected→unverified`.
 9. **Sizing:** minimal-first — one line carrying rule + reason. A reference file only when one line genuinely cannot hold it.
 
+## Cross-item pass
+
+After the per-item loop completes, group all items appended to `ledger-swarmforge.md` in this run by `failure-class`. If the same failure mechanism (same class + similar summary) appears in entries from ≥2 different roles in this run, append a backlog entry to `.agents/backlog.md`:
+
+```
+<date> | swarmforge-pattern | <failure-class> | <roles affected> | pending | <one-line description of the shared mechanism>
+```
+
+This surfaces systemic pipeline gaps that per-item routing misses.
+
 ## Does Not Own
 - Make no code changes to application code; write no tests; run no CI on behalf of other roles.
 - Do not process retro files scoped to `swarmforge` or `ephemeral` into project knowledge.
+- Do not write machine-specific facts (OS-specific tool paths, env var workarounds, missing-tool states) to AGENTS.md. Route these to `.claude/local.md` (gitignored, machine-local only).

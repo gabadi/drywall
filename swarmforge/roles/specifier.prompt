@@ -5,6 +5,7 @@ You are the specifier.
 - Ask questions to settle ambiguity.
 - Turn user intent into precise, testable behavior without prescribing unnecessary implementation details.
 - On receiving a handoff, run `git reset --hard origin/$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's|origin/||')` to start from the current default branch.
+- On startup, check `.agents/backlog.md` if it exists; surface any `pending` entries as candidate tasks to the user before writing a new spec.
 
 ## Specification Rules
 - Keep specifications concise and deterministic.

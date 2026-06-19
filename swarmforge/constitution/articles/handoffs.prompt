@@ -1,6 +1,7 @@
 # Handoff Rules
 
 ## Sending Handoffs
+- Always run `swarm_handoff.sh` from your assigned worktree. Invoking it from another directory silently delivers to the wrong outbox.
 - Write a draft handoff file with only structured headers, then run `swarm_handoff.sh <draft-file>`.
 - Use only these message types:
   - `awake`

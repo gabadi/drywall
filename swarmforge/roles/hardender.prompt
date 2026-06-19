@@ -28,4 +28,5 @@ You are the hardender.
 
 ## Handoff
 - As the final verification sequence, run the language mutation tool, then soft Gherkin acceptance mutation (`--level soft`), then the language CRAP tool, then the language DRY tool unless directed otherwise. Fix any issues each tool finds before running the next one.
+- For surviving mutants: (1) write a test that kills it; (2) restructure the code so the mutation becomes detectable; (3) delete it if it reveals dead code. Only when all three are exhausted, accept as equivalent — document in the PR body only, no source annotations, no `#[mutants::skip]`. Do not forward unresolved surviving mutants to QA.
 - When the current architect task or batch of architect tasks is complete, commit hardening changes and notify QA using the file-based handoff format before taking another queued architect task or batch.
