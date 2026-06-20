@@ -1,0 +1,14 @@
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
+
+---
+
+QA-7 and QA-9 are in cli_surface.qa.md, not duplicate_detection. Check that file and add the two missing Gherkin scenarios., corroborate so i can confirm before going on
+
+---
+
+Base from swarmforge-QA @ 7bdc3ef. Add two Gherkin scenarios to cli_surface.feature: QA-7 (run binary twice,
+  assert byte-identical stdout) and QA-9 (non-gitignored twin in a git work tree is reported). Those cases are defined in cli_surface.qa.md
+
+---
+
+why a `find /` ? will never end
