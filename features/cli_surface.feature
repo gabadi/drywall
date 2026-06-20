@@ -210,3 +210,33 @@ Feature: CLI surface exclusions auto built-in gitignore and repeatable exclude
     Examples:
       | left_file    | right_file  | args  | exit_code |
       | src/alpha.rs | src/beta.rs | ./src | 1         |
+
+  # cli-surface-9
+  # QA-9: gitignore-awareness only subtracts ignored paths; a non-ignored twin in a
+  # git work tree is still scanned and reported (guards against over-exclusion via git).
+  Scenario Outline: A non-ignored twin in a git work tree is still reported
+    Given a git work tree with a git executable available
+    And a gitignore entry "<ignore_pattern>"
+    And a Rust file "<left_file>" containing a function with structure "accumulate_sum" and identifiers "a,b,sum"
+    And a Rust file "<right_file>" containing a function with structure "accumulate_sum" and identifiers "x,y,total"
+    When I run drywall with the arguments "<args>"
+    Then the exit code is "<exit_code>"
+    And stdout reports a duplicate pair for "<left_file>" and "<right_file>"
+
+    Examples:
+      | ignore_pattern | left_file    | right_file  | args  | exit_code |
+      | generated/     | src/alpha.rs | src/beta.rs | ./src | 1         |
+
+  # cli-surface-10
+  # QA-7: built-in exclusion is environment-independent and deterministic; running the
+  # same input twice yields byte-identical stdout and the same exit code.
+  Scenario Outline: Built-in exclusion output is deterministic across runs
+    Given a Rust file "<left_file>" containing a function with structure "accumulate_sum" and identifiers "a,b,sum"
+    And a Rust file "<right_file>" containing a function with structure "accumulate_sum" and identifiers "x,y,total"
+    When I run drywall twice with the arguments "<args>"
+    Then both runs share the exit code "<exit_code>"
+    And both runs produce byte-identical stdout
+
+    Examples:
+      | left_file    | right_file           | args | exit_code |
+      | src/alpha.rs | node_modules/beta.rs | .    | 0         |
