@@ -40,14 +40,15 @@ install_mattpocock_skills() {
     echo "  ⚠ mattpocock skills unavailable (network error) — skipping"
     return 0
   fi
-  local src="$MATTPOCOCK_TMP_DIR/skills/engineering"
-  [[ ! -d "$src" ]] && return 0
+  local skills_base="$MATTPOCOCK_TMP_DIR/skills"
+  [[ ! -d "$skills_base" ]] && return 0
   IFS=',' read -ra _inc_arr <<< "$include"
   local dsts=("$SCRIPT_DIR/.claude/skills")
   for _wt in "$SCRIPT_DIR/.worktrees"/*/; do
     [[ -d "$_wt/.claude/skills" ]] && dsts+=("$_wt/.claude/skills")
   done
-  for _skill_dir in "$src"/*/; do
+  # Search all subdirs (engineering, productivity, etc.) for included skills
+  while IFS= read -r -d '' _skill_dir; do
     local _name; _name="$(basename "$_skill_dir")"
     local _ok=false
     if [[ -z "$include" ]]; then
@@ -67,7 +68,7 @@ install_mattpocock_skills() {
       cp -R "$_skill_dir" "$_dst/$_name"
     done
     echo "  ✓ $_name"
-  done
+  done < <(find "$skills_base" -mindepth 2 -maxdepth 2 -type d -print0)
   mkdir -p "$SCRIPT_DIR/.swarmforge"
   echo "$sha" > "$sentinel"
   rm -rf "$MATTPOCOCK_TMP_DIR"; MATTPOCOCK_TMP_DIR=""
