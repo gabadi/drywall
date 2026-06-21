@@ -94,22 +94,26 @@ pub fn collect_functions_from_path(
     }
 }
 
+pub fn should_scan_file(
+    path: &Path,
+    exclude_set: &GlobSet,
+    git_ignored: &dyn Fn(&Path) -> bool,
+) -> bool {
+    !is_builtin_excluded(path)
+        && is_rust_file(path)
+        && !should_skip(path, exclude_set)
+        && !git_ignored(path)
+}
+
 pub fn collect_from_single_file(
     path: &Path,
     exclude_set: &GlobSet,
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
-    if should_scan_file(path, exclude_set) {
+    if should_scan_file(path, exclude_set, &is_git_ignored) {
         process_file(path, functions, errors);
     }
-}
-
-fn should_scan_file(path: &Path, exclude_set: &GlobSet) -> bool {
-    !is_builtin_excluded(path)
-        && is_rust_file(path)
-        && !should_skip(path, exclude_set)
-        && !is_git_ignored(path)
 }
 
 fn process_entry(
@@ -119,7 +123,10 @@ fn process_entry(
     errors: &mut Vec<String>,
 ) {
     match entry {
-        Ok(e) if e.file_type().is_file() && should_scan_file(e.path(), exclude_set) => {
+        Ok(e)
+            if e.file_type().is_file()
+                && should_scan_file(e.path(), exclude_set, &is_git_ignored) =>
+        {
             process_file(e.path(), functions, errors);
         }
         Ok(_) => {}

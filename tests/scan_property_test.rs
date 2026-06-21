@@ -1,4 +1,6 @@
-use drywall::scan::{build_glob_set, is_builtin_excluded, is_rust_file, should_skip};
+use drywall::scan::{
+    build_glob_set, is_builtin_excluded, is_rust_file, should_scan_file, should_skip,
+};
 use proptest::prelude::*;
 use std::path::Path;
 
@@ -154,6 +156,69 @@ proptest! {
         prop_assert_eq!(
             result_once, result_twice,
             "duplicating a glob pattern must not change skip result for: {}",
+            path
+        );
+    }
+
+    // --- should_scan_file composition invariants ---
+
+    #[test]
+    fn should_scan_file_non_rs_never_scanned(
+        stem in "[a-z][a-z0-9_]{0,8}",
+        ext in "[a-z]{1,4}",
+    ) {
+        // Non-.rs files must never be scanned regardless of git-ignore oracle
+        prop_assume!(ext != "rs");
+        let path = format!("src/{}.{}", stem, ext);
+        let gs = build_glob_set(&[]).unwrap();
+        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| false));
+        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| true));
+    }
+
+    #[test]
+    fn should_scan_file_builtin_excluded_never_scanned(
+        excluded in proptest::sample::select(BUILTIN_DIRS),
+        stem in "[a-z][a-z0-9_]{0,8}",
+    ) {
+        let path = format!("{}/{}.rs", excluded, stem);
+        let gs = build_glob_set(&[]).unwrap();
+        prop_assert!(
+            !should_scan_file(Path::new(&path), &gs, &|_| false),
+            "builtin-excluded path must not scan: {}",
+            path
+        );
+    }
+
+    #[test]
+    fn should_scan_file_git_ignored_never_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
+        let path = format!("src/{}.rs", stem);
+        let gs = build_glob_set(&[]).unwrap();
+        prop_assert!(
+            !should_scan_file(Path::new(&path), &gs, &|_| true),
+            "git-ignored file must not scan: {}",
+            path
+        );
+    }
+
+    #[test]
+    fn should_scan_file_glob_excluded_never_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
+        let path = format!("acceptance/{}.rs", stem);
+        let gs = build_glob_set(&["acceptance/**".to_string()]).unwrap();
+        prop_assert!(
+            !should_scan_file(Path::new(&path), &gs, &|_| false),
+            "glob-excluded file must not scan: {}",
+            path
+        );
+    }
+
+    #[test]
+    fn should_scan_file_clean_rs_path_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
+        // A .rs file in src/ with no exclusions and not git-ignored must scan
+        let path = format!("src/{}.rs", stem);
+        let gs = build_glob_set(&[]).unwrap();
+        prop_assert!(
+            should_scan_file(Path::new(&path), &gs, &|_| false),
+            "clean .rs file must scan: {}",
             path
         );
     }
