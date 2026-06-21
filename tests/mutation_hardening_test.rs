@@ -2,10 +2,11 @@
 // Each test targets a specific surviving mutant identified by cargo-mutants.
 
 use drywall::ast::{
-    build_normalized_subtree, extract_functions, extract_let_declaration, make_parser,
+    JS_CONFIG, RUST_CONFIG, build_normalized_subtree, extract_functions,
+    extract_functions_with_config, extract_let_declaration, make_parser, make_parser_for,
 };
 use drywall::scan::{build_glob_set, collect_from_directory};
-use drywall::{FunctionInfo, find_duplicate_pairs, jaccard, source_lines};
+use drywall::{FunctionInfo, Lang, find_duplicate_pairs, jaccard, source_lines};
 use std::fs;
 
 fn parse_and_extract(source: &str) -> Vec<FunctionInfo> {
@@ -124,8 +125,8 @@ fn normalize_literal_integers_are_replaced() {
     let source_b = "fn b() -> i32 { 99 }\n";
     let tree_a = make_parser().parse(source_a, None).unwrap();
     let tree_b = make_parser().parse(source_b, None).unwrap();
-    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a);
-    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b);
+    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a, &RUST_CONFIG);
+    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b, &RUST_CONFIG);
     assert_eq!(
         norm_a, norm_b,
         "functions differing only in integer literals must normalize identically"
@@ -139,8 +140,8 @@ fn normalize_float_literals_are_replaced() {
     let source_b = "fn b() -> f64 { 9.9 }\n";
     let tree_a = make_parser().parse(source_a, None).unwrap();
     let tree_b = make_parser().parse(source_b, None).unwrap();
-    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a);
-    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b);
+    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a, &RUST_CONFIG);
+    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b, &RUST_CONFIG);
     assert_eq!(
         norm_a, norm_b,
         "functions differing only in float literals must normalize identically"
@@ -152,7 +153,7 @@ fn normalized_subtree_contains_lit_placeholder_not_raw_value() {
     // Direct check: the normalized form must contain _LIT, not the raw integer.
     let source = "fn a() -> i32 { 42 }\n";
     let tree = make_parser().parse(source, None).unwrap();
-    let norm = build_normalized_subtree(tree.root_node(), source);
+    let norm = build_normalized_subtree(tree.root_node(), source, &RUST_CONFIG);
     assert!(
         norm.contains("_LIT"),
         "normalized form must contain _LIT, got: {}",
@@ -289,11 +290,32 @@ fn collect_from_directory_skips_builtin_excluded_dirs() {
     let empty_glob = build_glob_set(&[]).expect("glob");
     let mut functions = Vec::new();
     let mut errors = Vec::new();
-    collect_from_directory(dir.path(), &empty_glob, &mut functions, &mut errors);
+    collect_from_directory(dir.path(), &empty_glob, None, &mut functions, &mut errors);
     assert!(errors.is_empty(), "unexpected errors: {:?}", errors);
     assert!(
         functions.is_empty(),
         "expected no functions from builtin-excluded dir, got: {:?}",
         functions
+    );
+}
+
+// --- ast.rs: replace == with != in extract_jsts_export_statement ---
+// Mutant: `if fn_decls.is_empty()` becomes `if !fn_decls.is_empty()`, inverting the branch.
+// When export has no direct function_declaration child (e.g., `export const f = () => {}`),
+// the original recurses into children to find the lexical_declaration/arrow_function.
+// With mutation: fn_decls.is_empty() is true but condition is negated, so we fall into the
+// else branch which iterates empty fn_decls — extracting nothing.
+#[test]
+fn export_const_arrow_function_is_extracted() {
+    let src = "export const compute = (a, b) => {\n  let c = a + b;\n  let d = c * 2;\n  let e = d + a;\n  return e;\n};\n";
+    let mut parser = make_parser_for(Lang::JavaScript);
+    let tree = parser.parse(src, None).unwrap();
+    let mut funcs = Vec::new();
+    extract_functions_with_config(tree.root_node(), src, "f.js", &JS_CONFIG, &mut funcs);
+    assert_eq!(
+        funcs.len(),
+        1,
+        "exported const arrow function must be extracted; got {} (mutation survival guard)",
+        funcs.len()
     );
 }
