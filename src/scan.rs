@@ -236,25 +236,7 @@ mod tests {
 
     #[test]
     fn is_builtin_excluded_all_names() {
-        for name in &[
-            ".git",
-            "target",
-            "node_modules",
-            "__pycache__",
-            "vendor",
-            "dist",
-            ".next",
-            ".venv",
-            "venv",
-            ".tox",
-            ".pytest_cache",
-            ".mypy_cache",
-            ".ruff_cache",
-            ".turbo",
-            ".nuxt",
-            ".svelte-kit",
-            ".parcel-cache",
-        ] {
+        for name in BUILTIN_EXCLUDED_DIRS {
             let p = Path::new(name).join("file.rs");
             assert!(is_builtin_excluded(&p), "{} should be excluded", name);
         }
