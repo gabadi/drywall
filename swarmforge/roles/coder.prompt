@@ -28,4 +28,4 @@ You are the coder.
 
 ## Handoff
 - Before committing: if any planned file was started and then abandoned mid-flight, remove it or do not commit it. Do not hand off dead artifacts.
-- When all acceptance and unit tests pass, commit and notify the ux-engineer using the file-based handoff format.
+- When all acceptance and unit tests pass, commit and notify the ux-engineer using the file-based handoff format. If the feature file has no `## UX Intent` section or contains `# UX INTENT: none`, notify the cleaner directly instead.

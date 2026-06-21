@@ -16,8 +16,8 @@ You are the integrator.
 5. Post-create gate:
    a. `gh pr view --json mergeable --jq .mergeable` — if `CONFLICTING`, post a conflict comment on the PR and send a `git_handoff` back to the coder with the current commit hash (`git rev-parse --short=10 HEAD`) and task name; stop.
    b. `gh pr checks` — if no checks are returned, wait 30 s and retry once; if still none, skip CI wait (no CI configured for this repo).
-   c. If checks are present: `gh pr checks --watch --timeout 1800`. No open-ended background polling loops.
-6. On green: merge immediately with `gh pr merge --delete-branch --squash` — merge is an in-role action; no user confirmation needed. Then run the post-merge gate: `gh run watch` on the resulting `main` CI run. If the project defines a full verification suite command, run it on green — skip if none defined.
+   c. If checks are present: `timeout 1800 gh pr checks --watch`. No open-ended background polling loops.
+6. On green: merge immediately with `gh pr merge --delete-branch --squash` — merge is an in-role action; no user confirmation needed. If `gh pr merge` exits non-zero with "already merged" or "failed to delete local branch", the merge succeeded — treat as success and continue. Then run the post-merge gate: `gh run watch` on the resulting `main` CI run. If the project defines a full verification suite command, run it on green — skip if none defined.
 7. On CI red (pre-merge or post-merge gate): diagnose then route — see CI-red routing below.
 
 ## CI-red routing
