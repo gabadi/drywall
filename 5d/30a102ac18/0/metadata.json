@@ -1,0 +1,80 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "5d30a102ac18",
+  "session_id": "7e755b42-3ef8-496a-a00f-62543c985dfe",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T17:11:06.070744Z",
+  "branch": "swarmforge-coder",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "Cargo.lock",
+    "Cargo.toml",
+    "acceptance/scripts/runner-adapter-python-detection",
+    "acceptance/steps/python_detection_steps.rs",
+    "src/ast.rs",
+    "src/core.rs",
+    "src/lib.rs",
+    "src/main.rs",
+    "src/scan.rs",
+    "tests/python_duplicate_detection_acceptance_test.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "233605a6e8df",
+  "token_usage": {
+    "input_tokens": 65,
+    "cache_creation_tokens": 131469,
+    "cache_read_tokens": 4782974,
+    "output_tokens": 23689,
+    "api_call_count": 62
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-21T16:59:03.081886Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "233605a6e8df",
+      "timestamp": "2026-06-21T16:59:03.081886Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T17:11:06.04741Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 1174,
+    "human_modified": 10,
+    "human_removed": 0,
+    "total_committed": 1174,
+    "total_lines_changed": 1184,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 25,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 25
+      }
+    }
+  ]
+}
