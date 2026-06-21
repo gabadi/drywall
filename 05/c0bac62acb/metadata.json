@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "05c0bac62acb",
+  "strategy": "manual-commit",
+  "branch": "swarmforge-cleaner",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "src/ast.rs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/05/c0bac62acb/0/metadata.json",
+      "transcript": "/05/c0bac62acb/0/full.jsonl",
+      "content_hash": "/05/c0bac62acb/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 55,
+    "cache_creation_tokens": 31393,
+    "cache_read_tokens": 3137289,
+    "output_tokens": 11174,
+    "api_call_count": 54
+  }
+}
