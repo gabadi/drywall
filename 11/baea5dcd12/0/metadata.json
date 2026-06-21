@@ -1,0 +1,224 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "11baea5dcd12",
+  "session_id": "c5e8d278-c766-4ef8-ac17-9ebc08f308c7",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T09:16:42.616531Z",
+  "branch": "swarmforge-hardender",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "features/jsts_detection.feature"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "3ae343c2796e",
+  "token_usage": {
+    "input_tokens": 470,
+    "cache_creation_tokens": 254830,
+    "cache_read_tokens": 49740717,
+    "output_tokens": 72223,
+    "api_call_count": 460
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-21T08:19:06.019159Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3027e87ce63e",
+      "timestamp": "2026-06-21T08:19:06.019159Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_011DqvSN9C7uo2y9QeqBmuSA",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "3ae343c2796e",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 22,
+        "end": 23,
+        "entry_ids": [
+          "aff64575-8ba5-4ffb-9fec-527356552cc2"
+        ],
+        "tool_use_id": "toolu_011DqvSN9C7uo2y9QeqBmuSA"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_011DqvSN9C7uo2y9QeqBmuSA"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T09:16:42.580451Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 2,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 28461,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22,
+        "acceptance/scripts/runner-adapter-jsts-detection": 82,
+        "build/acceptance-mutation/base/feature.json": 273,
+        "build/acceptance-mutation/mutations/m1/feature.json": 273,
+        "build/acceptance-mutation/mutations/m10/feature.json": 273,
+        "build/acceptance-mutation/mutations/m100/feature.json": 273,
+        "build/acceptance-mutation/mutations/m101/feature.json": 273,
+        "build/acceptance-mutation/mutations/m11/feature.json": 273,
+        "build/acceptance-mutation/mutations/m12/feature.json": 273,
+        "build/acceptance-mutation/mutations/m13/feature.json": 273,
+        "build/acceptance-mutation/mutations/m14/feature.json": 273,
+        "build/acceptance-mutation/mutations/m15/feature.json": 273,
+        "build/acceptance-mutation/mutations/m16/feature.json": 273,
+        "build/acceptance-mutation/mutations/m17/feature.json": 273,
+        "build/acceptance-mutation/mutations/m18/feature.json": 273,
+        "build/acceptance-mutation/mutations/m19/feature.json": 273,
+        "build/acceptance-mutation/mutations/m2/feature.json": 273,
+        "build/acceptance-mutation/mutations/m20/feature.json": 273,
+        "build/acceptance-mutation/mutations/m21/feature.json": 273,
+        "build/acceptance-mutation/mutations/m22/feature.json": 273,
+        "build/acceptance-mutation/mutations/m23/feature.json": 273,
+        "build/acceptance-mutation/mutations/m24/feature.json": 273,
+        "build/acceptance-mutation/mutations/m25/feature.json": 273,
+        "build/acceptance-mutation/mutations/m26/feature.json": 273,
+        "build/acceptance-mutation/mutations/m27/feature.json": 273,
+        "build/acceptance-mutation/mutations/m28/feature.json": 273,
+        "build/acceptance-mutation/mutations/m29/feature.json": 273,
+        "build/acceptance-mutation/mutations/m3/feature.json": 273,
+        "build/acceptance-mutation/mutations/m30/feature.json": 273,
+        "build/acceptance-mutation/mutations/m31/feature.json": 273,
+        "build/acceptance-mutation/mutations/m32/feature.json": 273,
+        "build/acceptance-mutation/mutations/m33/feature.json": 273,
+        "build/acceptance-mutation/mutations/m34/feature.json": 273,
+        "build/acceptance-mutation/mutations/m35/feature.json": 273,
+        "build/acceptance-mutation/mutations/m36/feature.json": 273,
+        "build/acceptance-mutation/mutations/m37/feature.json": 273,
+        "build/acceptance-mutation/mutations/m38/feature.json": 273,
+        "build/acceptance-mutation/mutations/m39/feature.json": 273,
+        "build/acceptance-mutation/mutations/m4/feature.json": 273,
+        "build/acceptance-mutation/mutations/m40/feature.json": 273,
+        "build/acceptance-mutation/mutations/m41/feature.json": 273,
+        "build/acceptance-mutation/mutations/m42/feature.json": 273,
+        "build/acceptance-mutation/mutations/m43/feature.json": 273,
+        "build/acceptance-mutation/mutations/m44/feature.json": 273,
+        "build/acceptance-mutation/mutations/m45/feature.json": 273,
+        "build/acceptance-mutation/mutations/m46/feature.json": 273,
+        "build/acceptance-mutation/mutations/m47/feature.json": 273,
+        "build/acceptance-mutation/mutations/m48/feature.json": 273,
+        "build/acceptance-mutation/mutations/m49/feature.json": 273,
+        "build/acceptance-mutation/mutations/m5/feature.json": 273,
+        "build/acceptance-mutation/mutations/m50/feature.json": 273,
+        "build/acceptance-mutation/mutations/m51/feature.json": 273,
+        "build/acceptance-mutation/mutations/m52/feature.json": 273,
+        "build/acceptance-mutation/mutations/m53/feature.json": 273,
+        "build/acceptance-mutation/mutations/m54/feature.json": 273,
+        "build/acceptance-mutation/mutations/m55/feature.json": 273,
+        "build/acceptance-mutation/mutations/m56/feature.json": 273,
+        "build/acceptance-mutation/mutations/m57/feature.json": 273,
+        "build/acceptance-mutation/mutations/m58/feature.json": 273,
+        "build/acceptance-mutation/mutations/m59/feature.json": 273,
+        "build/acceptance-mutation/mutations/m6/feature.json": 273,
+        "build/acceptance-mutation/mutations/m60/feature.json": 273,
+        "build/acceptance-mutation/mutations/m61/feature.json": 273,
+        "build/acceptance-mutation/mutations/m62/feature.json": 273,
+        "build/acceptance-mutation/mutations/m63/feature.json": 273,
+        "build/acceptance-mutation/mutations/m64/feature.json": 273,
+        "build/acceptance-mutation/mutations/m65/feature.json": 273,
+        "build/acceptance-mutation/mutations/m66/feature.json": 273,
+        "build/acceptance-mutation/mutations/m67/feature.json": 273,
+        "build/acceptance-mutation/mutations/m68/feature.json": 273,
+        "build/acceptance-mutation/mutations/m69/feature.json": 273,
+        "build/acceptance-mutation/mutations/m7/feature.json": 273,
+        "build/acceptance-mutation/mutations/m70/feature.json": 273,
+        "build/acceptance-mutation/mutations/m71/feature.json": 273,
+        "build/acceptance-mutation/mutations/m72/feature.json": 273,
+        "build/acceptance-mutation/mutations/m73/feature.json": 273,
+        "build/acceptance-mutation/mutations/m74/feature.json": 273,
+        "build/acceptance-mutation/mutations/m75/feature.json": 273,
+        "build/acceptance-mutation/mutations/m76/feature.json": 273,
+        "build/acceptance-mutation/mutations/m77/feature.json": 273,
+        "build/acceptance-mutation/mutations/m78/feature.json": 273,
+        "build/acceptance-mutation/mutations/m79/feature.json": 273,
+        "build/acceptance-mutation/mutations/m8/feature.json": 273,
+        "build/acceptance-mutation/mutations/m80/feature.json": 273,
+        "build/acceptance-mutation/mutations/m81/feature.json": 273,
+        "build/acceptance-mutation/mutations/m82/feature.json": 273,
+        "build/acceptance-mutation/mutations/m83/feature.json": 273,
+        "build/acceptance-mutation/mutations/m84/feature.json": 273,
+        "build/acceptance-mutation/mutations/m85/feature.json": 273,
+        "build/acceptance-mutation/mutations/m86/feature.json": 273,
+        "build/acceptance-mutation/mutations/m87/feature.json": 273,
+        "build/acceptance-mutation/mutations/m88/feature.json": 273,
+        "build/acceptance-mutation/mutations/m89/feature.json": 273,
+        "build/acceptance-mutation/mutations/m9/feature.json": 273,
+        "build/acceptance-mutation/mutations/m90/feature.json": 273,
+        "build/acceptance-mutation/mutations/m91/feature.json": 273,
+        "build/acceptance-mutation/mutations/m92/feature.json": 273,
+        "build/acceptance-mutation/mutations/m93/feature.json": 273,
+        "build/acceptance-mutation/mutations/m94/feature.json": 273,
+        "build/acceptance-mutation/mutations/m95/feature.json": 273,
+        "build/acceptance-mutation/mutations/m96/feature.json": 273,
+        "build/acceptance-mutation/mutations/m97/feature.json": 273,
+        "build/acceptance-mutation/mutations/m98/feature.json": 273,
+        "build/acceptance-mutation/mutations/m99/feature.json": 273,
+        "features/jsts_detection.feature": 172,
+        "tests/mutation_acceptance_test_25981.rs": 339
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 23,
+      "user_lines_removed": 1,
+      "agent_lines_added": 27932,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22,
+        "features/jsts_detection.feature": 1
+      },
+      "user_removed_per_file": {
+        "features/jsts_detection.feature": 1
+      }
+    }
+  ]
+}

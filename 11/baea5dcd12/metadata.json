@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "11baea5dcd12",
+  "strategy": "manual-commit",
+  "branch": "swarmforge-hardender",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "features/jsts_detection.feature"
+  ],
+  "sessions": [
+    {
+      "metadata": "/11/baea5dcd12/0/metadata.json",
+      "transcript": "/11/baea5dcd12/0/full.jsonl",
+      "content_hash": "/11/baea5dcd12/0/content_hash.txt",
+      "prompt": "/11/baea5dcd12/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 470,
+    "cache_creation_tokens": 254830,
+    "cache_read_tokens": 49740717,
+    "output_tokens": 72223,
+    "api_call_count": 460
+  }
+}
