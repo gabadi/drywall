@@ -59,6 +59,7 @@ const EXT_LANG_MAP: &[(&str, Lang)] = &[
     ("jsx", Lang::JavaScript),
     ("ts", Lang::TypeScript),
     ("tsx", Lang::Tsx),
+    ("py", Lang::Python),
 ];
 
 pub fn detect_lang(path: &Path) -> Option<Lang> {
@@ -695,6 +696,11 @@ fn two(y: i32) -> i32 {
     #[test]
     fn detect_lang_tsx_returns_tsx() {
         assert_eq!(detect_lang(Path::new("foo.tsx")), Some(Lang::Tsx));
+    }
+
+    #[test]
+    fn detect_lang_py_returns_python() {
+        assert_eq!(detect_lang(Path::new("foo.py")), Some(Lang::Python));
     }
 
     #[test]

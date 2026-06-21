@@ -5,7 +5,7 @@ use std::process;
 #[derive(Parser)]
 #[command(
     name = "drywall",
-    about = "Detect duplicate functions (Rust, JavaScript, TypeScript)"
+    about = "Detect duplicate functions (Rust, JavaScript, TypeScript, Python)"
 )]
 struct Cli {
     #[arg(help = "Paths to scan (files or directories)")]
@@ -25,7 +25,7 @@ struct Cli {
 
     #[arg(
         long,
-        help = "Force language (rust, js, or ts); default: auto-detect by extension"
+        help = "Force language (rust, js, ts, or py); default: auto-detect by extension"
     )]
     lang: Option<String>,
 

@@ -66,6 +66,20 @@ pub static TS_CONFIG: LangConfig = LangConfig {
     ],
 };
 
+pub static PYTHON_CONFIG: LangConfig = LangConfig {
+    lang: Lang::Python,
+    identifier_kinds: &["identifier", "attribute"],
+    literal_kinds: &[
+        "integer",
+        "float",
+        "string",
+        "concatenated_string",
+        "true",
+        "false",
+        "none",
+    ],
+};
+
 pub fn make_parser_for(lang: Lang) -> tree_sitter::Parser {
     let mut parser = tree_sitter::Parser::new();
     let language: tree_sitter::Language = match lang {
@@ -73,6 +87,7 @@ pub fn make_parser_for(lang: Lang) -> tree_sitter::Parser {
         Lang::JavaScript => tree_sitter_javascript::LANGUAGE.into(),
         Lang::TypeScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
         Lang::Tsx => tree_sitter_typescript::LANGUAGE_TSX.into(),
+        Lang::Python => tree_sitter_python::LANGUAGE.into(),
     };
     parser
         .set_language(&language)
@@ -89,6 +104,7 @@ pub fn lang_config(lang: Lang) -> &'static LangConfig {
         Lang::Rust => &RUST_CONFIG,
         Lang::JavaScript => &JS_CONFIG,
         Lang::TypeScript | Lang::Tsx => &TS_CONFIG,
+        Lang::Python => &PYTHON_CONFIG,
     }
 }
 
@@ -132,6 +148,7 @@ pub fn extract_functions_with_config(
         Lang::JavaScript | Lang::TypeScript | Lang::Tsx => {
             extract_jsts_functions(node, source, file, config, functions)
         }
+        Lang::Python => extract_python_functions(node, source, file, config, functions),
     }
 }
 
@@ -179,6 +196,48 @@ fn extract_rust_let_declaration(
     for child in children_of(node) {
         if child.kind() != "closure_expression" {
             extract_rust_functions(child, source, file, functions);
+        }
+    }
+}
+
+fn extract_python_functions(
+    node: tree_sitter::Node,
+    source: &str,
+    file: &str,
+    config: &LangConfig,
+    functions: &mut Vec<FunctionInfo>,
+) {
+    match node.kind() {
+        "function_definition" | "decorated_definition" => {
+            let fn_node = if node.kind() == "decorated_definition" {
+                children_of(node)
+                    .into_iter()
+                    .find(|c| c.kind() == "function_definition" || c.kind() == "class_definition")
+                    .unwrap_or(node)
+            } else {
+                node
+            };
+            if fn_node.kind() == "function_definition" {
+                functions.push(make_function_info(fn_node, source, file, config));
+            } else {
+                for child in children_of(fn_node) {
+                    extract_python_functions(child, source, file, config, functions);
+                }
+            }
+        }
+        "class_definition" => {
+            for child in children_of(node) {
+                if child.kind() == "block" {
+                    for class_child in children_of(child) {
+                        extract_python_functions(class_child, source, file, config, functions);
+                    }
+                }
+            }
+        }
+        _ => {
+            for child in children_of(node) {
+                extract_python_functions(child, source, file, config, functions);
+            }
         }
     }
 }
@@ -579,6 +638,132 @@ mod tests {
         // LANGUAGE_TSX accepts JSX return syntax; LANGUAGE_TYPESCRIPT does not
         let src = "function Render(x: number): JSX.Element { return <span>{x}</span>; }\n";
         assert!(parse_source_tree_for(src, Lang::Tsx).is_ok());
+    }
+
+    // --- Python unit tests ---
+
+    fn make_py_parser() -> tree_sitter::Parser {
+        make_parser_for(Lang::Python)
+    }
+
+    #[test]
+    fn python_grammar_loads_and_parses_function() {
+        let mut parser = make_py_parser();
+        let tree = parser.parse("def f():\n    pass\n", None).unwrap();
+        assert!(!tree.root_node().has_error());
+    }
+
+    #[test]
+    fn python_twin_def_functions_score_high() {
+        let src_a = "def accumulate_sum(a, b):\n    sum = a + b\n    extra = sum * 2\n    more = extra + a\n    result = more + b\n    return result\n";
+        let src_b = "def accumulate_sum(x, y):\n    total = x + y\n    extra = total * 2\n    more = extra + x\n    result = more + y\n    return result\n";
+        let mut parser = make_py_parser();
+        let tree_a = parser.parse(src_a, None).unwrap();
+        let tree_b = parser.parse(src_b, None).unwrap();
+        let mut funcs_a = Vec::new();
+        let mut funcs_b = Vec::new();
+        extract_functions_with_config(
+            tree_a.root_node(),
+            src_a,
+            "a.py",
+            &PYTHON_CONFIG,
+            &mut funcs_a,
+        );
+        extract_functions_with_config(
+            tree_b.root_node(),
+            src_b,
+            "b.py",
+            &PYTHON_CONFIG,
+            &mut funcs_b,
+        );
+        assert_eq!(funcs_a.len(), 1, "expected 1 function in a.py");
+        assert_eq!(funcs_b.len(), 1, "expected 1 function in b.py");
+        let score = crate::jaccard(&funcs_a[0].node_hashes, &funcs_b[0].node_hashes);
+        assert!(score >= 0.82, "expected score >= 0.82, got {}", score);
+    }
+
+    #[test]
+    fn python_async_def_function_is_extracted() {
+        let src = "async def accumulate_sum(a, b):\n    sum = a + b\n    extra = sum * 2\n    more = extra + a\n    result = more + b\n    return result\n";
+        let mut parser = make_py_parser();
+        let tree = parser.parse(src, None).unwrap();
+        let mut funcs = Vec::new();
+        extract_functions_with_config(tree.root_node(), src, "f.py", &PYTHON_CONFIG, &mut funcs);
+        assert_eq!(funcs.len(), 1, "async def should be extracted");
+    }
+
+    #[test]
+    fn python_async_def_twin_scores_high() {
+        let src_a = "async def accumulate_sum(a, b):\n    sum = a + b\n    extra = sum * 2\n    more = extra + a\n    result = more + b\n    return result\n";
+        let src_b = "async def accumulate_sum(x, y):\n    total = x + y\n    extra = total * 2\n    more = extra + x\n    result = more + y\n    return result\n";
+        let mut parser = make_py_parser();
+        let tree_a = parser.parse(src_a, None).unwrap();
+        let tree_b = parser.parse(src_b, None).unwrap();
+        let mut funcs_a = Vec::new();
+        let mut funcs_b = Vec::new();
+        extract_functions_with_config(
+            tree_a.root_node(),
+            src_a,
+            "a.py",
+            &PYTHON_CONFIG,
+            &mut funcs_a,
+        );
+        extract_functions_with_config(
+            tree_b.root_node(),
+            src_b,
+            "b.py",
+            &PYTHON_CONFIG,
+            &mut funcs_b,
+        );
+        assert_eq!(funcs_a.len(), 1);
+        assert_eq!(funcs_b.len(), 1);
+        let score = crate::jaccard(&funcs_a[0].node_hashes, &funcs_b[0].node_hashes);
+        assert!(score >= 0.82, "expected score >= 0.82, got {}", score);
+    }
+
+    #[test]
+    fn python_class_method_is_extracted() {
+        let src = "class Foo:\n    def accumulate_sum(self, a, b):\n        sum = a + b\n        extra = sum * 2\n        more = extra + a\n        result = more + b\n        return result\n";
+        let mut parser = make_py_parser();
+        let tree = parser.parse(src, None).unwrap();
+        let mut funcs = Vec::new();
+        extract_functions_with_config(tree.root_node(), src, "f.py", &PYTHON_CONFIG, &mut funcs);
+        assert_eq!(funcs.len(), 1, "class method should be extracted");
+    }
+
+    #[test]
+    fn python_class_method_twin_scores_high() {
+        let src_a = "class Foo:\n    def accumulate_sum(self, a, b):\n        sum = a + b\n        extra = sum * 2\n        more = extra + a\n        result = more + b\n        return result\n";
+        let src_b = "class Bar:\n    def accumulate_sum(self, x, y):\n        total = x + y\n        extra = total * 2\n        more = extra + x\n        result = more + y\n        return result\n";
+        let mut parser = make_py_parser();
+        let tree_a = parser.parse(src_a, None).unwrap();
+        let tree_b = parser.parse(src_b, None).unwrap();
+        let mut funcs_a = Vec::new();
+        let mut funcs_b = Vec::new();
+        extract_functions_with_config(
+            tree_a.root_node(),
+            src_a,
+            "a.py",
+            &PYTHON_CONFIG,
+            &mut funcs_a,
+        );
+        extract_functions_with_config(
+            tree_b.root_node(),
+            src_b,
+            "b.py",
+            &PYTHON_CONFIG,
+            &mut funcs_b,
+        );
+        assert_eq!(funcs_a.len(), 1);
+        assert_eq!(funcs_b.len(), 1);
+        let score = crate::jaccard(&funcs_a[0].node_hashes, &funcs_b[0].node_hashes);
+        assert!(score >= 0.82, "expected score >= 0.82, got {}", score);
+    }
+
+    #[test]
+    fn python_parse_error_detected() {
+        let bad_py = "def (((: !!!\n    @@@\n";
+        assert!(parse_source_tree_for(bad_py, Lang::Python).is_err());
     }
 
     #[test]

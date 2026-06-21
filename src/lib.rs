@@ -296,6 +296,71 @@ fn beta(x: i32, y: i32) -> i32 {
     }
 
     #[test]
+    fn run_py_duplicate_files_returns_duplicates() {
+        let dir = tempfile::tempdir().unwrap();
+        let alpha_src = "def accumulate_sum(a, b):\n    sum = a + b\n    extra = sum * 2\n    more = extra + a\n    result = more + b\n    return result\n";
+        let beta_src = "def accumulate_sum(x, y):\n    total = x + y\n    extra = total * 2\n    more = extra + x\n    result = more + y\n    return result\n";
+        std::fs::write(dir.path().join("alpha.py"), alpha_src).unwrap();
+        std::fs::write(dir.path().join("beta.py"), beta_src).unwrap();
+        let config = Config::default();
+        let paths = vec![dir.path().to_string_lossy().to_string()];
+        let result = run(&paths, &config);
+        assert!(
+            matches!(result, RunResult::Duplicates(_)),
+            "expected duplicates in py files"
+        );
+    }
+
+    #[test]
+    fn run_with_force_lang_py_scans_non_standard_ext() {
+        let dir = tempfile::tempdir().unwrap();
+        let alpha_src = "def accumulate_sum(a, b):\n    sum = a + b\n    extra = sum * 2\n    more = extra + a\n    result = more + b\n    return result\n";
+        let beta_src = "def accumulate_sum(x, y):\n    total = x + y\n    extra = total * 2\n    more = extra + x\n    result = more + y\n    return result\n";
+        std::fs::write(dir.path().join("alpha.txt"), alpha_src).unwrap();
+        std::fs::write(dir.path().join("beta.txt"), beta_src).unwrap();
+        let config = Config {
+            lang: Some(Lang::Python),
+            ..Config::default()
+        };
+        let paths = vec![dir.path().to_string_lossy().to_string()];
+        let result = run(&paths, &config);
+        assert!(
+            matches!(result, RunResult::Duplicates(_)),
+            "expected duplicates with forced py lang"
+        );
+    }
+
+    #[test]
+    fn run_mixed_rs_ts_py_dir_reports_three_pairs() {
+        let dir = tempfile::tempdir().unwrap();
+        let rs_a = "pub fn accumulate_sum(a: i32, b: i32) -> i32 {\n    let sum = a + b;\n    let extra = sum * 2;\n    let more = extra + a;\n    let result = more + b;\n    result\n}\n";
+        let rs_b = "pub fn accumulate_sum(x: i32, y: i32) -> i32 {\n    let total = x + y;\n    let extra = total * 2;\n    let more = extra + x;\n    let result = more + y;\n    result\n}\n";
+        let ts_a = "function accumulate_sum(a: number, b: number): number {\n  let sum = a + b;\n  let extra = sum * 2;\n  let more = extra + a;\n  let result = more + b;\n  return result;\n}\n";
+        let ts_b = "function accumulate_sum(x: number, y: number): number {\n  let total = x + y;\n  let extra = total * 2;\n  let more = extra + x;\n  let result = more + y;\n  return result;\n}\n";
+        let py_a = "def accumulate_sum(a, b):\n    sum = a + b\n    extra = sum * 2\n    more = extra + a\n    result = more + b\n    return result\n";
+        let py_b = "def accumulate_sum(x, y):\n    total = x + y\n    extra = total * 2\n    more = extra + x\n    result = more + y\n    return result\n";
+        std::fs::write(dir.path().join("a.rs"), rs_a).unwrap();
+        std::fs::write(dir.path().join("b.rs"), rs_b).unwrap();
+        std::fs::write(dir.path().join("c.ts"), ts_a).unwrap();
+        std::fs::write(dir.path().join("d.ts"), ts_b).unwrap();
+        std::fs::write(dir.path().join("e.py"), py_a).unwrap();
+        std::fs::write(dir.path().join("f.py"), py_b).unwrap();
+        let config = Config::default();
+        let paths = vec![dir.path().to_string_lossy().to_string()];
+        let result = run(&paths, &config);
+        match result {
+            RunResult::Duplicates(pairs) => {
+                assert!(
+                    pairs.len() >= 3,
+                    "expected at least 3 pairs (rs+ts+py), got {}",
+                    pairs.len()
+                );
+            }
+            _ => panic!("expected duplicates"),
+        }
+    }
+
+    #[test]
     fn js_function_declaration_extracts_one_form() {
         let src = "function compute(a, b) {\n  let c = a + b;\n  let d = c * 2;\n  let e = d + a;\n  let f = e + b;\n  return f;\n}\n";
         let mut parser = tree_sitter::Parser::new();
