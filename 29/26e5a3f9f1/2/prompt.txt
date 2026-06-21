@@ -1,0 +1,9 @@
+Do we have exclusions for the mutation tests?
+
+---
+
+/recall Why do we have exclusions in .cargo/mutants.toml?
+
+---
+
+ITs expected, check iin @.entire/

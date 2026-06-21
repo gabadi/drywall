@@ -1,0 +1,111 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "2926e5a3f9f1",
+  "session_id": "f3ac0a8b-c4b6-4449-9d03-d047d5fef98b",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T13:14:04.499683Z",
+  "branch": "feat/jsts-detection",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "swarmforge/roles/specifier.prompt",
+    "swarmforge/skills/domain-modeling/ADR-FORMAT.md",
+    "swarmforge/skills/domain-modeling/CONTEXT-FORMAT.md",
+    "swarmforge/skills/domain-modeling/SKILL.md",
+    "swarmforge/skills/grill-with-docs/SKILL.md",
+    "swarmforge/skills/grilling/SKILL.md",
+    "swarmforge/templates/feature.feature"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "ee4b923d0b9b",
+  "token_usage": {
+    "input_tokens": 166,
+    "cache_creation_tokens": 24580,
+    "cache_read_tokens": 621974,
+    "output_tokens": 5674,
+    "api_call_count": 20
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-recall-2026-06-21T08:44:18.754429Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "recall"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "01d1d96ca78f",
+      "timestamp": "2026-06-21T08:44:18.754429Z",
+      "native": {
+        "command": "/recall"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/recall",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T13:14:04.445959Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 208,
+    "total_committed": 0,
+    "total_lines_changed": 208,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 14,
+      "user_lines_removed": 208,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2,
+        "swarmforge/roles/specifier.prompt": 10,
+        "swarmforge/templates/feature.feature": 2
+      },
+      "user_removed_per_file": {
+        "swarmforge/roles/specifier.prompt": 9,
+        "swarmforge/skills/domain-modeling/ADR-FORMAT.md": 47,
+        "swarmforge/skills/domain-modeling/CONTEXT-FORMAT.md": 60,
+        "swarmforge/skills/domain-modeling/SKILL.md": 74,
+        "swarmforge/skills/grill-with-docs/SKILL.md": 7,
+        "swarmforge/skills/grilling/SKILL.md": 10,
+        "swarmforge/templates/feature.feature": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 12,
+      "agent_lines_removed": 208,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 12,
+      "agent_lines_removed": 208,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}
