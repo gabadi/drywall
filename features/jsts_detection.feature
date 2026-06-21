@@ -1,5 +1,5 @@
 # acceptance-mutation-manifest-begin
-# {"version":1,"tested_at":"2026-06-21T09:15:26.073515Z","feature_name":"JavaScript and TypeScript duplicate detection","feature_path":"features/jsts_detection.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
+# {"version":1,"tested_at":"2026-06-21T10:26:07.778776Z","feature_name":"JavaScript and TypeScript duplicate detection","feature_path":"features/jsts_detection.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
 # acceptance-mutation-manifest-end
 
 Feature: JavaScript and TypeScript duplicate detection

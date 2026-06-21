@@ -63,7 +63,10 @@ const EXT_LANG_MAP: &[(&str, Lang)] = &[
 
 pub fn detect_lang(path: &Path) -> Option<Lang> {
     let ext = path.extension().and_then(|e| e.to_str())?;
-    EXT_LANG_MAP.iter().find(|(e, _)| *e == ext).map(|(_, l)| *l)
+    EXT_LANG_MAP
+        .iter()
+        .find(|(e, _)| *e == ext)
+        .map(|(_, l)| *l)
 }
 
 pub fn is_rust_file(path: &Path) -> bool {
