@@ -132,6 +132,25 @@ pub fn collect_from_single_file(
     }
 }
 
+fn process_walk_entry(
+    entry: Result<ignore::DirEntry, ignore::Error>,
+    exclude_set: &GlobSet,
+    force_lang: Option<Lang>,
+    functions: &mut Vec<FunctionInfo>,
+    errors: &mut Vec<String>,
+) {
+    match entry {
+        Ok(e) if e.file_type().map(|ft| ft.is_file()).unwrap_or(false) => {
+            if should_scan_file(e.path(), exclude_set, force_lang) {
+                let lang = force_lang.or_else(|| detect_lang(e.path())).unwrap();
+                process_file(e.path(), lang, functions, errors);
+            }
+        }
+        Ok(_) => {}
+        Err(err) => errors.push(format!("walk error: {}", err)),
+    }
+}
+
 pub fn collect_from_directory(
     path: &Path,
     exclude_set: &GlobSet,
@@ -145,16 +164,7 @@ pub fn collect_from_directory(
         })
         .build();
     for entry in walker {
-        match entry {
-            Ok(e) if e.file_type().map(|ft| ft.is_file()).unwrap_or(false) => {
-                if should_scan_file(e.path(), exclude_set, force_lang) {
-                    let lang = force_lang.or_else(|| detect_lang(e.path())).unwrap();
-                    process_file(e.path(), lang, functions, errors);
-                }
-            }
-            Ok(_) => {}
-            Err(err) => errors.push(format!("walk error: {}", err)),
-        }
+        process_walk_entry(entry, exclude_set, force_lang, functions, errors);
     }
 }
 
