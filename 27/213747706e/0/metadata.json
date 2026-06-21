@@ -1,0 +1,96 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "27213747706e",
+  "session_id": "ca7ffb05-6213-4c90-bd00-6c83407f5c79",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T06:10:27.769241Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "build/acceptance-mutation/mutations/m75/feature.json",
+    "build/acceptance-mutation/mutations/m76/feature.json",
+    "build/acceptance-mutation/mutations/m77/feature.json",
+    "build/acceptance-mutation/mutations/m78/feature.json"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "255faa35ab52",
+  "token_usage": {
+    "input_tokens": 150,
+    "cache_creation_tokens": 80859,
+    "cache_read_tokens": 8379564,
+    "output_tokens": 23838,
+    "api_call_count": 139
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-21T03:25:37.877469Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "c3535660451a",
+      "timestamp": "2026-06-21T03:25:37.877469Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01M93p4afZWnM73uMLimSQ9s",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "agent-retro"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "255faa35ab52",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 415,
+        "end": 416,
+        "entry_ids": [
+          "3786753a-878b-49bd-acb3-5c55d6451e89"
+        ],
+        "tool_use_id": "toolu_01M93p4afZWnM73uMLimSQ9s"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01M93p4afZWnM73uMLimSQ9s"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: agent-retro",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T06:10:27.738445Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 538,
+    "human_removed": 1034,
+    "total_committed": 538,
+    "total_lines_changed": 1648,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}
