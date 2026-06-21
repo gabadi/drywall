@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "267f9b828125",
+  "strategy": "manual-commit",
+  "branch": "swarmforge-QA",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "CONTEXT.md",
+    "Cargo.lock",
+    "Cargo.toml",
+    "acceptance/scripts/runner-adapter-jsts-detection",
+    "acceptance/steps/jsts_detection_steps.rs",
+    "acceptance/steps/shared.rs",
+    "docs/adr/0001-langconfig-shared-pipeline.md",
+    "docs/adr/0002-extension-detection-and-lang-override.md",
+    "docs/qa-findings-jsts-detection.md",
+    "features/jsts_detection.feature",
+    "features/jsts_detection.qa.md",
+    "src/ast.rs",
+    "src/core.rs",
+    "src/lib.rs",
+    "src/main.rs",
+    "src/scan.rs",
+    "tests/ast_property_test.rs",
+    "tests/javascript_and_typescript_duplicate_detection_acceptance_test.rs",
+    "tests/metadata/features-jsts-ir-feature.json",
+    "tests/mutation_hardening_test.rs",
+    "tests/scan_property_test.rs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/26/7f9b828125/0/metadata.json",
+      "transcript": "/26/7f9b828125/0/full.jsonl",
+      "content_hash": "/26/7f9b828125/0/content_hash.txt",
+      "prompt": "/26/7f9b828125/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 7,
+    "cache_creation_tokens": 15145,
+    "cache_read_tokens": 147709,
+    "output_tokens": 557,
+    "api_call_count": 5
+  }
+}

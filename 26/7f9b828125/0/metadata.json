@@ -1,0 +1,93 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "267f9b828125",
+  "session_id": "17ae50d5-de10-451c-8bc9-29c74fc0e4ef",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T10:33:05.314626Z",
+  "branch": "swarmforge-QA",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "CONTEXT.md",
+    "Cargo.lock",
+    "Cargo.toml",
+    "acceptance/scripts/runner-adapter-jsts-detection",
+    "acceptance/steps/jsts_detection_steps.rs",
+    "acceptance/steps/shared.rs",
+    "docs/adr/0001-langconfig-shared-pipeline.md",
+    "docs/adr/0002-extension-detection-and-lang-override.md",
+    "docs/qa-findings-jsts-detection.md",
+    "features/jsts_detection.feature",
+    "features/jsts_detection.qa.md",
+    "src/ast.rs",
+    "src/core.rs",
+    "src/lib.rs",
+    "src/main.rs",
+    "src/scan.rs",
+    "tests/ast_property_test.rs",
+    "tests/javascript_and_typescript_duplicate_detection_acceptance_test.rs",
+    "tests/metadata/features-jsts-ir-feature.json",
+    "tests/mutation_hardening_test.rs",
+    "tests/scan_property_test.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "c3f0dfaa7344",
+  "token_usage": {
+    "input_tokens": 7,
+    "cache_creation_tokens": 15145,
+    "cache_read_tokens": 147709,
+    "output_tokens": 557,
+    "api_call_count": 5
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-21T10:31:19.001147Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "c3f0dfaa7344",
+      "timestamp": "2026-06-21T10:31:19.001147Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T10:33:05.30319Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 160,
+    "human_modified": 15,
+    "human_removed": 0,
+    "total_committed": 160,
+    "total_lines_changed": 175,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 480,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22,
+        "tests_regen/cli_surface_exclusions_auto_built_in_gitignore_and_repeatable_exclude_acceptance_test.rs": 448,
+        "tests_regen/metadata/features-cli-surface-feature.json": 10
+      }
+    }
+  ]
+}
