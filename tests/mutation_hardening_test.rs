@@ -290,11 +290,7 @@ fn collect_from_directory_skips_builtin_excluded_dirs() {
     let mut functions = Vec::new();
     let mut errors = Vec::new();
     collect_from_directory(dir.path(), &empty_glob, &mut functions, &mut errors);
-    assert!(
-        errors.is_empty(),
-        "unexpected errors: {:?}",
-        errors
-    );
+    assert!(errors.is_empty(), "unexpected errors: {:?}", errors);
     assert!(
         functions.is_empty(),
         "expected no functions from builtin-excluded dir, got: {:?}",
