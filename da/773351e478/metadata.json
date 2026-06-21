@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "da773351e478",
+  "strategy": "manual-commit",
+  "branch": "chore/swarmforge-housekeeping",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "swarmforge/constitution/articles/engineering.prompt"
+  ],
+  "sessions": [
+    {
+      "metadata": "/da/773351e478/0/metadata.json",
+      "transcript": "/da/773351e478/0/full.jsonl",
+      "content_hash": "/da/773351e478/0/content_hash.txt",
+      "prompt": "/da/773351e478/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 26,
+    "cache_creation_tokens": 1423,
+    "cache_read_tokens": 156297,
+    "output_tokens": 530,
+    "api_call_count": 3
+  }
+}
