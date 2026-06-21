@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "b6edc6a603ab",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "build/acceptance-mutation/mutations/m67/feature.json",
+    "build/acceptance-mutation/mutations/m68/feature.json",
+    "build/acceptance-mutation/mutations/m69/feature.json",
+    "build/acceptance-mutation/mutations/m70/feature.json",
+    "build/acceptance-mutation/mutations/m71/feature.json",
+    "build/acceptance-mutation/mutations/m72/feature.json",
+    "build/acceptance-mutation/mutations/m73/feature.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b6/edc6a603ab/0/metadata.json",
+      "transcript": "/b6/edc6a603ab/0/full.jsonl",
+      "content_hash": "/b6/edc6a603ab/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 16253,
+    "cache_read_tokens": 1358305,
+    "output_tokens": 3094,
+    "api_call_count": 15
+  }
+}
