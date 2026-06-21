@@ -1,0 +1,110 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "3c4378b18159",
+  "session_id": "35fd8608-c170-491b-ba40-8b39a5a5e645",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T20:32:41.050932Z",
+  "branch": "feat/builtin-excluded-dirs-python-jsts",
+  "checkpoints_count": 2,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "672ba1b42ea2",
+  "checkpoint_transcript_start": 66,
+  "transcript_lines_at_start": 66,
+  "token_usage": {
+    "input_tokens": 101,
+    "cache_creation_tokens": 9445,
+    "cache_read_tokens": 450966,
+    "output_tokens": 4060,
+    "api_call_count": 12
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-mattpocock-skills:implement-2026-06-21T20:27:07.4604Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "mattpocock-skills:implement"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3fcfb2219ee8",
+      "timestamp": "2026-06-21T20:27:07.4604Z",
+      "native": {
+        "command": "/mattpocock-skills:implement"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/mattpocock-skills:implement",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_018NWtAzwUBBGh4CEVwBcCqE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "672ba1b42ea2",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 70,
+        "end": 71,
+        "entry_ids": [
+          "64bcbdef-773d-4b12-b34d-d569ce628a49"
+        ],
+        "tool_use_id": "toolu_018NWtAzwUBBGh4CEVwBcCqE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_018NWtAzwUBBGh4CEVwBcCqE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: review",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}

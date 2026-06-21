@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "3c4378b18159",
+  "strategy": "manual-commit",
+  "branch": "feat/builtin-excluded-dirs-python-jsts",
+  "checkpoints_count": 2,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/3c/4378b18159/0/metadata.json",
+      "transcript": "/3c/4378b18159/0/full.jsonl",
+      "content_hash": "/3c/4378b18159/0/content_hash.txt",
+      "prompt": "/3c/4378b18159/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 101,
+    "cache_creation_tokens": 9445,
+    "cache_read_tokens": 450966,
+    "output_tokens": 4060,
+    "api_call_count": 12
+  }
+}
