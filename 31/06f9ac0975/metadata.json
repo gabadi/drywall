@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "3106f9ac0975",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "tests_regen/cli_surface_exclusions_auto_built_in_gitignore_and_repeatable_exclude_acceptance_test.rs",
+    "tests_regen/metadata/features-cli-surface-feature.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/31/06f9ac0975/0/metadata.json",
+      "transcript": "/31/06f9ac0975/0/full.jsonl",
+      "content_hash": "/31/06f9ac0975/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 8439,
+    "cache_read_tokens": 904467,
+    "output_tokens": 3641,
+    "api_call_count": 17
+  }
+}
