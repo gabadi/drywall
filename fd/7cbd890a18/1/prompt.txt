@@ -1,0 +1,18 @@
+Why you dont see the gabadi@gabadi-2 mattpocock-skills % find . | grep implement
+./skills/engineering/implement
+./skills/engineering/implement/SKILL.md
+gabadi@gabadi-2 mattpocock-skills % pwd
+/Users/gabadi/workspace/addi/mattpocock-skills
+gabadi@gabadi-2 mattpocock-skills % implement skill?
+
+---
+
+whats in remote? its missing in remote?
+
+---
+
+whats in remote? its missing in remote? any other skill missing?
+
+---
+
+add implement and resolve merge, do not commit/push
