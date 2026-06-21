@@ -200,6 +200,44 @@ fn extract_rust_let_declaration(
     }
 }
 
+fn unwrap_decorated<'a>(node: tree_sitter::Node<'a>) -> tree_sitter::Node<'a> {
+    children_of(node)
+        .into_iter()
+        .find(|c| c.kind() == "function_definition" || c.kind() == "class_definition")
+        .unwrap_or(node)
+}
+
+fn extract_python_class_body(
+    node: tree_sitter::Node,
+    source: &str,
+    file: &str,
+    config: &LangConfig,
+    functions: &mut Vec<FunctionInfo>,
+) {
+    for child in children_of(node) {
+        if child.kind() == "block" {
+            for class_child in children_of(child) {
+                extract_python_functions(class_child, source, file, config, functions);
+            }
+        }
+    }
+}
+
+fn extract_python_decorated(
+    node: tree_sitter::Node,
+    source: &str,
+    file: &str,
+    config: &LangConfig,
+    functions: &mut Vec<FunctionInfo>,
+) {
+    let inner = unwrap_decorated(node);
+    if inner.kind() == "function_definition" {
+        functions.push(make_function_info(inner, source, file, config));
+    } else {
+        extract_python_class_body(inner, source, file, config, functions);
+    }
+}
+
 fn extract_python_functions(
     node: tree_sitter::Node,
     source: &str,
@@ -208,32 +246,9 @@ fn extract_python_functions(
     functions: &mut Vec<FunctionInfo>,
 ) {
     match node.kind() {
-        "function_definition" | "decorated_definition" => {
-            let fn_node = if node.kind() == "decorated_definition" {
-                children_of(node)
-                    .into_iter()
-                    .find(|c| c.kind() == "function_definition" || c.kind() == "class_definition")
-                    .unwrap_or(node)
-            } else {
-                node
-            };
-            if fn_node.kind() == "function_definition" {
-                functions.push(make_function_info(fn_node, source, file, config));
-            } else {
-                for child in children_of(fn_node) {
-                    extract_python_functions(child, source, file, config, functions);
-                }
-            }
-        }
-        "class_definition" => {
-            for child in children_of(node) {
-                if child.kind() == "block" {
-                    for class_child in children_of(child) {
-                        extract_python_functions(class_child, source, file, config, functions);
-                    }
-                }
-            }
-        }
+        "function_definition" => functions.push(make_function_info(node, source, file, config)),
+        "decorated_definition" => extract_python_decorated(node, source, file, config, functions),
+        "class_definition" => extract_python_class_body(node, source, file, config, functions),
         _ => {
             for child in children_of(node) {
                 extract_python_functions(child, source, file, config, functions);
@@ -758,6 +773,26 @@ mod tests {
         assert_eq!(funcs_b.len(), 1);
         let score = crate::jaccard(&funcs_a[0].node_hashes, &funcs_b[0].node_hashes);
         assert!(score >= 0.82, "expected score >= 0.82, got {}", score);
+    }
+
+    #[test]
+    fn python_decorated_function_is_extracted() {
+        let src = "@decorator\ndef accumulate_sum(a, b):\n    sum = a + b\n    extra = sum * 2\n    more = extra + a\n    result = more + b\n    return result\n";
+        let mut parser = make_py_parser();
+        let tree = parser.parse(src, None).unwrap();
+        let mut funcs = Vec::new();
+        extract_functions_with_config(tree.root_node(), src, "f.py", &PYTHON_CONFIG, &mut funcs);
+        assert_eq!(funcs.len(), 1, "decorated def should be extracted");
+    }
+
+    #[test]
+    fn python_decorated_class_method_is_extracted() {
+        let src = "@module\nclass Foo:\n    def accumulate_sum(self, a, b):\n        sum = a + b\n        extra = sum * 2\n        more = extra + a\n        result = more + b\n        return result\n";
+        let mut parser = make_py_parser();
+        let tree = parser.parse(src, None).unwrap();
+        let mut funcs = Vec::new();
+        extract_functions_with_config(tree.root_node(), src, "f.py", &PYTHON_CONFIG, &mut funcs);
+        assert_eq!(funcs.len(), 1, "decorated class method should be extracted");
     }
 
     #[test]
