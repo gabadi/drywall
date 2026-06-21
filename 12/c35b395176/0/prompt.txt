@@ -1,0 +1,35 @@
+4. In `/Users/gabadi/workspace/addi/drywall/swarmforge/constitution/articles/engineering.prompt`, two Rust-specific lines were accidentally dropped in commit `ce6e19d`. Restore and improve them.
+5. 
+6. In the language tool table (after the Java row), add:
+7. 
+8.   - Rust: install with `mise install` (see `.mise.toml`); mutation `cargo-mutants`, CRAP `cargo-crap`, DRY `github.com/gabadi/drywall` (SELF, Chicken-and-egg), test runner `cargo-nextest`, coverage `cargo-llvm-cov`.
+9. 
+10. In the Language Defaults section (after the Java row), add:
+11. 
+12. - For Rust projects, prefer `cargo nextest` with project-defined profiles over `cargo test`. Use `cargo llvm-cov` for coverage, `cargo crap` for CRAP analysis, `cargo mutants` for mutation testing, `drywall ./src` for DRY analysis. Consult the project `AGENTS.md` for profile names, thresholds, and flags.
+13. - For Rust projects, run language mutation with `--git-base main` to restrict to changed lines only (equivalent to `--since-last-run` in mutate4go). Run one file at a time: `cargo mutants --git-base main --test-tool nextest -j 8 --no-shuffle -- --profile mutation`. Skip `--git-base` only when running full-suite hardening or when no base branch exists.
+14. 
+15. The second bullet in Language Defaults is the missing piece: `hardender.prompt` already mandates "always use differential mutation against the manifest" but never told Rust agents what that maps to in cargo-mutants. `--git-base main` is the equivalent mechanism. we had this review over ours current files, make a framing of the review so we can decide whats missing if anything is missing
+
+---
+
+4. In `/Users/gabadi/workspace/addi/drywall/swarmforge/constitution/articles/engineering.prompt`, two Rust-specific lines were accidentally dropped in commit `ce6e19d`. Restore and improve them.
+5. 
+6. In the language tool table (after the Java row), add:
+7. 
+8.   - Rust: install with `mise install` (see `.mise.toml`); mutation `cargo-mutants`, CRAP `cargo-crap`, DRY `github.com/gabadi/drywall` (SELF, Chicken-and-egg), test runner `cargo-nextest`, coverage `cargo-llvm-cov`.
+9. 
+10. In the Language Defaults section (after the Java row), add:
+11. 
+12. - For Rust projects, prefer `cargo nextest` with project-defined profiles over `cargo test`. Use `cargo llvm-cov` for coverage, `cargo crap` for CRAP analysis, `cargo mutants` for mutation testing, `drywall ./src` for DRY analysis. Consult the project `AGENTS.md` for profile names, thresholds, and flags.
+13. - For Rust projects, run language mutation with `--git-base main` to restrict to changed lines only (equivalent to `--since-last-run` in mutate4go). Run one file at a time: `cargo mutants --git-base main --test-tool nextest -j 8 --no-shuffle -- --profile mutation`. Skip `--git-base` only when running full-suite hardening or when no base branch exists.
+14. 
+15. The second bullet in Language Defaults is the missing piece: `hardender.prompt` already mandates "always use differential mutation against the manifest" but never told Rust agents what that maps to in cargo-mutants. `--git-base main` is the equivalent mechanism. we had this review over ours current files, make a framing of the review so we can decide whats missing if anything is missing. Lets define over this PR/branch
+
+---
+
+apply
+
+---
+
+Why (see `.mise.toml`)? this must not be part of th edeliverable? did you use the exact same change than before when  needed?
