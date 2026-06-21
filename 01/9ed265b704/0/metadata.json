@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "019ed265b704",
+  "session_id": "979a6ef6-23d1-4b44-81f1-7f7f71c98d29",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T13:28:57.291634Z",
+  "branch": "chore/swarmforge-housekeeping",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "4279ec4f9a87",
+  "checkpoint_transcript_start": 247,
+  "transcript_lines_at_start": 247,
+  "token_usage": {
+    "input_tokens": 34,
+    "cache_creation_tokens": 1597,
+    "cache_read_tokens": 203034,
+    "output_tokens": 919,
+    "api_call_count": 4
+  },
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}
