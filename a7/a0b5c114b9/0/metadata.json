@@ -42,6 +42,37 @@
         "label": "/mattpocock-skills:implement",
         "default_collapsed": true
       }
+    },
+    {
+      "id": "claude-skill-toolu_018NWtAzwUBBGh4CEVwBcCqE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "3fcfb2219ee8",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 70,
+        "end": 71,
+        "entry_ids": [
+          "64bcbdef-773d-4b12-b34d-d569ce628a49"
+        ],
+        "tool_use_id": "toolu_018NWtAzwUBBGh4CEVwBcCqE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_018NWtAzwUBBGh4CEVwBcCqE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: review",
+        "default_collapsed": true
+      }
     }
   ],
   "initial_attribution": {
