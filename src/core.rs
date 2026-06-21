@@ -1,6 +1,14 @@
 use serde::Serialize;
 use std::collections::HashSet;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Lang {
+    Rust,
+    JavaScript,
+    TypeScript,
+    Tsx,
+}
+
 #[derive(Debug, Clone)]
 pub struct FunctionInfo {
     pub file: String,
@@ -30,6 +38,7 @@ pub struct Config {
     pub min_nodes: usize,
     pub format: OutputFormat,
     pub excludes: Vec<String>,
+    pub lang: Option<Lang>,
 }
 
 impl Default for Config {
@@ -40,6 +49,7 @@ impl Default for Config {
             min_nodes: 20,
             format: OutputFormat::Text,
             excludes: vec![],
+            lang: None,
         }
     }
 }
@@ -63,14 +73,15 @@ pub fn parse_output_format(s: &str) -> Result<OutputFormat, String> {
     }
 }
 
-pub fn validate_lang(lang: &str) -> Result<(), String> {
-    if lang == "rust" {
-        Ok(())
-    } else {
-        Err(format!(
-            "unsupported language '{}'; only 'rust' is supported",
-            lang
-        ))
+pub fn validate_lang(lang: &str) -> Result<Lang, String> {
+    match lang {
+        "rust" => Ok(Lang::Rust),
+        "js" => Ok(Lang::JavaScript),
+        "ts" => Ok(Lang::TypeScript),
+        other => Err(format!(
+            "unsupported language '{}'; use rust, js, or ts",
+            other
+        )),
     }
 }
 
@@ -247,13 +258,20 @@ pub fn execute_cli(
         Err(e) => return cli_error(e),
     };
 
-    if let Some(lang) = lang
-        && let Err(e) = validate_lang(lang)
-    {
-        return cli_error(e);
-    }
+    let lang_val = if let Some(lang) = lang {
+        match validate_lang(lang) {
+            Ok(l) => Some(l),
+            Err(e) => return cli_error(e),
+        }
+    } else {
+        None
+    };
 
-    let config = Config { format, ..config };
+    let config = Config {
+        format,
+        lang: lang_val,
+        ..config
+    };
     let result = run_fn(paths, &config);
     run_result_to_cli(result, &config.format)
 }

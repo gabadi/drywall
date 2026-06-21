@@ -2,7 +2,7 @@
 // Each test targets a specific surviving mutant identified by cargo-mutants.
 
 use drywall::ast::{
-    build_normalized_subtree, extract_functions, extract_let_declaration, make_parser,
+    RUST_CONFIG, build_normalized_subtree, extract_functions, extract_let_declaration, make_parser,
 };
 use drywall::scan::{build_glob_set, collect_from_directory};
 use drywall::{FunctionInfo, find_duplicate_pairs, jaccard, source_lines};
@@ -124,8 +124,8 @@ fn normalize_literal_integers_are_replaced() {
     let source_b = "fn b() -> i32 { 99 }\n";
     let tree_a = make_parser().parse(source_a, None).unwrap();
     let tree_b = make_parser().parse(source_b, None).unwrap();
-    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a);
-    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b);
+    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a, &RUST_CONFIG);
+    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b, &RUST_CONFIG);
     assert_eq!(
         norm_a, norm_b,
         "functions differing only in integer literals must normalize identically"
@@ -139,8 +139,8 @@ fn normalize_float_literals_are_replaced() {
     let source_b = "fn b() -> f64 { 9.9 }\n";
     let tree_a = make_parser().parse(source_a, None).unwrap();
     let tree_b = make_parser().parse(source_b, None).unwrap();
-    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a);
-    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b);
+    let norm_a = build_normalized_subtree(tree_a.root_node(), source_a, &RUST_CONFIG);
+    let norm_b = build_normalized_subtree(tree_b.root_node(), source_b, &RUST_CONFIG);
     assert_eq!(
         norm_a, norm_b,
         "functions differing only in float literals must normalize identically"
@@ -152,7 +152,7 @@ fn normalized_subtree_contains_lit_placeholder_not_raw_value() {
     // Direct check: the normalized form must contain _LIT, not the raw integer.
     let source = "fn a() -> i32 { 42 }\n";
     let tree = make_parser().parse(source, None).unwrap();
-    let norm = build_normalized_subtree(tree.root_node(), source);
+    let norm = build_normalized_subtree(tree.root_node(), source, &RUST_CONFIG);
     assert!(
         norm.contains("_LIT"),
         "normalized form must contain _LIT, got: {}",
@@ -289,7 +289,7 @@ fn collect_from_directory_skips_builtin_excluded_dirs() {
     let empty_glob = build_glob_set(&[]).expect("glob");
     let mut functions = Vec::new();
     let mut errors = Vec::new();
-    collect_from_directory(dir.path(), &empty_glob, &mut functions, &mut errors);
+    collect_from_directory(dir.path(), &empty_glob, None, &mut functions, &mut errors);
     assert!(errors.is_empty(), "unexpected errors: {:?}", errors);
     assert!(
         functions.is_empty(),
