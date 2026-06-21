@@ -1,0 +1,12 @@
+/mattpocock-skills:diagnosing-bugs gabadi@gabadi-2 melech-mini-apps % drywall .
+error: parse error in ./api/src/testing/mutation-engine.ts%                     gabadi@gabadi-2 melech-mini-apps % pwd
+/Users/gabadi/workspace/melech/melech-mini-apps
+gabadi@gabadi-2 melech-mini-apps %
+
+---
+
+update ~/.local/bin
+
+---
+
+Update the PR
