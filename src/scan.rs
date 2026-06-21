@@ -1,9 +1,8 @@
 use crate::ast::{LangConfig, extract_functions_with_config, lang_config, parse_source_tree_for};
 use crate::core::{FunctionInfo, Lang};
 use globset::{Glob, GlobSet, GlobSetBuilder};
+use ignore::WalkBuilder;
 use std::path::{Component, Path};
-use std::process::Command;
-use walkdir::WalkDir;
 
 const BUILTIN_EXCLUDED_DIRS: &[&str] = &[
     ".git",
@@ -33,26 +32,6 @@ pub fn is_builtin_excluded(path: &Path) -> bool {
             false
         }
     })
-}
-
-fn git_check_ignore(path: &Path) -> Option<bool> {
-    let abs = path.canonicalize().ok()?;
-    let parent = abs.parent()?;
-    let output = Command::new("git")
-        .args([
-            "-C",
-            &parent.to_string_lossy(),
-            "check-ignore",
-            "--",
-            &abs.to_string_lossy(),
-        ])
-        .output()
-        .ok()?;
-    Some(output.status.code() == Some(0))
-}
-
-pub fn is_git_ignored(path: &Path) -> bool {
-    git_check_ignore(path).unwrap_or(false)
 }
 
 pub fn build_glob_set(patterns: &[String]) -> Result<GlobSet, globset::Error> {
@@ -98,13 +77,8 @@ pub fn should_skip(path: &Path, exclude_set: &GlobSet) -> bool {
 /// Returns whether a file should be scanned.
 /// When force_lang is Some, every non-excluded, non-builtin-excluded file is scanned.
 /// When force_lang is None, only files with recognized extensions are scanned.
-pub fn should_scan_file(
-    path: &Path,
-    exclude_set: &GlobSet,
-    git_ignored: &dyn Fn(&Path) -> bool,
-    force_lang: Option<Lang>,
-) -> bool {
-    if is_builtin_excluded(path) || should_skip(path, exclude_set) || git_ignored(path) {
+pub fn should_scan_file(path: &Path, exclude_set: &GlobSet, force_lang: Option<Lang>) -> bool {
+    if is_builtin_excluded(path) || should_skip(path, exclude_set) {
         return false;
     }
     match force_lang {
@@ -152,29 +126,9 @@ pub fn collect_from_single_file(
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
-    if should_scan_file(path, exclude_set, &is_git_ignored, force_lang) {
+    if should_scan_file(path, exclude_set, force_lang) {
         let lang = force_lang.or_else(|| detect_lang(path)).unwrap();
         process_file(path, lang, functions, errors);
-    }
-}
-
-fn process_entry(
-    entry: Result<walkdir::DirEntry, walkdir::Error>,
-    exclude_set: &GlobSet,
-    force_lang: Option<Lang>,
-    functions: &mut Vec<FunctionInfo>,
-    errors: &mut Vec<String>,
-) {
-    match entry {
-        Ok(e)
-            if e.file_type().is_file()
-                && should_scan_file(e.path(), exclude_set, &is_git_ignored, force_lang) =>
-        {
-            let lang = force_lang.or_else(|| detect_lang(e.path())).unwrap();
-            process_file(e.path(), lang, functions, errors);
-        }
-        Ok(_) => {}
-        Err(err) => errors.push(format!("walk error: {}", err)),
     }
 }
 
@@ -185,14 +139,22 @@ pub fn collect_from_directory(
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
-    let walker = WalkDir::new(path)
-        .sort_by_file_name()
-        .into_iter()
+    let walker = WalkBuilder::new(path)
         .filter_entry(|e| {
-            !e.file_type().is_dir() || (!is_builtin_excluded(e.path()) && !is_git_ignored(e.path()))
-        });
+            e.file_type().map(|ft| !ft.is_dir()).unwrap_or(true) || !is_builtin_excluded(e.path())
+        })
+        .build();
     for entry in walker {
-        process_entry(entry, exclude_set, force_lang, functions, errors);
+        match entry {
+            Ok(e) if e.file_type().map(|ft| ft.is_file()).unwrap_or(false) => {
+                if should_scan_file(e.path(), exclude_set, force_lang) {
+                    let lang = force_lang.or_else(|| detect_lang(e.path())).unwrap();
+                    process_file(e.path(), lang, functions, errors);
+                }
+            }
+            Ok(_) => {}
+            Err(err) => errors.push(format!("walk error: {}", err)),
+        }
     }
 }
 
@@ -225,6 +187,7 @@ pub fn process_file(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::process::Command;
 
     // --- built-in exclusion ---
 
@@ -306,6 +269,37 @@ mod tests {
             functions.len(),
             1,
             "only real.py should be scanned, not .venv"
+        );
+        assert!(functions[0].file.ends_with("real.py"));
+    }
+
+    #[test]
+    fn collect_from_directory_skips_dirs_excluded_by_ancestor_gitignore() {
+        // Uses `generated_code/` which is NOT in BUILTIN_EXCLUDED_DIRS, so exclusion
+        // can only come from WalkBuilder reading the ancestor .gitignore.
+        let parent = tempfile::tempdir().unwrap();
+        Command::new("git")
+            .args(["-C", &parent.path().to_string_lossy(), "init"])
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()
+            .unwrap();
+        std::fs::write(parent.path().join(".gitignore"), "generated_code/\n").unwrap();
+        let subdir = parent.path().join("subdir");
+        let gen_lib = subdir.join("generated_code").join("lib");
+        std::fs::create_dir_all(&gen_lib).unwrap();
+        let py_body = "def keep_me(x, y):\n    z = x + y\n    return z\n";
+        std::fs::write(gen_lib.join("dep.py"), py_body).unwrap();
+        std::fs::write(subdir.join("real.py"), py_body).unwrap();
+        let gs = build_glob_set(&[]).unwrap();
+        let mut functions = Vec::new();
+        let mut errors = Vec::new();
+        collect_from_directory(&subdir, &gs, None, &mut functions, &mut errors);
+        assert!(errors.is_empty());
+        assert_eq!(
+            functions.len(),
+            1,
+            "only real.py should be scanned, not generated_code/ excluded by ancestor .gitignore"
         );
         assert!(functions[0].file.ends_with("real.py"));
     }
@@ -654,53 +648,6 @@ fn two(y: i32) -> i32 {
         collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
         assert_eq!(functions.len(), 1);
-    }
-
-    // --- is_git_ignored ---
-
-    #[test]
-    fn is_git_ignored_nonexistent_path_returns_false() {
-        assert!(!is_git_ignored(Path::new(
-            "/nonexistent/totally/made/up/file.rs"
-        )));
-    }
-
-    #[test]
-    fn is_git_ignored_file_outside_git_repo_returns_false() {
-        let dir = tempfile::tempdir().unwrap();
-        let path = dir.path().join("plain.rs");
-        std::fs::write(&path, "fn x() {}").unwrap();
-        assert!(!is_git_ignored(&path));
-    }
-
-    #[test]
-    fn is_git_ignored_gitignored_file_returns_true() {
-        let dir = tempfile::tempdir().unwrap();
-        Command::new("git")
-            .args(["-C", &dir.path().to_string_lossy(), "init"])
-            .stdout(std::process::Stdio::null())
-            .stderr(std::process::Stdio::null())
-            .status()
-            .unwrap();
-        std::fs::write(dir.path().join(".gitignore"), "*.gen.rs\n").unwrap();
-        let ignored = dir.path().join("foo.gen.rs");
-        std::fs::write(&ignored, "fn x() {}").unwrap();
-        assert!(is_git_ignored(&ignored));
-    }
-
-    #[test]
-    fn is_git_ignored_non_ignored_file_in_git_repo_returns_false() {
-        let dir = tempfile::tempdir().unwrap();
-        Command::new("git")
-            .args(["-C", &dir.path().to_string_lossy(), "init"])
-            .stdout(std::process::Stdio::null())
-            .stderr(std::process::Stdio::null())
-            .status()
-            .unwrap();
-        std::fs::write(dir.path().join(".gitignore"), "*.gen.rs\n").unwrap();
-        let normal = dir.path().join("lib.rs");
-        std::fs::write(&normal, "fn x() {}").unwrap();
-        assert!(!is_git_ignored(&normal));
     }
 
     // --- detect_lang ---
