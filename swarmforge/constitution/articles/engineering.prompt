@@ -14,7 +14,7 @@
 - For Clojure projects, prefer Speclj for unit and behavior tests.
 - For Clojure or Babashka projects using Speclj, use `github.com/unclebob/speclj-structure-check` to validate test syntax. If a Speclj spec file changed, run the structure check before executing the relevant test command.
 - For Java projects, avoid using Maven to run tests; build dedicated test runners and run those instead.
-- For Rust projects, prefer `cargo nextest` with project-defined profiles over `cargo test`. Use `cargo llvm-cov` for coverage, `cargo crap` for CRAP analysis, `cargo mutants` for mutation testing, `drywall ./src` for DRY analysis. Consult the project `AGENTS.md` for profile names, thresholds, and flags.
+- For Rust projects, use `cargo nextest` with project-defined profiles, not `cargo test`. Use `cargo llvm-cov` for coverage, `cargo crap` for CRAP analysis, `cargo mutants` for mutation testing, `drywall ./src` for DRY analysis. Check the project `AGENTS.md` for profile names, thresholds, and flags.
 - For Rust projects, run language mutation with `--git-base main` to restrict to changed lines only (equivalent to `--since-last-run` in mutate4go). Run one file at a time: `cargo mutants --git-base main --test-tool nextest -j 8 --no-shuffle -- --profile mutation`. Skip `--git-base` only when running full-suite hardening or when no base branch exists.
 
 ## Design And Testability
