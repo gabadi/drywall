@@ -178,7 +178,9 @@ pub fn collect_from_directory(
     let walker = WalkDir::new(path)
         .sort_by_file_name()
         .into_iter()
-        .filter_entry(|e| !e.file_type().is_dir() || !is_builtin_excluded(e.path()));
+        .filter_entry(|e| {
+            !e.file_type().is_dir() || (!is_builtin_excluded(e.path()) && !is_git_ignored(e.path()))
+        });
     for entry in walker {
         process_entry(entry, exclude_set, force_lang, functions, errors);
     }
@@ -276,6 +278,34 @@ mod tests {
         collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
         assert_eq!(functions.len(), 1);
+    }
+
+    #[test]
+    fn collect_from_directory_skips_git_ignored_dirs() {
+        let dir = tempfile::tempdir().unwrap();
+        Command::new("git")
+            .args(["-C", &dir.path().to_string_lossy(), "init"])
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()
+            .unwrap();
+        std::fs::write(dir.path().join(".gitignore"), ".venv/\n").unwrap();
+        let venv_lib = dir.path().join(".venv").join("lib");
+        std::fs::create_dir_all(&venv_lib).unwrap();
+        let py_body = "def keep_me(x, y):\n    z = x + y\n    return z\n";
+        std::fs::write(venv_lib.join("dep.py"), py_body).unwrap();
+        std::fs::write(dir.path().join("real.py"), py_body).unwrap();
+        let gs = build_glob_set(&[]).unwrap();
+        let mut functions = Vec::new();
+        let mut errors = Vec::new();
+        collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
+        assert!(errors.is_empty());
+        assert_eq!(
+            functions.len(),
+            1,
+            "only real.py should be scanned, not .venv"
+        );
+        assert!(functions[0].file.ends_with("real.py"));
     }
 
     #[test]
