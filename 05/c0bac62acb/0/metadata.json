@@ -75,6 +75,37 @@
         "label": "Skill: agent-retro",
         "default_collapsed": true
       }
+    },
+    {
+      "id": "claude-skill-toolu_01E3ZdF9epWWmXqyvNTBYALM",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "agent-retro"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "6d8fe2ae9c04",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 287,
+        "end": 288,
+        "entry_ids": [
+          "6d7b9955-e670-47ba-b366-9e6fc194b044"
+        ],
+        "tool_use_id": "toolu_01E3ZdF9epWWmXqyvNTBYALM"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01E3ZdF9epWWmXqyvNTBYALM"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: agent-retro",
+        "default_collapsed": true
+      }
     }
   ],
   "initial_attribution": {
