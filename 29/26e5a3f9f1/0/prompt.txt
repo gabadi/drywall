@@ -1,0 +1,9 @@
+Which issue we already implemented?
+
+---
+
+Check in github vs git log, what we already implemented nad its not marked as done
+
+---
+
+Close #4
