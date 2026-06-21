@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "fb65510d6ed6",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "tmp/handoff_to_coder_fix.txt"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fb/65510d6ed6/0/metadata.json",
+      "transcript": "/fb/65510d6ed6/0/full.jsonl",
+      "content_hash": "/fb/65510d6ed6/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 564,
+    "cache_creation_tokens": 12572,
+    "cache_read_tokens": 2610428,
+    "output_tokens": 14175,
+    "api_call_count": 24
+  }
+}
