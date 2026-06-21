@@ -1,0 +1,131 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "818e31ed9432",
+  "session_id": "1de26cb4-2b23-4258-9548-b8aa216de47c",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T21:25:47.142616Z",
+  "branch": "perf/parallel-comparison-and-sorted-jaccard",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "219f1821f5b0",
+  "checkpoint_transcript_start": 191,
+  "transcript_lines_at_start": 191,
+  "token_usage": {
+    "input_tokens": 283,
+    "cache_creation_tokens": 46627,
+    "cache_read_tokens": 3809947,
+    "output_tokens": 23272,
+    "api_call_count": 35
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-mattpocock-skills:implement-2026-06-21T21:11:00.875693Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "mattpocock-skills:implement"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "a0cb194c4658",
+      "timestamp": "2026-06-21T21:11:00.875693Z",
+      "native": {
+        "command": "/mattpocock-skills:implement"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/mattpocock-skills:implement",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_017pk1c8gxGLuXojqVP95Cyf",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "run-drywall"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "219f1821f5b0",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 20,
+        "end": 21,
+        "entry_ids": [
+          "bbd30577-d520-455e-b1dc-dbb307cbe32f"
+        ],
+        "tool_use_id": "toolu_017pk1c8gxGLuXojqVP95Cyf"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_017pk1c8gxGLuXojqVP95Cyf"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: run-drywall",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01LkXm32o2h8XsAGSGeDvMff",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "219f1821f5b0",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 195,
+        "end": 196,
+        "entry_ids": [
+          "168e9965-0a1e-40c7-93ba-3c55ef144db8"
+        ],
+        "tool_use_id": "toolu_01LkXm32o2h8XsAGSGeDvMff"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01LkXm32o2h8XsAGSGeDvMff"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: review",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}
