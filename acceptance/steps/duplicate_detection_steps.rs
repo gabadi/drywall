@@ -425,9 +425,9 @@ fn step_then_reported_score_at_least(step: &str, world: &mut World) -> Option<St
     let caps = re.captures(step)?;
     let min_score: f64 = caps.get(1).unwrap().as_str().parse().unwrap_or(0.0);
 
-    let stdout = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stdout not yet recorded")),
+    let stdout = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
 
     static SCORE_RE: OnceLock<regex::Regex> = OnceLock::new();
@@ -453,15 +453,16 @@ fn step_then_pair_scoring_before(step: &str, world: &mut World) -> Option<StepRe
     let re = RE.get_or_init(|| {
         regex::Regex::new(
             r#"^the pair scoring "([^"]+)" is reported before the pair scoring "([^"]+)"$"#,
-        ).unwrap()
+        )
+        .unwrap()
     });
     let caps = re.captures(step)?;
     let _high_score: f64 = caps.get(1).unwrap().as_str().parse().unwrap_or(0.95);
     let _low_score: f64 = caps.get(2).unwrap().as_str().parse().unwrap_or(0.84);
 
-    let stdout = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stdout not yet recorded")),
+    let stdout = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
 
     static SCORE_RE: OnceLock<regex::Regex> = OnceLock::new();
@@ -496,9 +497,9 @@ fn step_then_pair_is_reported_equals(step: &str, world: &mut World) -> Option<St
     let caps = re.captures(step)?;
     let expected_reported = caps.get(1).unwrap().as_str() == "true";
 
-    let stdout = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stdout not yet recorded")),
+    let stdout = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
 
     let actually_reported = stdout.contains("DUPLICATE");
@@ -511,7 +512,7 @@ fn step_then_pair_is_reported_equals(step: &str, world: &mut World) -> Option<St
             expected_reported,
             actually_reported,
             stdout,
-            world.stderr.as_deref().unwrap_or("")
+            world.require_stderr().unwrap_or("")
         ))
     })
 }
@@ -520,9 +521,9 @@ fn step_then_stdout_is_valid_json(step: &str, world: &mut World) -> Option<StepR
     if step != "stdout is valid JSON" {
         return None;
     }
-    let stdout = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stdout not yet recorded")),
+    let stdout = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
     Some(match serde_json::from_str::<serde_json::Value>(&stdout) {
         Ok(_) => StepResult::ok(),
@@ -538,9 +539,9 @@ fn step_then_json_contains_pair_count(step: &str, world: &mut World) -> Option<S
     let caps = re.captures(step)?;
     let expected_count: usize = caps.get(1).unwrap().as_str().parse().unwrap_or(0);
 
-    let stdout = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stdout not yet recorded")),
+    let stdout = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
 
     Some(match serde_json::from_str::<serde_json::Value>(&stdout) {
@@ -563,9 +564,9 @@ fn step_then_stderr_not_empty(step: &str, world: &mut World) -> Option<StepResul
     if step != "stderr is not empty" {
         return None;
     }
-    let stderr = match &world.stderr {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stderr not yet recorded")),
+    let stderr = match world.require_stderr() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
     Some(if !stderr.is_empty() {
         StepResult::ok()

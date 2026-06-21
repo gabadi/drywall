@@ -217,9 +217,9 @@ fn step_then_stderr_empty(step: &str, world: &mut World) -> Option<StepResult> {
     if step != "stderr is empty" {
         return None;
     }
-    let stderr = match &world.stderr {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stderr not yet recorded")),
+    let stderr = match world.require_stderr() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
     Some(if stderr.is_empty() {
         StepResult::ok()
@@ -296,9 +296,9 @@ fn step_then_both_runs_byte_identical_stdout(step: &str, world: &mut World) -> O
     if step != "both runs produce byte-identical stdout" {
         return None;
     }
-    let out1 = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("first run stdout not recorded")),
+    let out1 = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(_) => return Some(StepResult::fail("first run stdout not recorded")),
     };
     let out2 = match &world.stdout2 {
         Some(s) => s.clone(),

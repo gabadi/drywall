@@ -74,8 +74,8 @@ pub fn step_then_exit_code(step: &str, world: &mut crate::runtime::World) -> Opt
     Some(if actual == expected {
         StepResult::ok()
     } else {
-        let stderr = world.stderr.as_deref().unwrap_or("");
-        let stdout = world.stdout.as_deref().unwrap_or("");
+        let stderr = world.require_stderr().unwrap_or("");
+        let stdout = world.require_stdout().unwrap_or("");
         StepResult::fail(format!(
             "expected exit code {}, got {}\nstdout: {}\nstderr: {}",
             expected, actual, stdout, stderr
@@ -93,9 +93,9 @@ pub fn step_then_stdout_reports_pair_for(step: &str, world: &mut crate::runtime:
     let left_file = caps.get(1).unwrap().as_str();
     let right_file = caps.get(2).unwrap().as_str();
 
-    let stdout = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stdout not yet recorded")),
+    let stdout = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
 
     let left_name = Path::new(left_file)
@@ -124,9 +124,9 @@ pub fn step_then_no_duplicate_pair(step: &str, world: &mut crate::runtime::World
     if step != "no duplicate pair is reported" {
         return None;
     }
-    let stdout = match &world.stdout {
-        Some(s) => s.clone(),
-        None => return Some(StepResult::fail("stdout not yet recorded")),
+    let stdout = match world.require_stdout() {
+        Ok(s) => s.to_owned(),
+        Err(e) => return Some(e),
     };
     Some(if !stdout.contains("DUPLICATE") {
         StepResult::ok()

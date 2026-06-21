@@ -17,6 +17,20 @@ impl World {
     pub fn new() -> Self {
         Self::default()
     }
+
+    #[allow(dead_code)]
+    pub fn require_stdout(&self) -> Result<&str, StepResult> {
+        self.stdout
+            .as_deref()
+            .ok_or_else(|| StepResult::fail("stdout not yet recorded"))
+    }
+
+    #[allow(dead_code)]
+    pub fn require_stderr(&self) -> Result<&str, StepResult> {
+        self.stderr
+            .as_deref()
+            .ok_or_else(|| StepResult::fail("stderr not yet recorded"))
+    }
 }
 
 pub struct StepResult {
