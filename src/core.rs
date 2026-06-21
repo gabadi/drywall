@@ -100,31 +100,43 @@ pub fn jaccard(a: &[u64], b: &[u64]) -> f64 {
             std::cmp::Ordering::Less => {
                 union += 1;
                 let v = a[i];
-                while i < a.len() && a[i] == v { i += 1; }
+                while i < a.len() && a[i] == v {
+                    i += 1;
+                }
             }
             std::cmp::Ordering::Greater => {
                 union += 1;
                 let v = b[j];
-                while j < b.len() && b[j] == v { j += 1; }
+                while j < b.len() && b[j] == v {
+                    j += 1;
+                }
             }
             std::cmp::Ordering::Equal => {
                 intersection += 1;
                 union += 1;
                 let v = a[i];
-                while i < a.len() && a[i] == v { i += 1; }
-                while j < b.len() && b[j] == v { j += 1; }
+                while i < a.len() && a[i] == v {
+                    i += 1;
+                }
+                while j < b.len() && b[j] == v {
+                    j += 1;
+                }
             }
         }
     }
     while i < a.len() {
         union += 1;
         let v = a[i];
-        while i < a.len() && a[i] == v { i += 1; }
+        while i < a.len() && a[i] == v {
+            i += 1;
+        }
     }
     while j < b.len() {
         union += 1;
         let v = b[j];
-        while j < b.len() && b[j] == v { j += 1; }
+        while j < b.len() && b[j] == v {
+            j += 1;
+        }
     }
     if union == 0 {
         return 0.0;
@@ -180,7 +192,11 @@ pub fn find_duplicate_pairs(
                     return None;
                 }
                 let score = jaccard(&a.node_hashes, &b.node_hashes);
-                if score >= threshold { Some(make_pair(a, b, score)) } else { None }
+                if score >= threshold {
+                    Some(make_pair(a, b, score))
+                } else {
+                    None
+                }
             })
         })
         .collect();
@@ -373,11 +389,17 @@ mod tests {
     fn jaccard_duplicate_runs() {
         // [1,1,2] and [1,2,2] both represent {1,2} — skip-run logic must treat runs as one element
         let same_set_score = jaccard(&[1u64, 1, 2], &[1u64, 2, 2]);
-        assert!((same_set_score - 1.0).abs() < 1e-9, "same unique sets must score 1.0, got {same_set_score}");
+        assert!(
+            (same_set_score - 1.0).abs() < 1e-9,
+            "same unique sets must score 1.0, got {same_set_score}"
+        );
 
         // [1,1,3] → {1,3}, [1,2,3] → {1,2,3} → intersection=2, union=3
         let partial_score = jaccard(&[1u64, 1, 3], &[1u64, 2, 3]);
-        assert!((partial_score - 2.0 / 3.0).abs() < 1e-9, "expected 2/3, got {partial_score}");
+        assert!(
+            (partial_score - 2.0 / 3.0).abs() < 1e-9,
+            "expected 2/3, got {partial_score}"
+        );
     }
 
     #[test]
