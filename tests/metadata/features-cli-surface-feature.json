@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "feature_path": "features/cli_surface.feature",
+  "ir_path": "tmp/acceptance/ir/cli_surface.json",
+  "implementation_hash": "sha256:c49a498e926eb3977b5be82be6c3693d0f3dd6b02494d469f281733feb4ca277",
+  "hash_scope": "generated_files",
+  "generated_files": [
+    "tests/cli_surface_exclusions_auto_built_in_gitignore_and_repeatable_exclude_acceptance_test.rs"
+  ]
+}
