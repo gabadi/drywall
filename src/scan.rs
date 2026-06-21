@@ -179,8 +179,7 @@ pub fn collect_from_directory(
         .sort_by_file_name()
         .into_iter()
         .filter_entry(|e| {
-            !e.file_type().is_dir()
-                || (!is_builtin_excluded(e.path()) && !is_git_ignored(e.path()))
+            !e.file_type().is_dir() || (!is_builtin_excluded(e.path()) && !is_git_ignored(e.path()))
         });
     for entry in walker {
         process_entry(entry, exclude_set, force_lang, functions, errors);
@@ -301,7 +300,11 @@ mod tests {
         let mut errors = Vec::new();
         collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
-        assert_eq!(functions.len(), 1, "only real.py should be scanned, not .venv");
+        assert_eq!(
+            functions.len(),
+            1,
+            "only real.py should be scanned, not .venv"
+        );
         assert!(functions[0].file.ends_with("real.py"));
     }
 
