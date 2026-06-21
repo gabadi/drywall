@@ -1,13 +1,12 @@
 pub mod ast;
 mod core;
-mod scan;
+pub mod scan;
 
 pub use core::{
     CliResult, Config, DuplicatePair, FunctionInfo, OutputFormat, PairEndpoint, RunResult,
     execute_cli, find_duplicate_pairs, format_json, format_text, jaccard, parse_output_format,
     source_lines, validate_lang,
 };
-pub use scan::collect_rust_files;
 
 use ast::parse_source_tree;
 use scan::{build_glob_set, collect_all_functions};
