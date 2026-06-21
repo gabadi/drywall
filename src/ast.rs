@@ -425,7 +425,6 @@ fn collect_subtree_hashes(node: tree_sitter::Node, source: &str, config: &LangCo
     let mut hashes = Vec::new();
     collect_hashes_recursive(node, source, config, &mut hashes);
     hashes.sort_unstable();
-    hashes.dedup();
     hashes
 }
 
