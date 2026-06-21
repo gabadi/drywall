@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "a790b7b7d581",
+  "strategy": "manual-commit",
+  "branch": "knowledge/python-detection",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".agents/ledger-swarmforge.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a7/90b7b7d581/0/metadata.json",
+      "transcript": "/a7/90b7b7d581/0/full.jsonl",
+      "content_hash": "/a7/90b7b7d581/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 8,
+    "cache_creation_tokens": 4763,
+    "cache_read_tokens": 587487,
+    "output_tokens": 2583,
+    "api_call_count": 8
+  }
+}
