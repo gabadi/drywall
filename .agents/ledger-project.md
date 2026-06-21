@@ -29,3 +29,10 @@ Format: `<date> | <session-id> | <role> | <failure-class> | <verdict> | <one-lin
 2026-06-21 | c01492bf-e25d-4c04-90cd-79eba5e938df | coder | convention-gap | promoted→AGENTS.md | World in acceptance/runtime/mod.rs needs #[allow(dead_code)] on struct for multi-binary coverage
 2026-06-19 | (scan-module) | architect | tool-error | rejected→machine-specific | file-based commit workaround for 1Password pipe failure; machine-specific env config
 2026-06-19 | (coder) | coder | convention-gap | rejected→inferable | diversify test function bodies to avoid Jaccard gate — inferable from AGENTS.md DRY self-check note
+2026-06-21 | 033a44af-c980-43bf-bfea-16b4db9a46c1 | coder | convention-gap | promoted→AGENTS.md | parallel js_X/ts_X test bodies must differ in source structure — identical short bodies trigger dogfood self-detection (recurrence)
+2026-06-21 | 17ae50d5-de10-451c-8bc9-29c74fc0e4ef | QA | wrong-path | promoted→AGENTS.md | ad-hoc QA scratch fixtures must use /tmp not project tmp/ — gitignore silently skips project gitignored paths
+2026-06-21 | cea00e56-970a410d-a6fa-19cfac1fcd8e | coder | convention-gap | promoted→AGENTS.md | Lang::Tsx must use LANGUAGE_TSX not LANGUAGE_TYPESCRIPT; guard is typescript_grammar_rejects_jsx_markup
+2026-06-21 | c5e8d278-c766-4ef8-ac17-9ebc08f308c7 | hardender | convention-gap | promoted→backlog | binary(~acceptance) nextest filter matches mutation test files; change to exact match
+2026-06-21 | cd1fedb9-ccf8-4ea9-80a9-f688b5733499 | specifier | convention-gap | rejected→inferable | gherkin-ir-dry-checker residual placeholder-variant findings expected — already in auto-memory
+2026-06-21 | 44b0fcc3-6aa9-4a5f-841b-aa836a59c617 | cleaner | tool-error | rejected→inferable | GPG signing failure via 1Password in worktree — already in auto-memory feedback_git_commit_gpg
+2026-06-21 | 033a44af-c980-43bf-bfea-16b4db9a46c1 | coder | convention-gap | promoted→memory | scan filter extension requires reviewing property tests whose names encode old language list

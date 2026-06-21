@@ -45,6 +45,9 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 - **cargo-mutants `--exclude`**: patterns match absolute paths, not CWD-relative. Use `**/filename.rs` form, not `src/filename.rs`.
 - **acceptance/runtime/mod.rs `World`**: add `#[allow(dead_code)]` on the struct (not per-field) — runtime is `include!`-ed across multiple test binaries with differing step coverage.
 - **Acceptance fixture paths**: must be outside gitignored paths (e.g. not under `tmp/`) — gitignore-awareness is default-on and silently skips ignored dirs, producing false-empty scans.
+- **Ad-hoc QA scratch fixtures**: write to `/tmp` or a non-gitignored path; any fixture under project `tmp/` is silently skipped by drywall — produces false exit 0 mimicking a missing feature.
+- **Parallel language test bodies (js_X / ts_X)**: differentiate source body structure, not just identifiers — identical short bodies trigger dogfood self-detection even when function names differ.
+- **`Lang::Tsx` grammar**: must use `LANGUAGE_TSX`, not `LANGUAGE_TYPESCRIPT`; `typescript_grammar_rejects_jsx_markup` is the guard — removing or weakening it silently breaks JSX in .tsx.
 
 ## drywall output format
 
