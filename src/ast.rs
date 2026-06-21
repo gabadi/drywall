@@ -72,6 +72,7 @@ pub fn make_parser_for(lang: Lang) -> tree_sitter::Parser {
         Lang::Rust => tree_sitter_rust::LANGUAGE.into(),
         Lang::JavaScript => tree_sitter_javascript::LANGUAGE.into(),
         Lang::TypeScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+        Lang::Tsx => tree_sitter_typescript::LANGUAGE_TSX.into(),
     };
     parser
         .set_language(&language)
@@ -87,7 +88,7 @@ pub fn lang_config(lang: Lang) -> &'static LangConfig {
     match lang {
         Lang::Rust => &RUST_CONFIG,
         Lang::JavaScript => &JS_CONFIG,
-        Lang::TypeScript => &TS_CONFIG,
+        Lang::TypeScript | Lang::Tsx => &TS_CONFIG,
     }
 }
 
@@ -128,7 +129,7 @@ pub fn extract_functions_with_config(
 ) {
     match config.lang {
         Lang::Rust => extract_rust_functions(node, source, file, functions),
-        Lang::JavaScript | Lang::TypeScript => {
+        Lang::JavaScript | Lang::TypeScript | Lang::Tsx => {
             extract_jsts_functions(node, source, file, config, functions)
         }
     }
@@ -571,5 +572,19 @@ mod tests {
     fn ts_parse_error_detected() {
         let bad_ts = "class {{ INVALID TS SYNTAX (((;\n";
         assert!(parse_source_tree_for(bad_ts, Lang::TypeScript).is_err());
+    }
+
+    #[test]
+    fn tsx_grammar_parses_jsx_markup() {
+        // LANGUAGE_TSX accepts JSX return syntax; LANGUAGE_TYPESCRIPT does not
+        let src = "function Render(x: number): JSX.Element { return <span>{x}</span>; }\n";
+        assert!(parse_source_tree_for(src, Lang::Tsx).is_ok());
+    }
+
+    #[test]
+    fn typescript_grammar_rejects_jsx_markup() {
+        // LANGUAGE_TYPESCRIPT cannot parse JSX — confirms Lang::Tsx must use LANGUAGE_TSX
+        let src = "function accumulate(a: number, b: number): number {\n  let sum = a + b;\n  let extra = sum * 2;\n  let more = extra + a;\n  let result = more + b;\n  return <div>{result}</div>;\n}\n";
+        assert!(parse_source_tree_for(src, Lang::TypeScript).is_err());
     }
 }

@@ -6,6 +6,7 @@ pub enum Lang {
     Rust,
     JavaScript,
     TypeScript,
+    Tsx,
 }
 
 #[derive(Debug, Clone)]

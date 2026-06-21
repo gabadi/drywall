@@ -119,11 +119,24 @@ fn exported_named_function_js(ids: &str, fn_name: &str) -> String {
     )
 }
 
+fn accumulate_sum_tsx(ids: &str, fn_name: &str) -> String {
+    let parts: Vec<&str> = ids.split(',').collect();
+    let (p0, p1, p2) = if parts.len() >= 3 {
+        (parts[0].trim(), parts[1].trim(), parts[2].trim())
+    } else {
+        ("a", "b", "sum")
+    };
+    format!(
+        "function {fn_name}({p0}: number, {p1}: number): JSX.Element {{\n  let {p2} = {p0} + {p1};\n  let extra = {p2} * 2;\n  let more = extra + {p0};\n  let result = more + {p1};\n  return <div>{{result}}</div>;\n}}\n"
+    )
+}
+
 fn make_source(ext: &str, structure: &str, ids: &str, fn_name: &str) -> String {
     match (ext, structure) {
         (_, "accumulate_sum") | (_, "function-declaration") => match ext {
             "rs" => accumulate_sum_rs(ids, fn_name),
-            "ts" | "tsx" => accumulate_sum_ts(ids, fn_name),
+            "tsx" => accumulate_sum_tsx(ids, fn_name),
+            "ts" => accumulate_sum_ts(ids, fn_name),
             _ => accumulate_sum_js(ids, fn_name),
         },
         (_, "arrow-function") => match ext {

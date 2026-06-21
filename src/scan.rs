@@ -58,7 +58,8 @@ pub fn detect_lang(path: &Path) -> Option<Lang> {
     match ext {
         "rs" => Some(Lang::Rust),
         "js" | "jsx" => Some(Lang::JavaScript),
-        "ts" | "tsx" => Some(Lang::TypeScript),
+        "ts" => Some(Lang::TypeScript),
+        "tsx" => Some(Lang::Tsx),
         _ => None,
     }
 }
@@ -687,8 +688,8 @@ fn two(y: i32) -> i32 {
     }
 
     #[test]
-    fn detect_lang_tsx_returns_typescript() {
-        assert_eq!(detect_lang(Path::new("foo.tsx")), Some(Lang::TypeScript));
+    fn detect_lang_tsx_returns_tsx() {
+        assert_eq!(detect_lang(Path::new("foo.tsx")), Some(Lang::Tsx));
     }
 
     #[test]
