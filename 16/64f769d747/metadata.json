@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "1664f769d747",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "tmp/handoff_hardener.txt"
+  ],
+  "sessions": [
+    {
+      "metadata": "/16/64f769d747/0/metadata.json",
+      "transcript": "/16/64f769d747/0/full.jsonl",
+      "content_hash": "/16/64f769d747/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 8921,
+    "cache_read_tokens": 1888939,
+    "output_tokens": 3646,
+    "api_call_count": 21
+  }
+}
