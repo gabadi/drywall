@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "df5a3bccd47c",
+  "strategy": "manual-commit",
+  "branch": "knowledge/python-detection",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".agents/ledger-project.md",
+    ".agents/ledger-swarmforge.md",
+    "AGENTS.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/df/5a3bccd47c/0/metadata.json",
+      "transcript": "/df/5a3bccd47c/0/full.jsonl",
+      "content_hash": "/df/5a3bccd47c/0/content_hash.txt",
+      "prompt": "/df/5a3bccd47c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 542,
+    "cache_creation_tokens": 54331,
+    "cache_read_tokens": 1970589,
+    "output_tokens": 11247,
+    "api_call_count": 35
+  }
+}
