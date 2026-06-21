@@ -3,11 +3,14 @@ use std::collections::HashMap;
 pub type Example = HashMap<String, String>;
 
 #[derive(Default)]
+#[allow(dead_code)]
 pub struct World {
     pub binary_path: Option<String>,
     pub exit_code: Option<i32>,
     pub stdout: Option<String>,
     pub stderr: Option<String>,
+    pub exit_code2: Option<i32>,
+    pub stdout2: Option<String>,
 }
 
 impl World {
