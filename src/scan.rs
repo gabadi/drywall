@@ -1,7 +1,5 @@
-use crate::ast::{
-    Lang, LangConfig, extract_functions_with_config, lang_config, parse_source_tree_for,
-};
-use crate::core::FunctionInfo;
+use crate::ast::{LangConfig, extract_functions_with_config, lang_config, parse_source_tree_for};
+use crate::core::{FunctionInfo, Lang};
 use globset::{Glob, GlobSet, GlobSetBuilder};
 use std::path::{Component, Path};
 use std::process::Command;

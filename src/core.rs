@@ -1,6 +1,13 @@
 use serde::Serialize;
 use std::collections::HashSet;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Lang {
+    Rust,
+    JavaScript,
+    TypeScript,
+}
+
 #[derive(Debug, Clone)]
 pub struct FunctionInfo {
     pub file: String,
@@ -30,7 +37,7 @@ pub struct Config {
     pub min_nodes: usize,
     pub format: OutputFormat,
     pub excludes: Vec<String>,
-    pub lang: Option<crate::ast::Lang>,
+    pub lang: Option<Lang>,
 }
 
 impl Default for Config {
@@ -65,11 +72,11 @@ pub fn parse_output_format(s: &str) -> Result<OutputFormat, String> {
     }
 }
 
-pub fn validate_lang(lang: &str) -> Result<crate::ast::Lang, String> {
+pub fn validate_lang(lang: &str) -> Result<Lang, String> {
     match lang {
-        "rust" => Ok(crate::ast::Lang::Rust),
-        "js" => Ok(crate::ast::Lang::JavaScript),
-        "ts" => Ok(crate::ast::Lang::TypeScript),
+        "rust" => Ok(Lang::Rust),
+        "js" => Ok(Lang::JavaScript),
+        "ts" => Ok(Lang::TypeScript),
         other => Err(format!(
             "unsupported language '{}'; use rust, js, or ts",
             other

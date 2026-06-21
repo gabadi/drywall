@@ -3,7 +3,7 @@ mod core;
 pub mod scan;
 
 pub use core::{
-    CliResult, Config, DuplicatePair, FunctionInfo, OutputFormat, PairEndpoint, RunResult,
+    CliResult, Config, DuplicatePair, FunctionInfo, Lang, OutputFormat, PairEndpoint, RunResult,
     execute_cli, find_duplicate_pairs, format_json, format_text, jaccard, parse_output_format,
     source_lines, validate_lang,
 };
@@ -44,8 +44,8 @@ pub fn run(paths: &[String], config: &Config) -> RunResult {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ast::{JS_CONFIG, Lang, extract_functions, extract_functions_with_config};
-    use crate::core::{jaccard, source_lines};
+    use crate::ast::{JS_CONFIG, extract_functions, extract_functions_with_config};
+    use crate::core::{Lang, jaccard, source_lines};
 
     #[test]
     fn minimal_rust_source_parses_without_error() {

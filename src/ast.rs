@@ -1,11 +1,4 @@
-use crate::FunctionInfo;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Lang {
-    Rust,
-    JavaScript,
-    TypeScript,
-}
+use crate::core::{FunctionInfo, Lang};
 
 pub struct LangConfig {
     pub lang: Lang,
