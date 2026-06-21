@@ -7,6 +7,7 @@ pub enum Lang {
     JavaScript,
     TypeScript,
     Tsx,
+    Python,
 }
 
 #[derive(Debug, Clone)]
@@ -78,8 +79,9 @@ pub fn validate_lang(lang: &str) -> Result<Lang, String> {
         "rust" => Ok(Lang::Rust),
         "js" => Ok(Lang::JavaScript),
         "ts" => Ok(Lang::TypeScript),
+        "py" => Ok(Lang::Python),
         other => Err(format!(
-            "unsupported language '{}'; use rust, js, or ts",
+            "unsupported language '{}'; use rust, js, ts, or py",
             other
         )),
     }
@@ -396,6 +398,11 @@ mod tests {
     #[test]
     fn validate_lang_rust_returns_ok() {
         assert!(validate_lang("rust").is_ok());
+    }
+
+    #[test]
+    fn validate_lang_py_returns_python() {
+        assert!(matches!(validate_lang("py"), Ok(Lang::Python)));
     }
 
     #[test]
