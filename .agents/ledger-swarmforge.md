@@ -6,43 +6,45 @@ Status ∈ `pending | applied | stale`
 
 ---
 
-2026-06-16 | 0c3619ed-b8cc-4848-b38a-fae030d2bd08 | architect | convention-gap | rejected→swarmforge | applied | DRY chicken-and-egg check-then-install rule targets swarmforge constitution, not project
-2026-06-16 | 3df20fbb-25fd-4cf3-9140-02cfe10620a6 | hardender | wrong-path | rejected→swarmforge | applied | cargo-mutants flag fix (-j not --max-workers) targets swarmforge hardender role prompt
-2026-06-16 | 3df20fbb-25fd-4cf3-9140-02cfe10620a6 | hardender | convention-gap | rejected→swarmforge | applied | Read generate_entrypoint.py before runner adapter — targets hardender role prompt
-2026-06-16 | 3df20fbb-25fd-4cf3-9140-02cfe10620a6 | hardender | wrong-path | rejected→swarmforge | applied | Scenario Outline → plain Scenario fix for generator — targets hardender role prompt
-2026-06-16 | 3df20fbb-25fd-4cf3-9140-02cfe10620a6 | hardender | wrong-path | rejected→swarmforge | applied | cargo-llvm-cov startup check targets swarmforge engineering rules
-2026-06-16 | d4a40556-f924-407b-94b1-161d35602f8a | integrator | convention-gap | rejected→swarmforge | applied | gh pr create --head rule targets swarmforge integrator role prompt
-2026-06-16 | d4a40556-f924-407b-94b1-161d35602f8a | integrator | tool-error | rejected→swarmforge | applied | SSH pre-check before git push targets swarmforge integrator role prompt
-2026-06-16 | d4a40556-f924-407b-94b1-161d35602f8a | integrator | convention-gap | rejected→swarmforge | applied | Use git rev-parse --short=10 for handoff commit abbrev targets swarmforge handoffs article
-2026-06-16 | d4a40556-f924-407b-94b1-161d35602f8a | integrator | wrong-path | rejected→swarmforge | applied | Absolute paths for tmp files targets swarmforge integrator/engineering
-2026-06-16 | d4a40556-f924-407b-94b1-161d35602f8a | integrator | tool-error | rejected→swarmforge | applied | gh pr merge auto-mode classifier block — investigate swarmforge settings
-2026-06-16 | d4a40556-f924-407b-94b1-161d35602f8a | integrator | wrong-path | rejected→swarmforge | applied | swarm_handoff.sh must run from assigned worktree targets swarmforge integrator prompt
-2026-06-16 | d4a40556-f924-407b-94b1-161d35602f8a | integrator | wrong-path | rejected→swarmforge | applied | Handoff delivery delay when invoked outside worktree — investigate handoffd.bb
-2026-06-16 | 3047ad02-3cc9-4a73-a17c-db61183e2637 | QA | wrong-path | rejected→swarmforge | applied | ready_for_next.sh must run from assigned worktree — targets swarmforge constitution
-2026-06-16 | 3047ad02-3cc9-4a73-a17c-db61183e2637 | QA | convention-gap | rejected→swarmforge | applied | CRAP --exclude 'acceptance/**' rule targets swarmforge engineering rules (duplicate of hardender#3)
-2026-06-16 | 34d2722c-85c8-4754-afe6-736114e676c2 | cleaner | tool-error | rejected→swarmforge | applied | Check-before-install for startup tools targets swarmforge engineering constitution
-2026-06-16 | 34d2722c-85c8-4754-afe6-736114e676c2 | cleaner | wrong-path | rejected→swarmforge | applied | cargo build --release before acceptance tests targets swarmforge local-engineering rules
-2026-06-16 | 34d2722c-85c8-4754-afe6-736114e676c2 | cleaner | convention-gap | rejected→swarmforge | applied | Run cargo clippy before writing manual trait impls — targets swarmforge engineering rules
-2026-06-16 | a238fa12-6e38-4f43-bf66-efc530cc68ef | coder | convention-gap | rejected→swarmforge | applied | Standalone script over heredoc for multi-language generators — targets swarmforge engineering
-2026-06-16 | a238fa12-6e38-4f43-bf66-efc530cc68ef | coder | wrong-path | rejected→swarmforge | applied | Verify test runner conventions before choosing output dir — targets swarmforge engineering
-2026-06-16 | a238fa12-6e38-4f43-bf66-efc530cc68ef | coder | convention-gap | rejected→swarmforge | applied | Verify generated code compiles without warnings — targets swarmforge engineering
-2026-06-16 | ec72e255-9882-4c2e-8ef6-ee08578aca9d | ux-engineer | convention-gap | rejected→swarmforge | applied | Clarify UX INTENT comment vs markdown heading — targets swarmforge ux-engineer role prompt
-2026-06-16 | ec72e255-9882-4c2e-8ef6-ee08578aca9d | ux-engineer | tool-error | rejected→swarmforge | applied | Double swarm-persona invocation — investigate harness skill replay mechanism
-2026-06-17 | fb292f78-e50e-4fd4-9f73-f5a114cbcd14 | architect | convention-gap | rejected→swarmforge | applied | Post-refactor full verification sequence — targets constitution/local-engineering.prompt
-2026-06-17 | fb292f78-e50e-4fd4-9f73-f5a114cbcd14 | architect | convention-gap | rejected→swarmforge | applied | Export function before writing property test — targets architect role prompt
-2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | convention-gap | rejected→swarmforge | applied | GENERATED file must be regenerated not hand-merged — targets hardender role prompt
-2026-06-17 | e1630652-fc8c-43c3-8e9e-e1d89202c14d | hardender | wrong-path | rejected→swarmforge | applied | cargo-mutants --profile mutation usage — targets hardender role prompt
-2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | wrong-path | rejected→swarmforge | applied | Check mergeable after gh pr create — targets integrator role prompt
-2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | wrong-path | rejected→swarmforge | applied | Check git log for already-merged features before PR — targets integrator role prompt
-2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | timeout | rejected→swarmforge | applied | CI polling loops need wall-clock timeout — targets integrator role prompt
-2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | tool-error | rejected→swarmforge | applied | SSH pre-check before git push — targets integrator role prompt (duplicate of 2026-06-16 integrator#2)
-2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | timeout | rejected→swarmforge | applied | Background until-loops bypass harness timeout block — investigate swarmforge scripts
-2026-06-17 | 8aafd328-8e37-4d8e-a66c-5fd669c3b6cb | integrator | convention-gap | rejected→swarmforge | applied | git_handoff not note after feature lands — targets integrator role prompt
-2026-06-17 | ab98a5aa-c35b-4929-9bbe-ba608e1308ae | QA | convention-gap | rejected→swarmforge | applied | Remove scaffold-era ASSUMED annotations when deferred behavior ships — targets QA role prompt
-2026-06-17 | ab98a5aa-c35b-4929-9bbe-ba608e1308ae | QA | convention-gap | rejected→swarmforge | applied | Run cargo fmt after regenerating acceptance tests — targets QA role prompt
-2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | convention-gap | rejected→swarmforge | applied | Fallback when merge_and_process not in PATH — targets cleaner role prompt or handoffs article
-2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | convention-gap | rejected→swarmforge | applied | Module split: move functions and tests together in one pass — targets engineering article
-2026-06-17 | a675d102-d21a-46f9-9e6a-e4e00227828d | cleaner | tool-error | rejected→swarmforge | applied | GPG/1Password commit signing failure — investigate global git config
-2026-06-17 | 1a7938af-e074-4405-a483-d928715a4d47 | coder | convention-gap | rejected→swarmforge | applied | Preview git diff before merge to avoid blind --theirs — targets coder role prompt
-2026-06-17 | 1a7938af-e074-4405-a483-d928715a4d47 | coder | tool-error | rejected→swarmforge | applied | advisor() overload fallback not documented — targets constitution or role prompt
-2026-06-17 | 7ac4552c-bbbc-42b6-942e-1ff1441be247 | specifier | convention-gap | rejected→swarmforge | applied | Post-handoff close-out sequence missing from specifier prompt — targets swarmforge/roles/specifier.prompt
+2026-06-18 | (architect) | architect | convention-gap | rejected→swarmforge | pending | Before writing handoff commit, derive with git rev-parse --short=10 HEAD not git log --oneline
+2026-06-18 | (architect) | architect | wrong-path | rejected→swarmforge | pending | Before writing handoff to: field, verify role name via ls swarmforge/roles/
+2026-06-18 | (hardender) | hardender | convention-gap | rejected→swarmforge | pending | cargo-mutants nextest profile: use --test-tool nextest -- --profile mutation not --profile directly
+2026-06-18 | (hardender) | hardender | convention-gap | rejected→swarmforge | pending | handoff role names case-sensitive; use git rev-parse --short=10 for commit abbrev
+2026-06-18 | (integrator-crap) | integrator | wrong-path | rejected→swarmforge | pending | Before swarm_handoff.sh, cd to main repo root to ensure commit hashes resolve correctly
+2026-06-18 | (integrator-crap) | integrator | wrong-path | rejected→swarmforge | pending | Before force-updating feature branch, check if remote exists and is behind
+2026-06-18 | (integrator-merge) | integrator | wrong-path | rejected→swarmforge | pending | Force-update remote feature branch via git push origin <hash>:refs/heads/<branch> --force-with-lease
+2026-06-18 | (integrator-merge) | integrator | wrong-path | rejected→swarmforge | pending | Before retrying gh pr merge after error, run gh pr view --json state to check if already merged
+2026-06-19 | (coder-exclusion) | coder | wrong-path | rejected→swarmforge | pending | merge_and_process.sh unconditional git fetch fails for local-only branches; add fallback
+2026-06-19 | (coder-exclusion) | coder | convention-gap | rejected→swarmforge | pending | Before adding coverage tests to reduce CRAP, verify C<=threshold algebraically first
+2026-06-19 | (cleaner-clean) | cleaner | convention-gap | rejected→swarmforge | pending | Always run git rev-parse --short=10 HEAD immediately before writing git_handoff draft
+2026-06-19 | (specifier-exclusions) | specifier | convention-gap | rejected→swarmforge | pending | Specifier Phase 2 prune: keep parametrized step shape, do NOT inline single-row values into plain Scenarios
+2026-06-19 | (specifier-exclusions) | specifier | convention-gap | rejected→swarmforge | pending | git_handoff commit: abbrev via git rev-parse --short=10 HEAD (10 chars) not git log default
+2026-06-19 | (qa-exclusions-route-back) | QA | convention-gap | rejected→swarmforge | pending | merge_and_process.sh should try local branch first before git fetch origin
+2026-06-19 | (qa-exclusions-route-back) | QA | convention-gap | rejected→swarmforge | pending | QA: document exact regeneration command including --steps and --feature-path flags
+2026-06-19 | (qa-note-defect) | coder | convention-gap | rejected→swarmforge | pending | Acceptance test verification: always run full pipeline (gherkin-parser → entrypoint-generator → nextest) not just committed tests
+2026-06-19 | (qa-note-defect) | QA | convention-gap | rejected→swarmforge | pending | Distinguish QA note types: defect-report requires investigation, completion/audit requires acknowledgment only
+2026-06-19 | (qa-note-defect) | QA | wrong-path | rejected→swarmforge | pending | QA defect note with no commit/branch: stop-and-report, do not silently close
+2026-06-19 | (scan-module) | architect | convention-gap | rejected→swarmforge | pending | merge_and_process.sh always fetches from remote — breaks local-only swarm; add local branch fallback
+2026-06-19 | (js-ts-spec) | specifier | convention-gap | rejected→swarmforge | pending | specifier role: git reset --hard origin/default gated by auto-classifier; add allow-rule or startup note
+2026-06-19 | (ux-passthrough) | ux-engineer | tool-error | rejected→swarmforge | pending | entire session info --transcript blocked by deny rule on .entire/metadata/**; primary retro path permanently broken
+2026-06-20 | afdf5692-db7c-4979-a811-7c5efd6ff189 | specifier | wrong-path | rejected→swarmforge | pending | QA note citing case IDs must name the feature/file — case IDs not globally unique across QA suites
+2026-06-20 | afdf5692-db7c-4979-a811-7c5efd6ff189 | specifier | wrong-path | rejected→swarmforge | pending | Never run find / (whole-FS); bound searches to repo, ~/.local, ~/src, or known build dir
+2026-06-20 | afdf5692-db7c-4979-a811-7c5efd6ff189 | specifier | convention-gap | rejected→swarmforge | pending | specifier reset rule vs destructive-gate tension: decide canonical behavior for named-base handoffs
+2026-06-20 | afdf5692-db7c-4979-a811-7c5efd6ff189 | specifier | convention-gap | rejected→swarmforge | pending | Base-adoption fallback: git checkout -B <branch> <commit>, never git checkout <commit> -- <subset>
+2026-06-20 | afdf5692-db7c-4979-a811-7c5efd6ff189 | specifier | convention-gap | rejected→swarmforge | pending | Pre-handoff gate: git show HEAD:<file> matches message claims; git diff --stat shows full base present
+2026-06-20 | afdf5692-db7c-4979-a811-7c5efd6ff189 | specifier | convention-gap | rejected→swarmforge | pending | Backward work-flow gap: QA→specifier has no defined delivery channel for spec patches
+2026-06-21 | c01492bf-e25d-4c04-90cd-79eba5e938df | coder | convention-gap | rejected→swarmforge | pending | Coder: before investigating handoff commit, first establish branch topology via git log --oneline
+2026-06-21 | (cleaner-qa-cleanup) | cleaner | convention-gap | rejected→swarmforge | pending | merge_and_process.sh fails when sender branch not pushed: fallback to git merge --no-ff <sha>
+2026-06-21 | ca7ffb05-6213-4c90-bd00-6c83407f5c79 | hardender | wrong-path | rejected→swarmforge | pending | swarm_handoff.sh: requires git rev-parse --short=10; role names case-sensitive (check swarmforge.conf)
+2026-06-21 | (cli-surface-11) | coder | convention-gap | rejected→swarmforge | pending | After merging spec commit, run acceptance pipeline before reading diff to identify actual failures
+2026-06-21 | (cli-surface-qa-gap) | coder | tool-error | rejected→swarmforge | pending | merge_and_process.sh git fetch origin fails for local-only branches; fallback to git rev-parse + merge
+2026-06-21 | (qa-spec-gaps) | QA | convention-gap | rejected→swarmforge | pending | QA: before sending git_handoff with no new code, confirm whether a commit is actually needed
+2026-06-21 | (qa-spec-gaps) | QA | convention-gap | rejected→swarmforge | pending | QA route-back to specifier: lead with what gap is and why it matters (not just the routing rule)
+2026-06-21 | (qa-spec-gaps) | QA | convention-gap | rejected→swarmforge | pending | Built-in exclusion scenarios: include parent-scan where excluded dir IS reachable under scanned path
+2026-06-21 | (qa-spec-gaps) | QA | convention-gap | rejected→swarmforge | pending | When routing back via git_handoff with spec gaps: commit findings file first so commit carries context
+2026-06-21 | (cli-surface-qa-verif) | QA | convention-gap | rejected→swarmforge | pending | commit abbrev: always use git rev-parse --short=10 HEAD rather than git log --oneline
+2026-06-21 | (cli-surface-step-dedup) | cleaner | convention-gap | rejected→swarmforge | pending | include!-based shared module: qualify types with crate:: path not bare type names
+2026-06-21 | (cli-surface-step-dedup) | cleaner | convention-gap | rejected→swarmforge | pending | include!-based shared module is the correct pattern for APS step utilities; document this
+2026-06-21 | (ux-no-intent) | ux-engineer | tool-error | rejected→swarmforge | pending | merge_and_process.sh assumes origin/swarmforge-<role> exists; local worktrees use local-only branches
+2026-06-21 | (ux-passthrough-2) | ux-engineer | convention-gap | rejected→swarmforge | pending | Handoff send is the final task step; run agent-retro AFTER handoff is queued, then done_with_current.sh
+2026-06-21 | (ux-no-intent-short) | ux-engineer | convention-gap | rejected→swarmforge | pending | cli-surface has no UX Intent section — may indicate gap in specifier template or process upstream

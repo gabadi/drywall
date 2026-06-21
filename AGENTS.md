@@ -26,10 +26,10 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 | Property tests | `cargo nextest run --profile property` |
 | Acceptance tests | `cargo nextest run --profile acceptance` |
 | Language mutation | `cargo mutants --test-tool nextest -j 8 --no-shuffle -- --profile mutation` |
-| Gherkin mutation | `gherkin-mutator --level soft <feature>` |
+| Gherkin mutation | `ln -sf <target>.feature features/a-feature.feature && gherkin-mutator --level soft features/a-feature.feature && rm features/a-feature.feature` |
 | Coverage (≥90% lines) | `mise exec -- cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info --fail-under-lines 90` |
 | CRAP (threshold ≤6) | `cargo crap --lcov lcov.info --exclude 'acceptance/**' --exclude 'src/main.rs' --threshold 6 --fail-above` |
-| Build release binary | `cargo build --release` |
+| Build release binary | `cargo build --release` (must run before `--profile acceptance` — stale binary causes false failures) |
 | DRY self-check | `./target/release/drywall ./src` |
 
 ## Mutation runs
@@ -39,6 +39,11 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 ## Tooling notes
 
 - **gherkin-ir-dry-checker output**: use `rtk json <report>` to read the JSON report compactly rather than dumping full JSON into context.
+- **gherkin-mutator**: defaults to `features/a-feature.feature`; must use symlink pattern above — passes wrong feature path silently with unknown flags.
+- **acceptance-entrypoint-generator**: requires `--steps <steps-file>` (basename only) for non-scaffold features; omitting it defaults to `scaffold_cli_steps.rs` and silently generates the wrong entrypoint.
+- **cargo-mutants `--exclude`**: patterns match absolute paths, not CWD-relative. Use `**/filename.rs` form, not `src/filename.rs`.
+- **acceptance/runtime/mod.rs `World`**: add `#[allow(dead_code)]` on the struct (not per-field) — runtime is `include!`-ed across multiple test binaries with differing step coverage.
+- **Acceptance fixture paths**: must be outside gitignored paths (e.g. not under `tmp/`) — gitignore-awareness is default-on and silently skips ignored dirs, producing false-empty scans.
 
 ## drywall output format
 
