@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "2926e5a3f9f1",
+  "session_id": "979a6ef6-23d1-4b44-81f1-7f7f71c98d29",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T13:14:03.870365Z",
+  "branch": "feat/jsts-detection",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "swarmforge/roles/specifier.prompt",
+    "swarmforge/skills/domain-modeling/ADR-FORMAT.md",
+    "swarmforge/skills/domain-modeling/CONTEXT-FORMAT.md",
+    "swarmforge/skills/domain-modeling/SKILL.md",
+    "swarmforge/skills/grill-with-docs/SKILL.md",
+    "swarmforge/skills/grilling/SKILL.md",
+    "swarmforge/templates/feature.feature"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "6164590973c0",
+  "token_usage": {
+    "input_tokens": 60,
+    "cache_creation_tokens": 12434,
+    "cache_read_tokens": 183685,
+    "output_tokens": 2287,
+    "api_call_count": 7
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T13:14:03.85536Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 208,
+    "total_committed": 0,
+    "total_lines_changed": 208,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 14,
+      "user_lines_removed": 208,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2,
+        "swarmforge/roles/specifier.prompt": 10,
+        "swarmforge/templates/feature.feature": 2
+      },
+      "user_removed_per_file": {
+        "swarmforge/roles/specifier.prompt": 9,
+        "swarmforge/skills/domain-modeling/ADR-FORMAT.md": 47,
+        "swarmforge/skills/domain-modeling/CONTEXT-FORMAT.md": 60,
+        "swarmforge/skills/domain-modeling/SKILL.md": 74,
+        "swarmforge/skills/grill-with-docs/SKILL.md": 7,
+        "swarmforge/skills/grilling/SKILL.md": 10,
+        "swarmforge/templates/feature.feature": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 12,
+      "agent_lines_removed": 208,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}

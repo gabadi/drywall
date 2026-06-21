@@ -3,13 +3,15 @@
   "checkpoint_id": "2926e5a3f9f1",
   "strategy": "manual-commit",
   "branch": "feat/jsts-detection",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
+    "swarmforge/roles/specifier.prompt",
     "swarmforge/skills/domain-modeling/ADR-FORMAT.md",
     "swarmforge/skills/domain-modeling/CONTEXT-FORMAT.md",
     "swarmforge/skills/domain-modeling/SKILL.md",
     "swarmforge/skills/grill-with-docs/SKILL.md",
-    "swarmforge/skills/grilling/SKILL.md"
+    "swarmforge/skills/grilling/SKILL.md",
+    "swarmforge/templates/feature.feature"
   ],
   "sessions": [
     {
@@ -17,13 +19,19 @@
       "transcript": "/29/26e5a3f9f1/0/full.jsonl",
       "content_hash": "/29/26e5a3f9f1/0/content_hash.txt",
       "prompt": "/29/26e5a3f9f1/0/prompt.txt"
+    },
+    {
+      "metadata": "/29/26e5a3f9f1/1/metadata.json",
+      "transcript": "/29/26e5a3f9f1/1/full.jsonl",
+      "content_hash": "/29/26e5a3f9f1/1/content_hash.txt",
+      "prompt": "/29/26e5a3f9f1/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 94,
-    "cache_creation_tokens": 23741,
-    "cache_read_tokens": 294109,
-    "output_tokens": 3414,
-    "api_call_count": 11
+    "input_tokens": 154,
+    "cache_creation_tokens": 36175,
+    "cache_read_tokens": 477794,
+    "output_tokens": 5701,
+    "api_call_count": 18
   }
 }

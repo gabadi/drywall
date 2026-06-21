@@ -1,0 +1,1 @@
+we need to pull main for remote, i dont know if we have stale changes locally, but we need to properly set/merge both. Maybe we can commit to a new branch, then pull and then see the diff and reason?
