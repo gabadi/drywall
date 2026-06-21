@@ -101,6 +101,56 @@ proptest! {
     }
 
     #[test]
+    fn tsx_extraction_deterministic(name in "[a-z][a-z0-9_]{0,8}") {
+        let src = format!(
+            "function {0}(a: number, b: number): number {{\n  let c = a + b;\n  let d = c * 2;\n  let e = d + a;\n  return e;\n}}\n",
+            name
+        );
+        let mut p1 = make_parser_for(Lang::Tsx);
+        let mut p2 = make_parser_for(Lang::Tsx);
+        let tree1 = p1.parse(&src, None).unwrap();
+        let tree2 = p2.parse(&src, None).unwrap();
+        let mut fns1 = Vec::new();
+        let mut fns2 = Vec::new();
+        extract_functions_with_config(tree1.root_node(), &src, "f.tsx", &TS_CONFIG, &mut fns1);
+        extract_functions_with_config(tree2.root_node(), &src, "f.tsx", &TS_CONFIG, &mut fns2);
+        prop_assert_eq!(fns1.len(), fns2.len(), "tsx extraction must be deterministic");
+        for (f1, f2) in fns1.iter().zip(fns2.iter()) {
+            prop_assert_eq!(&f1.node_hashes, &f2.node_hashes, "same tsx source must produce same hashes");
+        }
+    }
+
+    #[test]
+    fn js_self_similarity_is_one(name in "[a-z][a-z0-9_]{0,8}") {
+        let src = format!(
+            "function {0}(a, b) {{\n  let c = a + b;\n  let d = c * 2;\n  let e = d + a;\n  return e;\n}}\n",
+            name
+        );
+        let mut parser = make_parser_for(Lang::JavaScript);
+        let tree = parser.parse(&src, None).unwrap();
+        let mut fns = Vec::new();
+        extract_functions_with_config(tree.root_node(), &src, "f.js", &JS_CONFIG, &mut fns);
+        prop_assume!(fns.len() == 1);
+        let score = drywall::jaccard(&fns[0].node_hashes, &fns[0].node_hashes);
+        prop_assert!((score - 1.0).abs() < 1e-9, "self-similarity must be 1.0, got {}", score);
+    }
+
+    #[test]
+    fn ts_self_similarity_is_one(name in "[a-z][a-z0-9_]{0,8}") {
+        let src = format!(
+            "function {0}(a: number, b: number): number {{\n  let c = a + b;\n  let d = c * 2;\n  let e = d + a;\n  return e;\n}}\n",
+            name
+        );
+        let mut parser = make_parser_for(Lang::TypeScript);
+        let tree = parser.parse(&src, None).unwrap();
+        let mut fns = Vec::new();
+        extract_functions_with_config(tree.root_node(), &src, "f.ts", &TS_CONFIG, &mut fns);
+        prop_assume!(fns.len() == 1);
+        let score = drywall::jaccard(&fns[0].node_hashes, &fns[0].node_hashes);
+        prop_assert!((score - 1.0).abs() < 1e-9, "self-similarity must be 1.0, got {}", score);
+    }
+
+    #[test]
     fn js_twin_functions_hashes_differ_from_ts(name in "[a-z][a-z0-9_]{0,8}") {
         // JS and TS grammars produce different node kinds for typed parameters,
         // so their hash multisets must differ for typed functions.

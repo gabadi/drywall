@@ -1,5 +1,5 @@
 use drywall::scan::{
-    build_glob_set, is_builtin_excluded, is_rust_file, should_scan_file, should_skip,
+    build_glob_set, detect_lang, is_builtin_excluded, is_rust_file, should_scan_file, should_skip,
 };
 use proptest::prelude::*;
 use std::path::Path;
@@ -219,6 +219,59 @@ proptest! {
         prop_assert!(
             should_scan_file(Path::new(&path), &gs, &|_| false, None),
             "clean .rs file must scan: {}",
+            path
+        );
+    }
+
+    // --- detect_lang extension table invariants ---
+
+    #[test]
+    fn detect_lang_known_extensions_return_some(
+        stem in "[a-z][a-z0-9_]{0,8}",
+        ext in proptest::sample::select(&["rs", "js", "jsx", "ts", "tsx"][..]),
+    ) {
+        let path = format!("src/{}.{}", stem, ext);
+        prop_assert!(
+            detect_lang(Path::new(&path)).is_some(),
+            "known extension '{}' must return Some lang",
+            ext
+        );
+    }
+
+    #[test]
+    fn detect_lang_unsupported_ext_returns_none(
+        stem in "[a-z][a-z0-9_]{0,8}",
+        ext in "[a-z]{2,4}",
+    ) {
+        prop_assume!(!matches!(ext.as_str(), "rs" | "js" | "jsx" | "ts" | "tsx"));
+        let path = format!("src/{}.{}", stem, ext);
+        prop_assert!(
+            detect_lang(Path::new(&path)).is_none(),
+            "unsupported extension '{}' must return None",
+            ext
+        );
+    }
+
+    // --- should_scan_file: supported JS/TS extensions are scanned ---
+
+    #[test]
+    fn should_scan_file_clean_js_path_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
+        let path = format!("src/{}.js", stem);
+        let gs = build_glob_set(&[]).unwrap();
+        prop_assert!(
+            should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            "clean .js file must scan: {}",
+            path
+        );
+    }
+
+    #[test]
+    fn should_scan_file_clean_ts_path_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
+        let path = format!("src/{}.ts", stem);
+        let gs = build_glob_set(&[]).unwrap();
+        prop_assert!(
+            should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            "clean .ts file must scan: {}",
             path
         );
     }
