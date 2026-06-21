@@ -53,15 +53,17 @@ pub fn build_glob_set(patterns: &[String]) -> Result<GlobSet, globset::Error> {
     builder.build()
 }
 
+const EXT_LANG_MAP: &[(&str, Lang)] = &[
+    ("rs", Lang::Rust),
+    ("js", Lang::JavaScript),
+    ("jsx", Lang::JavaScript),
+    ("ts", Lang::TypeScript),
+    ("tsx", Lang::Tsx),
+];
+
 pub fn detect_lang(path: &Path) -> Option<Lang> {
     let ext = path.extension().and_then(|e| e.to_str())?;
-    match ext {
-        "rs" => Some(Lang::Rust),
-        "js" | "jsx" => Some(Lang::JavaScript),
-        "ts" => Some(Lang::TypeScript),
-        "tsx" => Some(Lang::Tsx),
-        _ => None,
-    }
+    EXT_LANG_MAP.iter().find(|(e, _)| *e == ext).map(|(_, l)| *l)
 }
 
 pub fn is_rust_file(path: &Path) -> bool {
