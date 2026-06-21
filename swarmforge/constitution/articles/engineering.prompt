@@ -7,12 +7,15 @@
   - Go: install with `go install`; mutation `github.com/unclebob/mutate4go`, CRAP `github.com/unclebob/crap4go`, DRY `github.com/unclebob/dry4go`.
   - Clojure: install with Clojure CLI/deps.edn; mutation `github.com/unclebob/clj-mutate`, CRAP `github.com/unclebob/crap4clj`, DRY `github.com/unclebob/dry4clj`.
   - Java: install with Maven (`mvn`); mutation `github.com/unclebob/mutate4java`, CRAP `github.com/unclebob/crap4java`, DRY `github.com/unclebob/dry4java`.
+  - Rust: install with `mise install`; mutation `cargo-mutants`, CRAP `cargo-crap`, DRY `github.com/gabadi/drywall` (SELF, Chicken-and-egg), test runner `cargo-nextest`, coverage `cargo-llvm-cov`.
 
 ## Language Defaults
 - For Clojure projects, prefer Babashka where possible.
 - For Clojure projects, prefer Speclj for unit and behavior tests.
 - For Clojure or Babashka projects using Speclj, use `github.com/unclebob/speclj-structure-check` to validate test syntax. If a Speclj spec file changed, run the structure check before executing the relevant test command.
 - For Java projects, avoid using Maven to run tests; build dedicated test runners and run those instead.
+- For Rust projects, prefer `cargo nextest` with project-defined profiles over `cargo test`. Use `cargo llvm-cov` for coverage, `cargo crap` for CRAP analysis, `cargo mutants` for mutation testing, `drywall ./src` for DRY analysis. Consult the project `AGENTS.md` for profile names, thresholds, and flags.
+- For Rust projects, run language mutation with `--git-base main` to restrict to changed lines only (equivalent to `--since-last-run` in mutate4go). Run one file at a time: `cargo mutants --git-base main --test-tool nextest -j 8 --no-shuffle -- --profile mutation`. Skip `--git-base` only when running full-suite hardening or when no base branch exists.
 
 ## Design And Testability
 - Work in small, reviewable increments.
