@@ -1,0 +1,71 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "a7a0b5c114b9",
+  "session_id": "35fd8608-c170-491b-ba40-8b39a5a5e645",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T20:28:31.174621Z",
+  "branch": "feat/builtin-excluded-dirs-python-jsts",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "src/scan.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "3fcfb2219ee8",
+  "token_usage": {
+    "input_tokens": 98,
+    "cache_creation_tokens": 14786,
+    "cache_read_tokens": 340798,
+    "output_tokens": 2951,
+    "api_call_count": 12
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-mattpocock-skills:implement-2026-06-21T20:27:07.4604Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "mattpocock-skills:implement"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3fcfb2219ee8",
+      "timestamp": "2026-06-21T20:27:07.4604Z",
+      "native": {
+        "command": "/mattpocock-skills:implement"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/mattpocock-skills:implement",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T20:28:31.161337Z",
+    "agent_lines": 21,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 21,
+    "total_lines_changed": 22,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}
