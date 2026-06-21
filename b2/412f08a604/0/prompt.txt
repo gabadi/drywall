@@ -1,0 +1,25 @@
+So, we fixed noth?
+
+---
+
+So, we fixed both?
+
+---
+
+you are right, /verify, do we have missing cases to add in verify? or we are ok
+
+---
+
+install  to ~/.local/bin/
+
+---
+
+we dont need version management
+
+---
+
+Whats the statis of with issue #25?
+
+---
+
+Create PR
