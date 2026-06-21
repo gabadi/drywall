@@ -1,0 +1,84 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "dc3704be5f9b",
+  "session_id": "cd539689-6f5e-42db-986b-1c1f1249857f",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T04:15:44.584439Z",
+  "branch": "knowledge/rust-dup-detect-batch2",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "AGENTS.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "85260fc20399",
+  "token_usage": {
+    "input_tokens": 6,
+    "cache_creation_tokens": 14829,
+    "cache_read_tokens": 75854,
+    "output_tokens": 233,
+    "api_call_count": 3
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01V5DZyZxSuRVJx68B6Um2Ee",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "85260fc20399",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 15,
+        "end": 16,
+        "entry_ids": [
+          "0d6a7587-3f7a-4d57-8839-44c39d408bec"
+        ],
+        "tool_use_id": "toolu_01V5DZyZxSuRVJx68B6Um2Ee"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01V5DZyZxSuRVJx68B6Um2Ee"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T04:15:44.566885Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 62,
+    "human_modified": 4,
+    "human_removed": 0,
+    "total_committed": 62,
+    "total_lines_changed": 106,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 10,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 7,
+        "AGENTS.md": 3
+      }
+    }
+  ]
+}
