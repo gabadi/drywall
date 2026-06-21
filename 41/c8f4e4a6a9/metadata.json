@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "41c8f4e4a6a9",
+  "strategy": "manual-commit",
+  "branch": "knowledge/jsts-detection-batch",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".agents/backlog.md",
+    ".agents/ledger-project.md",
+    ".agents/ledger-swarmforge.md",
+    "AGENTS.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/41/c8f4e4a6a9/0/metadata.json",
+      "transcript": "/41/c8f4e4a6a9/0/full.jsonl",
+      "content_hash": "/41/c8f4e4a6a9/0/content_hash.txt",
+      "prompt": "/41/c8f4e4a6a9/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 29,
+    "cache_creation_tokens": 53277,
+    "cache_read_tokens": 1516719,
+    "output_tokens": 10751,
+    "api_call_count": 27
+  }
+}

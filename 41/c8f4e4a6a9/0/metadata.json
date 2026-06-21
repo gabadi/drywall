@@ -1,0 +1,79 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "41c8f4e4a6a9",
+  "session_id": "219bdcb5-2ff5-4bec-a76b-4ae66ef729d7",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T10:56:43.12247Z",
+  "branch": "knowledge/jsts-detection-batch",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "AGENTS.md",
+    ".agents/backlog.md",
+    ".agents/ledger-project.md",
+    ".agents/ledger-swarmforge.md"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "6dde592da953",
+  "token_usage": {
+    "input_tokens": 29,
+    "cache_creation_tokens": 53277,
+    "cache_read_tokens": 1516719,
+    "output_tokens": 10751,
+    "api_call_count": 27
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-21T10:51:07.128167Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "6dde592da953",
+      "timestamp": "2026-06-21T10:51:07.128167Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T10:56:43.105481Z",
+    "agent_lines": 35,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 35,
+    "total_lines_changed": 35,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 219,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 21,
+        ".claude/skills/domain-modeling/ADR-FORMAT.md": 47,
+        ".claude/skills/domain-modeling/CONTEXT-FORMAT.md": 60,
+        ".claude/skills/domain-modeling/SKILL.md": 74,
+        ".claude/skills/grill-with-docs/SKILL.md": 7,
+        ".claude/skills/grilling/SKILL.md": 10
+      }
+    }
+  ]
+}
