@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "b7d8ea122f41",
+  "strategy": "manual-commit",
+  "branch": "feat/ignore-crate-walkbuilder",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/scan.rs",
+    "tests/scan_property_test.rs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b7/d8ea122f41/0/metadata.json",
+      "transcript": "/b7/d8ea122f41/0/full.jsonl",
+      "content_hash": "/b7/d8ea122f41/0/content_hash.txt",
+      "prompt": "/b7/d8ea122f41/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 261,
+    "cache_creation_tokens": 65541,
+    "cache_read_tokens": 1811845,
+    "output_tokens": 27407,
+    "api_call_count": 32
+  }
+}

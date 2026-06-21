@@ -1,0 +1,118 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "b7d8ea122f41",
+  "session_id": "02cb44cf-d9c4-4fd0-a925-a1be943e695e",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T20:44:33.544395Z",
+  "branch": "feat/ignore-crate-walkbuilder",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/scan.rs",
+    "tests/scan_property_test.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "a8e8266a95e0",
+  "token_usage": {
+    "input_tokens": 261,
+    "cache_creation_tokens": 65541,
+    "cache_read_tokens": 1811845,
+    "output_tokens": 27407,
+    "api_call_count": 32
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-mattpocock-skills:implement-2026-06-21T20:35:13.038329Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "mattpocock-skills:implement"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "305eaed880dd",
+      "timestamp": "2026-06-21T20:35:13.038329Z",
+      "native": {
+        "command": "/mattpocock-skills:implement"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/mattpocock-skills:implement",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_0161Pi4V8J7oSR9TAqKFEdhn",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "a8e8266a95e0",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 128,
+        "end": 129,
+        "entry_ids": [
+          "b3274b00-dea5-4a2c-818d-15181f920268"
+        ],
+        "tool_use_id": "toolu_0161Pi4V8J7oSR9TAqKFEdhn"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_0161Pi4V8J7oSR9TAqKFEdhn"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: review",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T20:44:33.526576Z",
+    "agent_lines": 94,
+    "agent_removed": 125,
+    "human_added": 2,
+    "human_modified": 5,
+    "human_removed": 0,
+    "total_committed": 101,
+    "total_lines_changed": 226,
+    "agent_percentage": 96.90265486725663,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 99,
+      "agent_lines_removed": 125,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}
