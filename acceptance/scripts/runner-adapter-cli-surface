@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Gherkin mutation runner adapter for drywall cli_surface feature.
+# Persistent worker: reads JSON job requests from stdin, writes JSON responses to stdout.
+# Diagnostics go to stderr.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+MUTATION_TEST="$PROJECT_ROOT/tests/mutation_acceptance_test.rs"
+
+echo "runner-adapter-cli-surface started, project_root=$PROJECT_ROOT" >&2
+
+cleanup() {
+    rm -f "$MUTATION_TEST"
+}
+trap cleanup EXIT
+
+# Generate into a temp dir then copy to tests/ with the mutation-specific name
+TMPDIR_BASE="$PROJECT_ROOT/tmp/runner-adapter-cli-surface-gen"
+mkdir -p "$TMPDIR_BASE"
+
+while IFS= read -r line; do
+    id=$(python3 -c "import sys,json; d=json.loads(sys.argv[1]); print(d['id'])" "$line")
+    feature_json=$(python3 -c "import sys,json; d=json.loads(sys.argv[1]); print(d['feature_json'])" "$line")
+
+    echo "runner-adapter-cli-surface: job id=$id" >&2
+
+    start_ns=$(python3 -c "import time; print(int(time.monotonic_ns()))")
+
+    outcome="test_success"
+    output=""
+    err_text=""
+
+    GEN_DIR="$TMPDIR_BASE/$id"
+    mkdir -p "$GEN_DIR/metadata"
+
+    # Generate into GEN_DIR first to see the output filename
+    if ! regen_out=$(python3 "$SCRIPT_DIR/generate_entrypoint.py" "$feature_json" "$GEN_DIR" 2>&1); then
+        outcome="infrastructure_error"
+        err_text="generate_entrypoint failed: $regen_out"
+    else
+        gen_file=$(find "$GEN_DIR" -name "*_acceptance_test.rs" | head -1)
+        if [ -z "$gen_file" ]; then
+            outcome="infrastructure_error"
+            err_text="no generated acceptance test found in $GEN_DIR"
+        else
+            tests_dir="$PROJECT_ROOT/tests"
+            acceptance_dir="$PROJECT_ROOT/acceptance"
+            runtime_rel=$(python3 -c "import os; print(os.path.relpath('$acceptance_dir/runtime/mod.rs', '$tests_dir'))")
+            steps_rel=$(python3 -c "import os; print(os.path.relpath('$acceptance_dir/steps/cli_surface_steps.rs', '$tests_dir'))")
+
+            # Replace the include paths and inject per-test state reset
+            sed -e "s|include!(\"[^\"]*runtime/mod.rs\")|include!(\"$runtime_rel\")|g" \
+                -e "s|include!(\"[^\"]*_steps.rs\")|include!(\"$steps_rel\")|g" \
+                -e "s|let mut world = World::new();|steps::reset_test_state();\n    let mut world = World::new();|g" \
+                "$gen_file" > "$MUTATION_TEST"
+
+            if run_out=$(cd "$PROJECT_ROOT" && DRYWALL_BINARY="$PROJECT_ROOT/target/release/drywall" cargo test --test mutation_acceptance_test -- --test-threads=1 2>&1); then
+                outcome="test_success"
+                output="$run_out"
+            else
+                outcome="test_failure"
+                output="$run_out"
+            fi
+        fi
+    fi
+
+    rm -rf "$GEN_DIR"
+
+    end_ns=$(python3 -c "import time; print(int(time.monotonic_ns()))")
+    duration=$(( end_ns - start_ns ))
+
+    python3 -c "
+import json, sys
+print(json.dumps({
+    'id': sys.argv[1],
+    'outcome': sys.argv[2],
+    'output': sys.argv[3],
+    'error': sys.argv[4],
+    'duration': int(sys.argv[5]),
+}))" "$id" "$outcome" "$output" "$err_text" "$duration"
+
+done
