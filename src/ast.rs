@@ -189,6 +189,75 @@ fn extract_rust_let_declaration(
     }
 }
 
+fn extract_jsts_export_statement(
+    node: tree_sitter::Node,
+    source: &str,
+    file: &str,
+    config: &LangConfig,
+    functions: &mut Vec<FunctionInfo>,
+) {
+    let fn_decls: Vec<_> = children_of(node)
+        .into_iter()
+        .filter(|c| c.kind() == "function_declaration")
+        .collect();
+    if fn_decls.is_empty() {
+        for child in children_of(node) {
+            extract_jsts_functions(child, source, file, config, functions);
+        }
+    } else {
+        for child in fn_decls {
+            functions.push(make_function_info(child, source, file, config));
+        }
+    }
+}
+
+fn extract_jsts_lexical_declaration(
+    node: tree_sitter::Node,
+    source: &str,
+    file: &str,
+    config: &LangConfig,
+    functions: &mut Vec<FunctionInfo>,
+) {
+    for child in children_of(node) {
+        if child.kind() == "variable_declarator" {
+            extract_jsts_variable_declarator(child, source, file, config, functions);
+        }
+    }
+}
+
+fn extract_jsts_class_body(
+    node: tree_sitter::Node,
+    source: &str,
+    file: &str,
+    config: &LangConfig,
+    functions: &mut Vec<FunctionInfo>,
+) {
+    for child in children_of(node) {
+        if child.kind() == "method_definition" {
+            functions.push(make_function_info(child, source, file, config));
+        }
+    }
+}
+
+fn try_extract_jsts_node(
+    node: tree_sitter::Node,
+    source: &str,
+    file: &str,
+    config: &LangConfig,
+    functions: &mut Vec<FunctionInfo>,
+) -> bool {
+    match node.kind() {
+        "function_declaration" => functions.push(make_function_info(node, source, file, config)),
+        "export_statement" => extract_jsts_export_statement(node, source, file, config, functions),
+        "lexical_declaration" => {
+            extract_jsts_lexical_declaration(node, source, file, config, functions)
+        }
+        "class_body" => extract_jsts_class_body(node, source, file, config, functions),
+        _ => return false,
+    }
+    true
+}
+
 fn extract_jsts_functions(
     node: tree_sitter::Node,
     source: &str,
@@ -196,46 +265,9 @@ fn extract_jsts_functions(
     config: &LangConfig,
     functions: &mut Vec<FunctionInfo>,
 ) {
-    match node.kind() {
-        // function declaration: `function foo() {}`
-        "function_declaration" => {
-            functions.push(make_function_info(node, source, file, config));
-        }
-        // exported named function: `export function foo() {}` or `export default function foo() {}`
-        "export_statement" => {
-            let mut found = false;
-            for child in children_of(node) {
-                if child.kind() == "function_declaration" {
-                    functions.push(make_function_info(child, source, file, config));
-                    found = true;
-                }
-            }
-            if !found {
-                for child in children_of(node) {
-                    extract_jsts_functions(child, source, file, config, functions);
-                }
-            }
-        }
-        // `const f = () => {}` or `let f = () => {}`
-        "lexical_declaration" => {
-            for child in children_of(node) {
-                if child.kind() == "variable_declarator" {
-                    extract_jsts_variable_declarator(child, source, file, config, functions);
-                }
-            }
-        }
-        // class body: extract methods
-        "class_body" => {
-            for child in children_of(node) {
-                if child.kind() == "method_definition" {
-                    functions.push(make_function_info(child, source, file, config));
-                }
-            }
-        }
-        _ => {
-            for child in children_of(node) {
-                extract_jsts_functions(child, source, file, config, functions);
-            }
+    if !try_extract_jsts_node(node, source, file, config, functions) {
+        for child in children_of(node) {
+            extract_jsts_functions(child, source, file, config, functions);
         }
     }
 }
