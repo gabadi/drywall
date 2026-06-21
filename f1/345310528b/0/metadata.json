@@ -76,6 +76,37 @@
         "label": "Skill: run-drywall",
         "default_collapsed": true
       }
+    },
+    {
+      "id": "claude-skill-toolu_01LkXm32o2h8XsAGSGeDvMff",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "439fefbd3f15",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 195,
+        "end": 196,
+        "entry_ids": [
+          "168e9965-0a1e-40c7-93ba-3c55ef144db8"
+        ],
+        "tool_use_id": "toolu_01LkXm32o2h8XsAGSGeDvMff"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01LkXm32o2h8XsAGSGeDvMff"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: review",
+        "default_collapsed": true
+      }
     }
   ],
   "session_metrics": {
