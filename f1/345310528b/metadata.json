@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "f1345310528b",
+  "strategy": "manual-commit",
+  "branch": "perf/parallel-comparison-and-sorted-jaccard",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/ast.rs",
+    "src/core.rs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f1/345310528b/0/metadata.json",
+      "transcript": "/f1/345310528b/0/full.jsonl",
+      "content_hash": "/f1/345310528b/0/content_hash.txt",
+      "prompt": "/f1/345310528b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 251,
+    "cache_creation_tokens": 68975,
+    "cache_read_tokens": 1898962,
+    "output_tokens": 15589,
+    "api_call_count": 30
+  }
+}

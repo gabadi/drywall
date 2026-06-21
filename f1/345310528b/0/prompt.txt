@@ -1,0 +1,30 @@
+Check /Users/gabadi/workspace/addi/platform/python3, why it takes almost 3min to run?
+
+---
+
+/mattpocock-skills:implement use a branch
+
+---
+
+Before going on, this changes any definition vs upstream dry4go? or its a fully 100% optimization, use a subagent to answer this
+
+---
+
+<task-notification>
+<task-id>a803b3b3c49377b7f</task-id>
+<tool-use-id>toolu_01MJ7b1KegYqmgpMtE83heqm</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-gabadi-workspace-addi-drywall/94a98bee-d74f-4b75-b860-e82cb524caa8/tasks/a803b3b3c49377b7f.output</output-file>
+<status>completed</status>
+<summary>Agent "Check if dedup changes Jaccard semantics" came to rest</summary>
+<note>A task-notification fires each time this agent comes to rest with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**Task:** Determine if `.dedup()` addition is semantically identical to original or changes Jaccard scores.
+
+**Pure optimization — results are identical.**
+
+`collect_hashes_recursive` hashes every subtree node (parent + all children recursively), so duplicates absolutely arise — e.g., two identical leaf tokens (`_ID`) hash to the same value, and structurally similar sub-expressions repeat hashes.
+
+The original `jaccard()` converted both slices to `HashSet&lt;u64&gt;`, which inherently deduplicates before computing intersection/union. The new `jaccard()` uses a two-pointer sorted-slice merge, which requires the inputs to already be deduplicated — hence the `.dedup()` call.
+
+Both paths compute Jaccard over the **set** of unique hashes. Adding `.dedup()` to `collect_subtree_hashes` just moves the deduplication from per-comparison (HashSet allocation) to per-extraction (one O(n) pass on a sorted Vec). The resulting scores are bit-for-bit identical.</result>
+<usage><subagent_tokens>75081</subagent_tokens><tool_uses>1</tool_uses><duration_ms>12988</duration_ms></usage>
+</task-notification>
