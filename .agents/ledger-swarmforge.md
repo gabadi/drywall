@@ -70,3 +70,5 @@ Status ∈ `pending | applied | stale`
 2026-06-21 | 2308d3c6-531d-460c-8ab1-ca4d79eae2ad | ux-engineer | tool-error | rejected→swarmforge | pending | entire session info --transcript blocked by sandbox deny rule — primary retro data path non-functional; fallback works
 2026-06-21 | 2308d3c6-531d-460c-8ab1-ca4d79eae2ad | ux-engineer | convention-gap | rejected→swarmforge | pending | swarm-persona: if persona content already in last user message from /swarm-persona command, skip Skill tool invocation
 2026-06-21 | dc39fd1d-1487-4be4-8e7c-5fc4338f7e20 | curator | convention-gap | rejected→swarmforge | pending | Retro files MUST include Session ID in header; without it curator ledger entries lack traceability
+2026-06-21 | 4f568388-4756-468f-b118-65f5ed8d4f6f | integrator | convention-gap | rejected→swarmforge | pending | Remove --timeout 1800 from gh pr checks --watch in integrator role — flag does not exist in installed gh CLI
+2026-06-21 | 4f568388-4756-468f-b118-65f5ed8d4f6f | integrator | wrong-path | rejected→swarmforge | pending | Before gh pr merge --delete-branch, check whether any worktree holds feature branch; omit --delete-branch if so
