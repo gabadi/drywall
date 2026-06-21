@@ -21,7 +21,7 @@ pub fn run(paths: &[String], config: &Config) -> RunResult {
         Err(e) => return RunResult::Error(format!("invalid exclude glob: {}", e)),
     };
 
-    let (functions, errors) = collect_all_functions(paths, &exclude_set);
+    let (functions, errors) = collect_all_functions(paths, &exclude_set, config.lang);
 
     if !errors.is_empty() {
         return RunResult::Error(errors.join("\n"));
@@ -44,7 +44,7 @@ pub fn run(paths: &[String], config: &Config) -> RunResult {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ast::extract_functions;
+    use crate::ast::{JS_CONFIG, Lang, extract_functions, extract_functions_with_config};
     use crate::core::{jaccard, source_lines};
 
     #[test]
@@ -202,5 +202,109 @@ fn beta(x: i32, y: i32) -> i32 {
             0,
             "static with non-closure value, no functions expected"
         );
+    }
+
+    #[test]
+    fn run_js_duplicate_files_returns_duplicates() {
+        let dir = tempfile::tempdir().unwrap();
+        let alpha_src = "function accumulate_sum(a, b) {\n  let sum = a + b;\n  let extra = sum * 2;\n  let more = extra + a;\n  let result = more + b;\n  return result;\n}\n";
+        let beta_src = "function accumulate_sum(x, y) {\n  let total = x + y;\n  let extra = total * 2;\n  let more = extra + x;\n  let result = more + y;\n  return result;\n}\n";
+        std::fs::write(dir.path().join("alpha.js"), alpha_src).unwrap();
+        std::fs::write(dir.path().join("beta.js"), beta_src).unwrap();
+        let config = Config::default();
+        let paths = vec![dir.path().to_string_lossy().to_string()];
+        let result = run(&paths, &config);
+        assert!(
+            matches!(result, RunResult::Duplicates(_)),
+            "expected duplicates in js files"
+        );
+    }
+
+    #[test]
+    fn run_ts_duplicate_files_returns_duplicates() {
+        let dir = tempfile::tempdir().unwrap();
+        let alpha_src = "function accumulate_sum(a: number, b: number): number {\n  let sum = a + b;\n  let extra = sum * 2;\n  let more = extra + a;\n  let result = more + b;\n  return result;\n}\n";
+        let beta_src = "function accumulate_sum(x: number, y: number): number {\n  let total = x + y;\n  let extra = total * 2;\n  let more = extra + x;\n  let result = more + y;\n  return result;\n}\n";
+        std::fs::write(dir.path().join("alpha.ts"), alpha_src).unwrap();
+        std::fs::write(dir.path().join("beta.ts"), beta_src).unwrap();
+        let config = Config::default();
+        let paths = vec![dir.path().to_string_lossy().to_string()];
+        let result = run(&paths, &config);
+        assert!(
+            matches!(result, RunResult::Duplicates(_)),
+            "expected duplicates in ts files"
+        );
+    }
+
+    #[test]
+    fn run_with_force_lang_js_scans_non_standard_ext() {
+        let dir = tempfile::tempdir().unwrap();
+        let alpha_src = "function accumulate_sum(a, b) {\n  let sum = a + b;\n  let extra = sum * 2;\n  let more = extra + a;\n  let result = more + b;\n  return result;\n}\n";
+        let beta_src = "function accumulate_sum(x, y) {\n  let total = x + y;\n  let extra = total * 2;\n  let more = extra + x;\n  let result = more + y;\n  return result;\n}\n";
+        std::fs::write(dir.path().join("alpha.inc"), alpha_src).unwrap();
+        std::fs::write(dir.path().join("beta.inc"), beta_src).unwrap();
+        let config = Config {
+            lang: Some(Lang::JavaScript),
+            ..Config::default()
+        };
+        let paths = vec![dir.path().to_string_lossy().to_string()];
+        let result = run(&paths, &config);
+        assert!(
+            matches!(result, RunResult::Duplicates(_)),
+            "expected duplicates with forced js lang"
+        );
+    }
+
+    #[test]
+    fn run_mixed_language_dir_reports_both_pairs() {
+        let dir = tempfile::tempdir().unwrap();
+        let rs_alpha = r#"pub fn accumulate_sum(a: i32, b: i32) -> i32 {
+    let sum = a + b;
+    let extra = sum * 2;
+    let more = extra + a;
+    let result = more + b;
+    result
+}
+"#;
+        let rs_beta = r#"pub fn accumulate_sum(x: i32, y: i32) -> i32 {
+    let total = x + y;
+    let extra = total * 2;
+    let more = extra + x;
+    let result = more + y;
+    result
+}
+"#;
+        let ts_alpha = "function accumulate_sum(a: number, b: number): number {\n  let sum = a + b;\n  let extra = sum * 2;\n  let more = extra + a;\n  let result = more + b;\n  return result;\n}\n";
+        let ts_beta = "function accumulate_sum(x: number, y: number): number {\n  let total = x + y;\n  let extra = total * 2;\n  let more = extra + x;\n  let result = more + y;\n  return result;\n}\n";
+        std::fs::write(dir.path().join("a.rs"), rs_alpha).unwrap();
+        std::fs::write(dir.path().join("b.rs"), rs_beta).unwrap();
+        std::fs::write(dir.path().join("c.ts"), ts_alpha).unwrap();
+        std::fs::write(dir.path().join("d.ts"), ts_beta).unwrap();
+        let config = Config::default();
+        let paths = vec![dir.path().to_string_lossy().to_string()];
+        let result = run(&paths, &config);
+        match result {
+            RunResult::Duplicates(pairs) => {
+                assert!(
+                    pairs.len() >= 2,
+                    "expected at least 2 pairs, got {}",
+                    pairs.len()
+                );
+            }
+            _ => panic!("expected duplicates"),
+        }
+    }
+
+    #[test]
+    fn js_function_declaration_extracts_one_form() {
+        let src = "function compute(a, b) {\n  let c = a + b;\n  let d = c * 2;\n  let e = d + a;\n  let f = e + b;\n  return f;\n}\n";
+        let mut parser = tree_sitter::Parser::new();
+        parser
+            .set_language(&tree_sitter_javascript::LANGUAGE.into())
+            .unwrap();
+        let tree = parser.parse(src, None).unwrap();
+        let mut funcs = Vec::new();
+        extract_functions_with_config(tree.root_node(), src, "f.js", &JS_CONFIG, &mut funcs);
+        assert_eq!(funcs.len(), 1, "function-declaration form");
     }
 }

@@ -3,7 +3,10 @@ use drywall::{Config, execute_cli, run};
 use std::process;
 
 #[derive(Parser)]
-#[command(name = "drywall", about = "Detect duplicate Rust functions")]
+#[command(
+    name = "drywall",
+    about = "Detect duplicate functions (Rust, JavaScript, TypeScript)"
+)]
 struct Cli {
     #[arg(help = "Paths to scan (files or directories)")]
     paths: Vec<String>,
@@ -20,7 +23,10 @@ struct Cli {
     #[arg(long, default_value = "text", help = "Output format: text or json")]
     format: String,
 
-    #[arg(long, help = "Force language (only 'rust' supported)")]
+    #[arg(
+        long,
+        help = "Force language (rust, js, or ts); default: auto-detect by extension"
+    )]
     lang: Option<String>,
 
     #[arg(long, help = "Exclude glob patterns (repeatable)")]
