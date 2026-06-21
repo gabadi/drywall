@@ -82,6 +82,37 @@
         "label": "Skill: swarm-persona",
         "default_collapsed": true
       }
+    },
+    {
+      "id": "claude-skill-toolu_011bdaUkzk2fKoPbNM7ez7cs",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "agent-retro"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "905f09eab003",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 395,
+        "end": 396,
+        "entry_ids": [
+          "4f0df0cb-f39e-45a6-91ab-15373738aed6"
+        ],
+        "tool_use_id": "toolu_011bdaUkzk2fKoPbNM7ez7cs"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_011bdaUkzk2fKoPbNM7ez7cs"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: agent-retro",
+        "default_collapsed": true
+      }
     }
   ],
   "initial_attribution": {
