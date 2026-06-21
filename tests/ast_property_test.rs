@@ -1,4 +1,4 @@
-use drywall::ast::{build_normalized_subtree, extract_functions, make_parser};
+use drywall::ast::{RUST_CONFIG, build_normalized_subtree, extract_functions, make_parser};
 use proptest::prelude::*;
 
 proptest! {
@@ -25,8 +25,8 @@ proptest! {
         let mut parser = make_parser();
         let tree = parser.parse(&src, None).unwrap();
         let root = tree.root_node();
-        let s1 = build_normalized_subtree(root, &src);
-        let s2 = build_normalized_subtree(root, &src);
+        let s1 = build_normalized_subtree(root, &src, &RUST_CONFIG);
+        let s2 = build_normalized_subtree(root, &src, &RUST_CONFIG);
         prop_assert_eq!(s1, s2, "build_normalized_subtree must be deterministic");
     }
 

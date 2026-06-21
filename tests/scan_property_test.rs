@@ -163,16 +163,16 @@ proptest! {
     // --- should_scan_file composition invariants ---
 
     #[test]
-    fn should_scan_file_non_rs_never_scanned(
+    fn should_scan_file_unsupported_ext_never_scanned(
         stem in "[a-z][a-z0-9_]{0,8}",
-        ext in "[a-z]{1,4}",
+        ext in "[a-z]{2,4}",
     ) {
-        // Non-.rs files must never be scanned regardless of git-ignore oracle
-        prop_assume!(ext != "rs");
+        // Extensions not in {rs, js, jsx, ts, tsx} must never be scanned with force_lang=None
+        prop_assume!(!matches!(ext.as_str(), "rs" | "js" | "jsx" | "ts" | "tsx"));
         let path = format!("src/{}.{}", stem, ext);
         let gs = build_glob_set(&[]).unwrap();
-        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| false));
-        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| true));
+        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| false, None));
+        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| true, None));
     }
 
     #[test]
@@ -183,7 +183,7 @@ proptest! {
         let path = format!("{}/{}.rs", excluded, stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            !should_scan_file(Path::new(&path), &gs, &|_| false),
+            !should_scan_file(Path::new(&path), &gs, &|_| false, None),
             "builtin-excluded path must not scan: {}",
             path
         );
@@ -194,7 +194,7 @@ proptest! {
         let path = format!("src/{}.rs", stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            !should_scan_file(Path::new(&path), &gs, &|_| true),
+            !should_scan_file(Path::new(&path), &gs, &|_| true, None),
             "git-ignored file must not scan: {}",
             path
         );
@@ -205,7 +205,7 @@ proptest! {
         let path = format!("acceptance/{}.rs", stem);
         let gs = build_glob_set(&["acceptance/**".to_string()]).unwrap();
         prop_assert!(
-            !should_scan_file(Path::new(&path), &gs, &|_| false),
+            !should_scan_file(Path::new(&path), &gs, &|_| false, None),
             "glob-excluded file must not scan: {}",
             path
         );
@@ -217,7 +217,7 @@ proptest! {
         let path = format!("src/{}.rs", stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            should_scan_file(Path::new(&path), &gs, &|_| false),
+            should_scan_file(Path::new(&path), &gs, &|_| false, None),
             "clean .rs file must scan: {}",
             path
         );
