@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "feature_path": "features/jsts_ir.feature",
+  "ir_path": "/tmp/jsts_ir.json",
+  "implementation_hash": "sha256:ac4d4db31e81cf9ea7ff03178aecf5811267afc78b4ccfa1bb6220b40ab9e57b",
+  "hash_scope": "generated_files",
+  "generated_files": [
+    "tests/javascript_and_typescript_duplicate_detection_acceptance_test.rs"
+  ]
+}
