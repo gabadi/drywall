@@ -173,6 +173,7 @@ pub fn find_duplicate_pairs(
     let mut pairs: Vec<DuplicatePair> = candidates
         .par_iter()
         .enumerate()
+        // flat_map_iter: inner ~n/2 loop runs sequentially per outer task — avoids O(n²) Rayon task overhead
         .flat_map_iter(|(i, a)| {
             candidates[i + 1..].iter().filter_map(move |b| {
                 if is_same_location(a, b) {
@@ -184,7 +185,7 @@ pub fn find_duplicate_pairs(
         })
         .collect();
 
-    pairs.sort_by(|a, b| {
+    pairs.sort_unstable_by(|a, b| {
         b.score
             .partial_cmp(&a.score)
             .unwrap_or(std::cmp::Ordering::Equal)
@@ -366,6 +367,17 @@ mod tests {
         let b = vec![1u64, 2, 3, 4, 5];
         let score = jaccard(&a, &b);
         assert!((score - 3.0 / 5.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn jaccard_duplicate_runs() {
+        // [1,1,2] and [1,2,2] both represent {1,2} — skip-run logic must treat runs as one element
+        let same_set_score = jaccard(&[1u64, 1, 2], &[1u64, 2, 2]);
+        assert!((same_set_score - 1.0).abs() < 1e-9, "same unique sets must score 1.0, got {same_set_score}");
+
+        // [1,1,3] → {1,3}, [1,2,3] → {1,2,3} → intersection=2, union=3
+        let partial_score = jaccard(&[1u64, 1, 3], &[1u64, 2, 3]);
+        assert!((partial_score - 2.0 / 3.0).abs() < 1e-9, "expected 2/3, got {partial_score}");
     }
 
     #[test]

@@ -133,7 +133,6 @@ pub fn collect_from_single_file(
     }
 }
 
-
 pub fn collect_from_directory(
     path: &Path,
     exclude_set: &GlobSet,
