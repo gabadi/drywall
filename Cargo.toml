@@ -12,6 +12,7 @@ name = "drywall"
 path = "src/lib.rs"
 
 [dependencies]
+rayon = "1"
 tree-sitter = "0.26"
 tree-sitter-rust = "0.24"
 regex = "1"

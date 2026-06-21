@@ -2,6 +2,7 @@ use crate::ast::{LangConfig, extract_functions_with_config, lang_config, parse_s
 use crate::core::{FunctionInfo, Lang};
 use globset::{Glob, GlobSet, GlobSetBuilder};
 use ignore::WalkBuilder;
+use rayon::prelude::*;
 use std::path::{Component, Path};
 
 const BUILTIN_EXCLUDED_DIRS: &[&str] = &[
@@ -132,24 +133,6 @@ pub fn collect_from_single_file(
     }
 }
 
-fn process_walk_entry(
-    entry: Result<ignore::DirEntry, ignore::Error>,
-    exclude_set: &GlobSet,
-    force_lang: Option<Lang>,
-    functions: &mut Vec<FunctionInfo>,
-    errors: &mut Vec<String>,
-) {
-    match entry {
-        Ok(e) if e.file_type().map(|ft| ft.is_file()).unwrap_or(false) => {
-            if should_scan_file(e.path(), exclude_set, force_lang) {
-                let lang = force_lang.or_else(|| detect_lang(e.path())).unwrap();
-                process_file(e.path(), lang, functions, errors);
-            }
-        }
-        Ok(_) => {}
-        Err(err) => errors.push(format!("walk error: {}", err)),
-    }
-}
 
 pub fn collect_from_directory(
     path: &Path,
@@ -158,13 +141,37 @@ pub fn collect_from_directory(
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
-    let walker = WalkBuilder::new(path)
+    let file_paths: Vec<(std::path::PathBuf, Lang)> = WalkBuilder::new(path)
         .filter_entry(|e| {
             e.file_type().map(|ft| !ft.is_dir()).unwrap_or(true) || !is_builtin_excluded(e.path())
         })
-        .build();
-    for entry in walker {
-        process_walk_entry(entry, exclude_set, force_lang, functions, errors);
+        .build()
+        .filter_map(|entry| match entry {
+            Ok(e) if e.file_type().map(|ft| ft.is_file()).unwrap_or(false) => {
+                if should_scan_file(e.path(), exclude_set, force_lang) {
+                    let lang = force_lang.or_else(|| detect_lang(e.path())).unwrap();
+                    Some((e.into_path(), lang))
+                } else {
+                    None
+                }
+            }
+            _ => None,
+        })
+        .collect();
+
+    let results: Vec<(Vec<FunctionInfo>, Vec<String>)> = file_paths
+        .into_par_iter()
+        .map(|(p, lang)| {
+            let mut fns = Vec::new();
+            let mut errs = Vec::new();
+            process_file(&p, lang, &mut fns, &mut errs);
+            (fns, errs)
+        })
+        .collect();
+
+    for (fns, errs) in results {
+        functions.extend(fns);
+        errors.extend(errs);
     }
 }
 
