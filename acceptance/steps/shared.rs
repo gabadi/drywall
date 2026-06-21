@@ -41,6 +41,7 @@ pub fn write_fixture(root: &str, relative: &str, content: &str) -> Result<(), St
     Ok(())
 }
 
+#[allow(dead_code)]
 pub fn accumulate_sum_source(params: &str) -> String {
     let ids: Vec<&str> = params.split(',').collect();
     let (p0, p1, p2) = if ids.len() >= 3 {

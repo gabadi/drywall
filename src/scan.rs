@@ -1,5 +1,5 @@
-use crate::ast::{extract_functions, parse_source_tree};
-use crate::core::FunctionInfo;
+use crate::ast::{LangConfig, extract_functions_with_config, lang_config, parse_source_tree_for};
+use crate::core::{FunctionInfo, Lang};
 use globset::{Glob, GlobSet, GlobSetBuilder};
 use std::path::{Component, Path};
 use std::process::Command;
@@ -53,8 +53,28 @@ pub fn build_glob_set(patterns: &[String]) -> Result<GlobSet, globset::Error> {
     builder.build()
 }
 
+const EXT_LANG_MAP: &[(&str, Lang)] = &[
+    ("rs", Lang::Rust),
+    ("js", Lang::JavaScript),
+    ("jsx", Lang::JavaScript),
+    ("ts", Lang::TypeScript),
+    ("tsx", Lang::Tsx),
+];
+
+pub fn detect_lang(path: &Path) -> Option<Lang> {
+    let ext = path.extension().and_then(|e| e.to_str())?;
+    EXT_LANG_MAP
+        .iter()
+        .find(|(e, _)| *e == ext)
+        .map(|(_, l)| *l)
+}
+
 pub fn is_rust_file(path: &Path) -> bool {
     path.extension().and_then(|e| e.to_str()) == Some("rs")
+}
+
+pub fn is_supported_file(path: &Path) -> bool {
+    detect_lang(path).is_some()
 }
 
 pub fn should_skip(path: &Path, exclude_set: &GlobSet) -> bool {
@@ -64,9 +84,28 @@ pub fn should_skip(path: &Path, exclude_set: &GlobSet) -> bool {
     exclude_set.is_match(path)
 }
 
+/// Returns whether a file should be scanned.
+/// When force_lang is Some, every non-excluded, non-builtin-excluded file is scanned.
+/// When force_lang is None, only files with recognized extensions are scanned.
+pub fn should_scan_file(
+    path: &Path,
+    exclude_set: &GlobSet,
+    git_ignored: &dyn Fn(&Path) -> bool,
+    force_lang: Option<Lang>,
+) -> bool {
+    if is_builtin_excluded(path) || should_skip(path, exclude_set) || git_ignored(path) {
+        return false;
+    }
+    match force_lang {
+        Some(_) => true,
+        None => is_supported_file(path),
+    }
+}
+
 pub fn collect_all_functions(
     paths: &[String],
     exclude_set: &GlobSet,
+    force_lang: Option<Lang>,
 ) -> (Vec<FunctionInfo>, Vec<String>) {
     let mut functions: Vec<FunctionInfo> = Vec::new();
     let mut errors: Vec<String> = Vec::new();
@@ -75,7 +114,7 @@ pub fn collect_all_functions(
         if !path.exists() {
             errors.push(format!("path does not exist: {}", path_str));
         } else {
-            collect_functions_from_path(path, exclude_set, &mut functions, &mut errors);
+            collect_functions_from_path(path, exclude_set, force_lang, &mut functions, &mut errors);
         }
     }
     (functions, errors)
@@ -84,50 +123,44 @@ pub fn collect_all_functions(
 pub fn collect_functions_from_path(
     path: &Path,
     exclude_set: &GlobSet,
+    force_lang: Option<Lang>,
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
     if path.is_file() {
-        collect_from_single_file(path, exclude_set, functions, errors);
+        collect_from_single_file(path, exclude_set, force_lang, functions, errors);
     } else {
-        collect_from_directory(path, exclude_set, functions, errors);
+        collect_from_directory(path, exclude_set, force_lang, functions, errors);
     }
-}
-
-pub fn should_scan_file(
-    path: &Path,
-    exclude_set: &GlobSet,
-    git_ignored: &dyn Fn(&Path) -> bool,
-) -> bool {
-    !is_builtin_excluded(path)
-        && is_rust_file(path)
-        && !should_skip(path, exclude_set)
-        && !git_ignored(path)
 }
 
 pub fn collect_from_single_file(
     path: &Path,
     exclude_set: &GlobSet,
+    force_lang: Option<Lang>,
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
-    if should_scan_file(path, exclude_set, &is_git_ignored) {
-        process_file(path, functions, errors);
+    if should_scan_file(path, exclude_set, &is_git_ignored, force_lang) {
+        let lang = force_lang.or_else(|| detect_lang(path)).unwrap();
+        process_file(path, lang, functions, errors);
     }
 }
 
 fn process_entry(
     entry: Result<walkdir::DirEntry, walkdir::Error>,
     exclude_set: &GlobSet,
+    force_lang: Option<Lang>,
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
     match entry {
         Ok(e)
             if e.file_type().is_file()
-                && should_scan_file(e.path(), exclude_set, &is_git_ignored) =>
+                && should_scan_file(e.path(), exclude_set, &is_git_ignored, force_lang) =>
         {
-            process_file(e.path(), functions, errors);
+            let lang = force_lang.or_else(|| detect_lang(e.path())).unwrap();
+            process_file(e.path(), lang, functions, errors);
         }
         Ok(_) => {}
         Err(err) => errors.push(format!("walk error: {}", err)),
@@ -137,6 +170,7 @@ fn process_entry(
 pub fn collect_from_directory(
     path: &Path,
     exclude_set: &GlobSet,
+    force_lang: Option<Lang>,
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
@@ -145,11 +179,16 @@ pub fn collect_from_directory(
         .into_iter()
         .filter_entry(|e| !e.file_type().is_dir() || !is_builtin_excluded(e.path()));
     for entry in walker {
-        process_entry(entry, exclude_set, functions, errors);
+        process_entry(entry, exclude_set, force_lang, functions, errors);
     }
 }
 
-pub fn process_file(path: &Path, functions: &mut Vec<FunctionInfo>, errors: &mut Vec<String>) {
+pub fn process_file(
+    path: &Path,
+    lang: Lang,
+    functions: &mut Vec<FunctionInfo>,
+    errors: &mut Vec<String>,
+) {
     let source = match std::fs::read_to_string(path) {
         Ok(s) => s,
         Err(e) => {
@@ -158,10 +197,11 @@ pub fn process_file(path: &Path, functions: &mut Vec<FunctionInfo>, errors: &mut
         }
     };
 
-    match parse_source_tree(&source) {
+    let config: &LangConfig = lang_config(lang);
+    match parse_source_tree_for(&source, lang) {
         Ok(tree) => {
             let file_str = path.to_string_lossy().to_string();
-            extract_functions(tree.root_node(), &source, &file_str, functions);
+            extract_functions_with_config(tree.root_node(), &source, &file_str, config, functions);
         }
         Err(msg) => {
             errors.push(format!("{} in {}", msg, path.display()));
@@ -210,7 +250,6 @@ mod tests {
 
     #[test]
     fn is_builtin_excluded_partial_name_does_not_match() {
-        // "targets" or "my_target" must NOT be excluded
         assert!(!is_builtin_excluded(Path::new("targets/foo.rs")));
         assert!(!is_builtin_excluded(Path::new("my_target/foo.rs")));
     }
@@ -233,9 +272,8 @@ mod tests {
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_directory(dir.path(), &gs, &mut functions, &mut errors);
+        collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
-        // only keep.rs scanned, excluded.rs inside target/ is pruned
         assert_eq!(functions.len(), 1);
     }
 
@@ -249,7 +287,7 @@ mod tests {
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_single_file(&path, &gs, &mut functions, &mut errors);
+        collect_from_single_file(&path, &gs, None, &mut functions, &mut errors);
         assert_eq!(functions.len(), 0);
         assert!(errors.is_empty());
     }
@@ -301,7 +339,6 @@ mod tests {
 
     #[test]
     fn should_skip_glob_star_suffix_does_not_match_different_suffix() {
-        // *x/beta.rs should NOT match src/beta.rs (src ends in c, not x)
         let gs = build_glob_set(&["*x/beta.rs".to_string()]).unwrap();
         assert!(!should_skip(std::path::Path::new("src/beta.rs"), &gs));
         assert!(should_skip(std::path::Path::new("srcx/beta.rs"), &gs));
@@ -309,11 +346,9 @@ mod tests {
 
     #[test]
     fn should_skip_two_patterns_union() {
-        // Both **/alpha.rs AND **/beta.rs must match their respective targets
         let gs = build_glob_set(&["**/alpha.rs".to_string(), "**/beta.rs".to_string()]).unwrap();
         assert!(should_skip(std::path::Path::new("src/alpha.rs"), &gs));
         assert!(should_skip(std::path::Path::new("src/beta.rs"), &gs));
-        // Breaking one: only **/alpha.rs — beta.rs should NOT be skipped
         let gs_one = build_glob_set(&["**/alpha.rs".to_string()]).unwrap();
         assert!(should_skip(std::path::Path::new("src/alpha.rs"), &gs_one));
         assert!(!should_skip(std::path::Path::new("src/beta.rs"), &gs_one));
@@ -339,7 +374,7 @@ fn beta(b: i32) -> i32 {
         .unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        process_file(&path, &mut functions, &mut errors);
+        process_file(&path, Lang::Rust, &mut functions, &mut errors);
         assert!(errors.is_empty(), "unexpected errors: {:?}", errors);
         assert_eq!(functions.len(), 2);
     }
@@ -350,6 +385,7 @@ fn beta(b: i32) -> i32 {
         let mut errors = Vec::new();
         process_file(
             std::path::Path::new("/nonexistent/path/file.rs"),
+            Lang::Rust,
             &mut functions,
             &mut errors,
         );
@@ -364,7 +400,7 @@ fn beta(b: i32) -> i32 {
         std::fs::write(&path, "this @@ is not valid rust {{{{").unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        process_file(&path, &mut functions, &mut errors);
+        process_file(&path, Lang::Rust, &mut functions, &mut errors);
         assert_eq!(functions.len(), 0);
         assert!(!errors.is_empty());
     }
@@ -390,7 +426,7 @@ fn two(y: i32) -> i32 {
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_functions_from_path(&path, &gs, &mut functions, &mut errors);
+        collect_functions_from_path(&path, &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
         assert_eq!(functions.len(), 2);
     }
@@ -404,13 +440,13 @@ fn two(y: i32) -> i32 {
         let gs = build_glob_set(&[pattern]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_functions_from_path(&path, &gs, &mut functions, &mut errors);
+        collect_functions_from_path(&path, &gs, None, &mut functions, &mut errors);
         assert_eq!(functions.len(), 0);
         assert!(errors.is_empty());
     }
 
     #[test]
-    fn collect_functions_from_path_directory_finds_rs_only() {
+    fn collect_functions_from_path_directory_finds_rs_only_no_force_lang() {
         let dir = tempfile::tempdir().unwrap();
         std::fs::write(
             dir.path().join("code.rs"),
@@ -425,20 +461,20 @@ fn two(y: i32) -> i32 {
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_functions_from_path(dir.path(), &gs, &mut functions, &mut errors);
+        collect_functions_from_path(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
         assert_eq!(functions.len(), 1);
     }
 
     #[test]
-    fn collect_functions_from_path_non_rs_file_skipped() {
+    fn collect_functions_from_path_non_rs_file_skipped_no_force_lang() {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("readme.txt");
         std::fs::write(&path, "not rust").unwrap();
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_functions_from_path(&path, &gs, &mut functions, &mut errors);
+        collect_functions_from_path(&path, &gs, None, &mut functions, &mut errors);
         assert_eq!(functions.len(), 0);
         assert!(errors.is_empty());
     }
@@ -452,7 +488,7 @@ fn two(y: i32) -> i32 {
         let (functions, errors) = {
             let mut f = Vec::new();
             let mut e = Vec::new();
-            collect_functions_from_path(dir.path(), &gs, &mut f, &mut e);
+            collect_functions_from_path(dir.path(), &gs, None, &mut f, &mut e);
             (f, e)
         };
         assert_eq!(functions.len(), 0);
@@ -463,7 +499,7 @@ fn two(y: i32) -> i32 {
     fn collect_all_functions_nonexistent_path_returns_error() {
         let gs = build_glob_set(&[]).unwrap();
         let paths = vec!["/nonexistent/path".to_string()];
-        let (functions, errors) = collect_all_functions(&paths, &gs);
+        let (functions, errors) = collect_all_functions(&paths, &gs, None);
         assert_eq!(functions.len(), 0);
         assert!(!errors.is_empty());
     }
@@ -485,20 +521,20 @@ fn two(y: i32) -> i32 {
             f1.to_string_lossy().to_string(),
             f2.to_string_lossy().to_string(),
         ];
-        let (functions, errors) = collect_all_functions(&paths, &gs);
+        let (functions, errors) = collect_all_functions(&paths, &gs, None);
         assert!(errors.is_empty());
         assert_eq!(functions.len(), 2);
     }
 
     #[test]
-    fn collect_from_single_file_excludes_non_rs() {
+    fn collect_from_single_file_excludes_non_rs_no_force_lang() {
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("notes.md");
         std::fs::write(&path, "# notes").unwrap();
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_single_file(&path, &gs, &mut functions, &mut errors);
+        collect_from_single_file(&path, &gs, None, &mut functions, &mut errors);
         assert_eq!(functions.len(), 0);
         assert!(errors.is_empty());
     }
@@ -511,7 +547,7 @@ fn two(y: i32) -> i32 {
         let gs = build_glob_set(&[path.to_string_lossy().to_string()]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_single_file(&path, &gs, &mut functions, &mut errors);
+        collect_from_single_file(&path, &gs, None, &mut functions, &mut errors);
         assert_eq!(functions.len(), 0);
         assert!(errors.is_empty());
     }
@@ -532,7 +568,7 @@ fn two(y: i32) -> i32 {
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_directory(dir.path(), &gs, &mut functions, &mut errors);
+        collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
         assert_eq!(functions.len(), 1);
     }
@@ -549,13 +585,13 @@ fn two(y: i32) -> i32 {
     }
 
     #[test]
-    fn collect_from_directory_skips_non_rs_files() {
+    fn collect_from_directory_skips_non_supported_files() {
         let dir = tempfile::tempdir().unwrap();
         std::fs::write(dir.path().join("readme.txt"), "text").unwrap();
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_directory(dir.path(), &gs, &mut functions, &mut errors);
+        collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
         assert_eq!(functions.len(), 0);
     }
@@ -567,15 +603,13 @@ fn two(y: i32) -> i32 {
         let gs = build_glob_set(&[]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_directory(dir.path(), &gs, &mut functions, &mut errors);
-        // fn foo is 1 line so below min_lines, but file is still scanned (no parse error)
+        collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
     }
 
     #[test]
     fn collect_from_directory_skips_excluded_rs_file() {
         let dir = tempfile::tempdir().unwrap();
-        // Two files: one excluded by glob, one not
         let excluded = dir.path().join("excluded_by_glob.rs");
         let kept = dir.path().join("kept.rs");
         std::fs::write(&excluded, "fn foo() {}").unwrap();
@@ -584,10 +618,8 @@ fn two(y: i32) -> i32 {
         let gs = build_glob_set(&[pattern]).unwrap();
         let mut functions = Vec::new();
         let mut errors = Vec::new();
-        collect_from_directory(dir.path(), &gs, &mut functions, &mut errors);
-        // excluded_by_glob.rs is skipped; kept.rs is scanned (fn bar collected but below min_lines)
+        collect_from_directory(dir.path(), &gs, None, &mut functions, &mut errors);
         assert!(errors.is_empty());
-        // excluded file produced 0 functions; kept.rs produced 1 (fn bar), total 1
         assert_eq!(functions.len(), 1);
     }
 
@@ -595,7 +627,6 @@ fn two(y: i32) -> i32 {
 
     #[test]
     fn is_git_ignored_nonexistent_path_returns_false() {
-        // canonicalize fails on a non-existent path → returns false (no panic)
         assert!(!is_git_ignored(Path::new(
             "/nonexistent/totally/made/up/file.rs"
         )));
@@ -603,30 +634,24 @@ fn two(y: i32) -> i32 {
 
     #[test]
     fn is_git_ignored_file_outside_git_repo_returns_false() {
-        // A real file that exists but is NOT inside any git repo → git check-ignore exits 1 → false
         let dir = tempfile::tempdir().unwrap();
         let path = dir.path().join("plain.rs");
         std::fs::write(&path, "fn x() {}").unwrap();
-        // tempdir is not a git repo, so check-ignore exits 128 (not a repo) → false
         assert!(!is_git_ignored(&path));
     }
 
     #[test]
     fn is_git_ignored_gitignored_file_returns_true() {
         let dir = tempfile::tempdir().unwrap();
-        // Initialize a git repo in the temp dir
         Command::new("git")
             .args(["-C", &dir.path().to_string_lossy(), "init"])
             .stdout(std::process::Stdio::null())
             .stderr(std::process::Stdio::null())
             .status()
             .unwrap();
-        // Write a .gitignore that ignores *.gen.rs
         std::fs::write(dir.path().join(".gitignore"), "*.gen.rs\n").unwrap();
-        // Create the file to ignore
         let ignored = dir.path().join("foo.gen.rs");
         std::fs::write(&ignored, "fn x() {}").unwrap();
-        // The file should be reported as ignored
         assert!(is_git_ignored(&ignored));
     }
 
@@ -643,5 +668,77 @@ fn two(y: i32) -> i32 {
         let normal = dir.path().join("lib.rs");
         std::fs::write(&normal, "fn x() {}").unwrap();
         assert!(!is_git_ignored(&normal));
+    }
+
+    // --- detect_lang ---
+
+    #[test]
+    fn detect_lang_rs_returns_rust() {
+        assert_eq!(detect_lang(Path::new("foo.rs")), Some(Lang::Rust));
+    }
+
+    #[test]
+    fn detect_lang_js_returns_javascript() {
+        assert_eq!(detect_lang(Path::new("foo.js")), Some(Lang::JavaScript));
+    }
+
+    #[test]
+    fn detect_lang_jsx_returns_javascript() {
+        assert_eq!(detect_lang(Path::new("foo.jsx")), Some(Lang::JavaScript));
+    }
+
+    #[test]
+    fn detect_lang_ts_returns_typescript() {
+        assert_eq!(detect_lang(Path::new("foo.ts")), Some(Lang::TypeScript));
+    }
+
+    #[test]
+    fn detect_lang_tsx_returns_tsx() {
+        assert_eq!(detect_lang(Path::new("foo.tsx")), Some(Lang::Tsx));
+    }
+
+    #[test]
+    fn detect_lang_txt_returns_none() {
+        assert_eq!(detect_lang(Path::new("foo.txt")), None);
+    }
+
+    #[test]
+    fn force_lang_scans_non_standard_extension() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("foo.txt");
+        let js_src = "function accumulate_sum(a, b) {\n  let sum = a + b;\n  let extra = sum * 2;\n  let more = extra + a;\n  let result = more + b;\n  return result;\n}\n";
+        std::fs::write(&path, js_src).unwrap();
+        let gs = build_glob_set(&[]).unwrap();
+        let mut functions = Vec::new();
+        let mut errors = Vec::new();
+        collect_from_single_file(
+            &path,
+            &gs,
+            Some(Lang::JavaScript),
+            &mut functions,
+            &mut errors,
+        );
+        assert!(errors.is_empty(), "errors: {:?}", errors);
+        assert_eq!(
+            functions.len(),
+            1,
+            "forced lang should scan non-standard ext"
+        );
+    }
+
+    #[test]
+    fn process_file_valid_js_adds_functions() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("test.js");
+        std::fs::write(
+            &path,
+            "function alpha(a, b) {\n  let x = a + b;\n  let y = x * 2;\n  return y;\n}\n\nfunction beta(c, d) {\n  let e = c + d;\n  let f = e * 2;\n  return f;\n}\n",
+        )
+        .unwrap();
+        let mut functions = Vec::new();
+        let mut errors = Vec::new();
+        process_file(&path, Lang::JavaScript, &mut functions, &mut errors);
+        assert!(errors.is_empty(), "unexpected errors: {:?}", errors);
+        assert_eq!(functions.len(), 2);
     }
 }
