@@ -1,0 +1,18 @@
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
+
+---
+
+Did you received a handoff from qa?
+
+---
+
+QA found spec coverage gaps in `cli-surface-qa-scenarios` that need strengthening before this can be verified.
+
+**GAP-1 (critical)**: Scenario `cli-surface-1` has 7 examples all with `args=./src`, where each excluded file (e.g. `.git/beta.rs`) is a sibling directory never reachable from `./src`. These pass trivially — exclusion logic is never exercised. The QA procedure (QA-1) requires a second invocation with `args=.` (parent scan) where the excluded dir IS reachable under the scanned path. This second invocation is missing for `.git`, `__pycache__`, `vendor`, `dist`, `.next` (only `node_modules` and `target` are covered via cli-surface-2).
+
+**GAP-2**: `cli-surface-6` (gitignored path not scanned) and `cli-surface-1` are missing `And stderr is empty` assertions required by the QA procedure.
+
+**GAP-3**: `cli-surface-8` tests "no git executable available" but QA-10 specifies "not inside a git work tree" — these are distinct failure modes; only one is tested.
+
+The code is correct. These are spec coverage gaps, not code defects.
+ this is the message from the QA, take into account and re run properly (apply following yours constitution including the retro and the send to the next agent when needed)
