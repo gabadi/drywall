@@ -1,0 +1,17 @@
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
+
+---
+
+before going on, this will include the whole implementation of mutations and so on already made for features/duplicate_detection.feature? only answer now
+
+---
+
+ok, but check the QA worktree, we have other things there, will inlcud them here with this fix merge or not? i'm a little lost
+
+---
+
+ok, inlcude them, we dont need to be behind, this is an iteration over it
+
+---
+
+yes

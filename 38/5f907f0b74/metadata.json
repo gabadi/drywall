@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "385f907f0b74",
+  "strategy": "manual-commit",
+  "branch": "swarmforge-coder",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "acceptance/runtime/mod.rs",
+    "acceptance/steps/cli_surface_steps.rs",
+    "features/cli_surface.feature"
+  ],
+  "sessions": [
+    {
+      "metadata": "/38/5f907f0b74/0/metadata.json",
+      "transcript": "/38/5f907f0b74/0/full.jsonl",
+      "content_hash": "/38/5f907f0b74/0/content_hash.txt",
+      "prompt": "/38/5f907f0b74/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 102,
+    "cache_creation_tokens": 78857,
+    "cache_read_tokens": 6409846,
+    "output_tokens": 15329,
+    "api_call_count": 91
+  }
+}
