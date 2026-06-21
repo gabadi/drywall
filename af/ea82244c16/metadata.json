@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "afea82244c16",
+  "strategy": "manual-commit",
+  "branch": "knowledge/rust-dup-detect-batch2",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/af/ea82244c16/0/metadata.json",
+      "transcript": "/af/ea82244c16/0/full.jsonl",
+      "content_hash": "/af/ea82244c16/0/content_hash.txt",
+      "prompt": "/af/ea82244c16/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 76,
+    "cache_creation_tokens": 142544,
+    "cache_read_tokens": 4326493,
+    "output_tokens": 17222,
+    "api_call_count": 61
+  }
+}
