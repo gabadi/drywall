@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "cd9a64c4cf08",
+  "strategy": "manual-commit",
+  "branch": "feat/gitignore-scan-and-run-skill",
+  "checkpoints_count": 2,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/cd/9a64c4cf08/0/metadata.json",
+      "transcript": "/cd/9a64c4cf08/0/full.jsonl",
+      "content_hash": "/cd/9a64c4cf08/0/content_hash.txt",
+      "prompt": "/cd/9a64c4cf08/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 124,
+    "cache_creation_tokens": 9035,
+    "cache_read_tokens": 828098,
+    "output_tokens": 5835,
+    "api_call_count": 15
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "cd9a64c4cf08",
+  "session_id": "94a98bee-d74f-4b75-b860-e82cb524caa8",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T20:23:47.415985Z",
+  "branch": "feat/gitignore-scan-and-run-skill",
+  "checkpoints_count": 2,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "4474e48546e0",
+  "checkpoint_transcript_start": 171,
+  "transcript_lines_at_start": 171,
+  "token_usage": {
+    "input_tokens": 124,
+    "cache_creation_tokens": 9035,
+    "cache_read_tokens": 828098,
+    "output_tokens": 5835,
+    "api_call_count": 15
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-run-skill-generator-2026-06-21T20:11:08.789338Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "run-skill-generator"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "0ef72552f21b",
+      "timestamp": "2026-06-21T20:11:08.789338Z",
+      "native": {
+        "command": "/run-skill-generator"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/run-skill-generator",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}
