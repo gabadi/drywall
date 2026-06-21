@@ -9,12 +9,69 @@ ARCHIVE_URL="${SWARMFORGE_SCRIPTS_URL:-${_REPO_BASE}/archive/refs/heads/${MAIN_B
 ROLES_ARCHIVE_URL="${SWARMFORGE_ROLES_URL:-${_REPO_BASE}/archive/refs/heads/${ROLES_BRANCH}.tar.gz}"
 TMP_DIR=""
 ROLES_TMP_DIR=""
+MATTPOCOCK_TMP_DIR=""
 
 cleanup() {
   [[ -n "$TMP_DIR" ]] && rm -rf "$TMP_DIR"
   [[ -n "$ROLES_TMP_DIR" ]] && rm -rf "$ROLES_TMP_DIR"
+  [[ -n "$MATTPOCOCK_TMP_DIR" ]] && rm -rf "$MATTPOCOCK_TMP_DIR"
 }
 trap cleanup EXIT
+
+install_mattpocock_skills() {
+  local pins_file="$SCRIPT_DIR/swarmforge/scripts/install-pins.conf"
+  [[ ! -f "$pins_file" ]] && return 0
+  local sha="" include=""
+  while IFS='=' read -r _k _v; do
+    [[ "$_k" =~ ^# ]] && continue
+    _k="${_k// /}"; _v="${_v// /}"
+    [[ "$_k" == "MATTPOCOCK_SKILLS_SHA" ]] && sha="$_v"
+    [[ "$_k" == "MATTPOCOCK_SKILLS_INCLUDE" ]] && include="$_v"
+  done < "$pins_file"
+  [[ -z "$sha" ]] && return 0
+  local sentinel="$SCRIPT_DIR/.swarmforge/mattpocock-skills-installed"
+  if [[ -f "$sentinel" ]] && [[ "$(cat "$sentinel")" == "$sha" ]]; then
+    echo "  mattpocock skills already at ${sha:0:8}, skipping"
+    return 0
+  fi
+  echo "  Installing mattpocock skills (${sha:0:8})..."
+  MATTPOCOCK_TMP_DIR="$(mktemp -d)"
+  if ! curl -fsSL "https://github.com/mattpocock/skills/archive/${sha}.tar.gz" | tar -xz --strip-components=1 -C "$MATTPOCOCK_TMP_DIR"; then
+    echo "  ⚠ mattpocock skills unavailable (network error) — skipping"
+    return 0
+  fi
+  local src="$MATTPOCOCK_TMP_DIR/skills/engineering"
+  [[ ! -d "$src" ]] && return 0
+  IFS=',' read -ra _inc_arr <<< "$include"
+  local dsts=("$SCRIPT_DIR/.claude/skills")
+  for _wt in "$SCRIPT_DIR/.worktrees"/*/; do
+    [[ -d "$_wt/.claude/skills" ]] && dsts+=("$_wt/.claude/skills")
+  done
+  for _skill_dir in "$src"/*/; do
+    local _name; _name="$(basename "$_skill_dir")"
+    local _ok=false
+    if [[ -z "$include" ]]; then
+      _ok=true
+    else
+      for _i in "${_inc_arr[@]}"; do
+        _i="${_i// /}"
+        [[ "$_name" == "$_i" ]] && _ok=true && break
+      done
+    fi
+    [[ "$_ok" != "true" ]] && continue
+    rm -rf "$SCRIPT_DIR/swarmforge/skills/$_name"
+    cp -R "$_skill_dir" "$SCRIPT_DIR/swarmforge/skills/$_name"
+    for _dst in "${dsts[@]}"; do
+      mkdir -p "$_dst"
+      rm -rf "$_dst/$_name"
+      cp -R "$_skill_dir" "$_dst/$_name"
+    done
+    echo "  ✓ $_name"
+  done
+  mkdir -p "$SCRIPT_DIR/.swarmforge"
+  echo "$sha" > "$sentinel"
+  rm -rf "$MATTPOCOCK_TMP_DIR"; MATTPOCOCK_TMP_DIR=""
+}
 
 if [[ "${1:-}" == "stop" ]]; then
   STATE_DIR="$SCRIPT_DIR/.swarmforge"
@@ -79,6 +136,9 @@ if [[ "${1:-}" == "upgrade" ]]; then
     rm -rf "$SCRIPT_DIR/swarmforge/skills"
     cp -R "$_roles_src/swarmforge/skills" "$SCRIPT_DIR/swarmforge/skills"
   fi
+
+  # Install pinned external skills (mattpocock et al.) and refresh all worktrees
+  install_mattpocock_skills
 
   echo "SwarmForge upgraded."
   exit 0
