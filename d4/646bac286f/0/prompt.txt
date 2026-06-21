@@ -1,0 +1,13 @@
+/swarm-persona Lets implment github issue #5 from the PRD #1
+
+---
+
+Which where mine answers?
+
+---
+
+⏺ User declined to answer questions
+· Issue #5 specifies separate JS and TS grammars but the existing duplicate_detection.feature only covers Rust. How should I structure the JS/TS spec relative to the existing Rust feature file? (New jsts_detection.feature (Recommended) / Extend duplicate_detection.feature / Two files (js + ts separate))
+· The PRD lists JS/TS function forms as: function declarations, arrow functions (const/let), class methods, exported named functions, plus JSX/TSX. Which forms must the spec require as REPORTABLE analysis units for this slice? (Function declarations / Arrow fns (const/let) / Class methods / Exported named functions)
+· For the `--lang` override values in this slice, which set should the spec require drywall to accept? (rust, js, ts (Recommended) / rust, js, jsx, ts, tsx)
+· When a JS/TS source file fails to parse (tree-sitter reports an error node), what should the contract require — matching the Rust slice's exit 2, or tolerating it? (Exit 2 (match Rust) (Recommended) / Skip-and-continue). Regarding function declarations, do we need all of them, no?
