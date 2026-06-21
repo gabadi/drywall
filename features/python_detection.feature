@@ -1,5 +1,5 @@
 # acceptance-mutation-manifest-begin
-# {"version":1,"feature_name":"Python duplicate detection","feature_path":"features/python_detection.feature","scenarios":[]}
+# {"version":1,"tested_at":"2026-06-21T17:59:58.023116Z","feature_name":"Python duplicate detection","feature_path":"features/python_detection.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
 # acceptance-mutation-manifest-end
 
 Feature: Python duplicate detection

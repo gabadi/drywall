@@ -115,7 +115,7 @@ fn make_source(ext: &str, structure: &str, ids: &str, fn_name: &str) -> String {
         ("rs", _) => accumulate_sum_rs(ids, fn_name),
         ("ts", _) => accumulate_sum_ts(ids, fn_name),
         ("js", _) => accumulate_sum_js(ids, fn_name),
-        _ => accumulate_sum_py(ids, fn_name),
+        _ => panic!("unsupported (ext, structure) combination: ({ext:?}, {structure:?})"),
     }
 }
 
