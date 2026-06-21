@@ -14,10 +14,10 @@ use std::collections::HashMap;
 fn built_in_excluded_directory_is_never_scanned_example_1() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), ".git/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), ".git/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -67,10 +67,10 @@ fn built_in_excluded_directory_is_never_scanned_example_1() {
 fn built_in_excluded_directory_is_never_scanned_example_2() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "target/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "target/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -120,10 +120,10 @@ fn built_in_excluded_directory_is_never_scanned_example_2() {
 fn built_in_excluded_directory_is_never_scanned_example_3() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "node_modules/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "node_modules/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -173,10 +173,10 @@ fn built_in_excluded_directory_is_never_scanned_example_3() {
 fn built_in_excluded_directory_is_never_scanned_example_4() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "__pycache__/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "__pycache__/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -226,10 +226,10 @@ fn built_in_excluded_directory_is_never_scanned_example_4() {
 fn built_in_excluded_directory_is_never_scanned_example_5() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "vendor/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "vendor/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -279,10 +279,10 @@ fn built_in_excluded_directory_is_never_scanned_example_5() {
 fn built_in_excluded_directory_is_never_scanned_example_6() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "dist/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "dist/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -332,10 +332,10 @@ fn built_in_excluded_directory_is_never_scanned_example_6() {
 fn built_in_excluded_directory_is_never_scanned_example_7() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), ".next/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), ".next/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -385,13 +385,13 @@ fn built_in_excluded_directory_is_never_scanned_example_7() {
 fn explicitly_passing_the_parent_does_not_re_include_a_built_in_excluded_subdirectory_example_1() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
+    example.insert("args".to_string(), "proj".to_string());
+    example.insert("exit_code".to_string(), "0".to_string());
     example.insert("left_file".to_string(), "proj/alpha.rs".to_string());
     example.insert(
         "right_file".to_string(),
         "proj/node_modules/beta.rs".to_string(),
     );
-    example.insert("args".to_string(), "proj".to_string());
-    example.insert("exit_code".to_string(), "0".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -441,10 +441,10 @@ fn explicitly_passing_the_parent_does_not_re_include_a_built_in_excluded_subdire
 fn explicitly_passing_the_parent_does_not_re_include_a_built_in_excluded_subdirectory_example_2() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "proj/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "proj/target/beta.rs".to_string());
     example.insert("args".to_string(), "proj".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "proj/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "proj/target/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -494,10 +494,10 @@ fn explicitly_passing_the_parent_does_not_re_include_a_built_in_excluded_subdire
 fn a_built_in_excluded_directory_passed_directly_is_still_excluded_example_1() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "node_modules/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "node_modules/beta.rs".to_string());
     example.insert("args".to_string(), "./node_modules".to_string());
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "node_modules/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "node_modules/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -547,10 +547,10 @@ fn a_built_in_excluded_directory_passed_directly_is_still_excluded_example_1() {
 fn a_twin_outside_built_in_excluded_directories_is_still_reported_example_1() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "src/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "1".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "src/beta.rs".to_string());
 
     let result = steps::dispatch(
         "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
@@ -604,32 +604,43 @@ fn a_twin_outside_built_in_excluded_directories_is_still_reported_example_1() {
 fn repeated_exclude_flags_union_their_patterns_example_1() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "src/beta.rs".to_string());
     example.insert(
         "args".to_string(),
         "--exclude **/alpha.rs --exclude **/beta.rs ./src".to_string(),
     );
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "src/beta.rs".to_string());
+    example.insert("witness_file".to_string(), "src/gamma.rs".to_string());
 
     let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
+        "a Rust file \"<witness_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
         &mut world,
         &example,
     );
     assert!(
         result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"]: {}",
+        "step failed [a Rust file \"<witness_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"]: {}",
         result.message
     );
     let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"",
+        "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"",
         &mut world,
         &example,
     );
     assert!(
         result.success,
-        "step failed [a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"]: {}",
+        "step failed [a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"p,q,res\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"p,q,res\"]: {}",
         result.message
     );
     let result = steps::dispatch(
@@ -660,32 +671,43 @@ fn repeated_exclude_flags_union_their_patterns_example_1() {
 fn repeated_exclude_flags_union_their_patterns_example_2() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "gen/beta.rs".to_string());
     example.insert(
         "args".to_string(),
-        "--exclude **/gen/** --exclude **/legacy/** ./src ./gen".to_string(),
+        "--exclude **/alpha.rs --exclude **/gen/** ./src ./gen".to_string(),
     );
     example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "gen/beta.rs".to_string());
+    example.insert("witness_file".to_string(), "src/gamma.rs".to_string());
 
     let result = steps::dispatch(
-        "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
+        "a Rust file \"<witness_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
         &mut world,
         &example,
     );
     assert!(
         result.success,
-        "step failed [a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"]: {}",
+        "step failed [a Rust file \"<witness_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"]: {}",
         result.message
     );
     let result = steps::dispatch(
-        "a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"",
+        "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"",
         &mut world,
         &example,
     );
     assert!(
         result.success,
-        "step failed [a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"]: {}",
+        "step failed [a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"p,q,res\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"p,q,res\"]: {}",
         result.message
     );
     let result = steps::dispatch(
@@ -716,11 +738,11 @@ fn repeated_exclude_flags_union_their_patterns_example_2() {
 fn a_gitignored_path_is_not_scanned_when_git_is_available_example_1() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
+    example.insert("args".to_string(), "./src".to_string());
+    example.insert("exit_code".to_string(), "0".to_string());
     example.insert("ignore_pattern".to_string(), "generated/".to_string());
     example.insert("left_file".to_string(), "src/alpha.rs".to_string());
     example.insert("right_file".to_string(), "generated/beta.rs".to_string());
-    example.insert("args".to_string(), "./src".to_string());
-    example.insert("exit_code".to_string(), "0".to_string());
 
     let result = steps::dispatch(
         "a git work tree with a git executable available",
@@ -841,10 +863,10 @@ fn dogfood_run_stays_clean_with_gitignore_awareness_on_example_1() {
 fn gitignore_awareness_silently_no_ops_when_git_is_unavailable_example_1() {
     let mut world = World::new();
     let mut example: HashMap<String, String> = HashMap::new();
-    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
-    example.insert("right_file".to_string(), "src/beta.rs".to_string());
     example.insert("args".to_string(), "./src".to_string());
     example.insert("exit_code".to_string(), "1".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "src/beta.rs".to_string());
 
     let result = steps::dispatch("no git executable is available", &mut world, &example);
     assert!(
@@ -902,6 +924,145 @@ fn gitignore_awareness_silently_no_ops_when_git_is_unavailable_example_1() {
     assert!(
         result.success,
         "step failed [stderr is empty]: {}",
+        result.message
+    );
+}
+
+#[test]
+fn a_non_ignored_twin_in_a_git_work_tree_is_still_reported_example_1() {
+    let mut world = World::new();
+    let mut example: HashMap<String, String> = HashMap::new();
+    example.insert("args".to_string(), "./src".to_string());
+    example.insert("exit_code".to_string(), "1".to_string());
+    example.insert("ignore_pattern".to_string(), "generated/".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "src/beta.rs".to_string());
+
+    let result = steps::dispatch(
+        "a git work tree with a git executable available",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a git work tree with a git executable available]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "a gitignore entry \"<ignore_pattern>\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a gitignore entry \"<ignore_pattern>\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "I run drywall with the arguments \"<args>\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [I run drywall with the arguments \"<args>\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch("the exit code is \"<exit_code>\"", &mut world, &example);
+    assert!(
+        result.success,
+        "step failed [the exit code is \"<exit_code>\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "stdout reports a duplicate pair for \"<left_file>\" and \"<right_file>\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [stdout reports a duplicate pair for \"<left_file>\" and \"<right_file>\"]: {}",
+        result.message
+    );
+}
+
+#[test]
+fn built_in_exclusion_output_is_deterministic_across_runs_example_1() {
+    let mut world = World::new();
+    let mut example: HashMap<String, String> = HashMap::new();
+    example.insert("args".to_string(), ".".to_string());
+    example.insert("exit_code".to_string(), "0".to_string());
+    example.insert("left_file".to_string(), "src/alpha.rs".to_string());
+    example.insert("right_file".to_string(), "node_modules/beta.rs".to_string());
+
+    let result = steps::dispatch(
+        "a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a Rust file \"<left_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"a,b,sum\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [a Rust file \"<right_file>\" containing a function with structure \"accumulate_sum\" and identifiers \"x,y,total\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "I run drywall twice with the arguments \"<args>\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [I run drywall twice with the arguments \"<args>\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "both runs share the exit code \"<exit_code>\"",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [both runs share the exit code \"<exit_code>\"]: {}",
+        result.message
+    );
+    let result = steps::dispatch(
+        "both runs produce byte-identical stdout",
+        &mut world,
+        &example,
+    );
+    assert!(
+        result.success,
+        "step failed [both runs produce byte-identical stdout]: {}",
         result.message
     );
 }

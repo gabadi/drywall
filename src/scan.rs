@@ -303,8 +303,7 @@ mod tests {
     #[test]
     fn should_skip_two_patterns_union() {
         // Both **/alpha.rs AND **/beta.rs must match their respective targets
-        let gs =
-            build_glob_set(&["**/alpha.rs".to_string(), "**/beta.rs".to_string()]).unwrap();
+        let gs = build_glob_set(&["**/alpha.rs".to_string(), "**/beta.rs".to_string()]).unwrap();
         assert!(should_skip(std::path::Path::new("src/alpha.rs"), &gs));
         assert!(should_skip(std::path::Path::new("src/beta.rs"), &gs));
         // Breaking one: only **/alpha.rs — beta.rs should NOT be skipped

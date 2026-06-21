@@ -120,7 +120,10 @@ pub fn dispatch(step_text: &str, world: &mut World, example: &Example) -> StepRe
     try_step!(step_given_no_git_executable);
     try_step!(step_given_project_source_dir);
     try_step!(step_when_run_drywall_with_args);
+    try_step!(step_when_run_drywall_twice_with_args);
     try_step!(step_then_exit_code);
+    try_step!(step_then_both_runs_share_exit_code);
+    try_step!(step_then_both_runs_byte_identical_stdout);
     try_step!(step_then_stdout_reports_pair_for);
     try_step!(step_then_no_duplicate_pair);
     try_step!(step_then_stderr_empty);
@@ -355,5 +358,91 @@ fn step_then_stderr_empty(step: &str, world: &mut World) -> Option<StepResult> {
         StepResult::ok()
     } else {
         StepResult::fail(format!("expected empty stderr, got: {}", stderr))
+    })
+}
+
+fn step_when_run_drywall_twice_with_args(step: &str, world: &mut World) -> Option<StepResult> {
+    static RE: OnceLock<regex::Regex> = OnceLock::new();
+    let re = RE.get_or_init(|| {
+        regex::Regex::new(r#"^I run drywall twice with the arguments "([^"]*)"$"#).unwrap()
+    });
+    let caps = re.captures(step)?;
+    let raw_args = caps.get(1).map_or("", |m| m.as_str());
+
+    let binary = std::env::var("DRYWALL_BINARY")
+        .unwrap_or_else(|_| "./target/release/drywall".to_string());
+    let resolved = resolve_arg_paths(raw_args);
+
+    let run = |b: &str, args: &[String]| -> Result<(i32, String), String> {
+        Command::new(b)
+            .args(args)
+            .output()
+            .map_err(|e| format!("failed to run binary: {}", e))
+            .map(|o| (
+                o.status.code().unwrap_or(-1),
+                String::from_utf8_lossy(&o.stdout).to_string(),
+            ))
+    };
+
+    let (code1, out1) = match run(&binary, &resolved) {
+        Ok(r) => r,
+        Err(e) => return Some(StepResult::fail(e)),
+    };
+    let (code2, out2) = match run(&binary, &resolved) {
+        Ok(r) => r,
+        Err(e) => return Some(StepResult::fail(e)),
+    };
+
+    world.exit_code = Some(code1);
+    world.stdout = Some(out1);
+    world.exit_code2 = Some(code2);
+    world.stdout2 = Some(out2);
+    Some(StepResult::ok())
+}
+
+fn step_then_both_runs_share_exit_code(step: &str, world: &mut World) -> Option<StepResult> {
+    static RE: OnceLock<regex::Regex> = OnceLock::new();
+    let re = RE.get_or_init(|| {
+        regex::Regex::new(r#"^both runs share the exit code "?(\d+)"?$"#).unwrap()
+    });
+    let caps = re.captures(step)?;
+    let expected: i32 = caps.get(1).unwrap().as_str().parse().unwrap();
+    let code1 = match world.exit_code {
+        Some(c) => c,
+        None => return Some(StepResult::fail("first run exit code not recorded")),
+    };
+    let code2 = match world.exit_code2 {
+        Some(c) => c,
+        None => return Some(StepResult::fail("second run exit code not recorded")),
+    };
+    Some(if code1 == expected && code2 == expected {
+        StepResult::ok()
+    } else {
+        StepResult::fail(format!(
+            "expected both runs to have exit code {}, got {} and {}",
+            expected, code1, code2
+        ))
+    })
+}
+
+fn step_then_both_runs_byte_identical_stdout(step: &str, world: &mut World) -> Option<StepResult> {
+    if step != "both runs produce byte-identical stdout" {
+        return None;
+    }
+    let out1 = match &world.stdout {
+        Some(s) => s.clone(),
+        None => return Some(StepResult::fail("first run stdout not recorded")),
+    };
+    let out2 = match &world.stdout2 {
+        Some(s) => s.clone(),
+        None => return Some(StepResult::fail("second run stdout not recorded")),
+    };
+    Some(if out1 == out2 {
+        StepResult::ok()
+    } else {
+        StepResult::fail(format!(
+            "stdout differs between runs:\nrun1: {}\nrun2: {}",
+            out1, out2
+        ))
     })
 }
