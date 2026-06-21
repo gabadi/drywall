@@ -167,8 +167,8 @@ proptest! {
         stem in "[a-z][a-z0-9_]{0,8}",
         ext in "[a-z]{2,4}",
     ) {
-        // Extensions not in {rs, js, jsx, ts, tsx} must never be scanned with force_lang=None
-        prop_assume!(!matches!(ext.as_str(), "rs" | "js" | "jsx" | "ts" | "tsx"));
+        // Extensions not in {rs, js, jsx, ts, tsx, py} must never be scanned with force_lang=None
+        prop_assume!(!matches!(ext.as_str(), "rs" | "js" | "jsx" | "ts" | "tsx" | "py"));
         let path = format!("src/{}.{}", stem, ext);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| false, None));
@@ -228,7 +228,7 @@ proptest! {
     #[test]
     fn detect_lang_known_extensions_return_some(
         stem in "[a-z][a-z0-9_]{0,8}",
-        ext in proptest::sample::select(&["rs", "js", "jsx", "ts", "tsx"][..]),
+        ext in proptest::sample::select(&["rs", "js", "jsx", "ts", "tsx", "py"][..]),
     ) {
         let path = format!("src/{}.{}", stem, ext);
         prop_assert!(
@@ -243,7 +243,7 @@ proptest! {
         stem in "[a-z][a-z0-9_]{0,8}",
         ext in "[a-z]{2,4}",
     ) {
-        prop_assume!(!matches!(ext.as_str(), "rs" | "js" | "jsx" | "ts" | "tsx"));
+        prop_assume!(!matches!(ext.as_str(), "rs" | "js" | "jsx" | "ts" | "tsx" | "py"));
         let path = format!("src/{}.{}", stem, ext);
         prop_assert!(
             detect_lang(Path::new(&path)).is_none(),
@@ -272,6 +272,17 @@ proptest! {
         prop_assert!(
             should_scan_file(Path::new(&path), &gs, &|_| false, None),
             "clean .ts file must scan: {}",
+            path
+        );
+    }
+
+    #[test]
+    fn should_scan_file_clean_py_path_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
+        let path = format!("src/{}.py", stem);
+        let gs = build_glob_set(&[]).unwrap();
+        prop_assert!(
+            should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            "clean .py file must scan: {}",
             path
         );
     }
