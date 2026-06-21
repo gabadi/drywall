@@ -26,7 +26,7 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 | Property tests | `cargo nextest run --profile property` |
 | Acceptance tests | `cargo nextest run --profile acceptance` |
 | Language mutation | `cargo mutants --test-tool nextest -j 8 --no-shuffle -- --profile mutation` |
-| Gherkin mutation | `gherkin-mutator --level soft <feature>` (see symlink note below) |
+| Gherkin mutation | `gherkin-mutator --level soft --feature <feature>` |
 | Coverage (≥90% lines) | `mise exec -- cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info --fail-under-lines 90` |
 | CRAP (threshold ≤6) | `cargo crap --lcov lcov.info --exclude 'acceptance/**' --exclude 'src/main.rs' --threshold 6 --fail-above` |
 | Build release binary | `cargo build --release` |
@@ -39,7 +39,7 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 ## Tooling notes
 
 - **gherkin-ir-dry-checker output**: use `rtk json <report>` to read the JSON report compactly rather than dumping full JSON into context.
-- **gherkin-mutator**: defaults to `features/a-feature.feature`; invoke via symlink: `ln -sf <target>.feature features/a-feature.feature && gherkin-mutator --level soft features/a-feature.feature && rm features/a-feature.feature` — unknown flags pass silently and run 0 mutations.
+- **gherkin-mutator**: always pass `--feature <path>` explicitly — omitting it silently falls back to `features/a-feature.feature` and mutates the wrong file. Flags `--feature-file` and `--feature-path` are wrong names and silently run 0 mutations.
 - **Build release binary before acceptance**: `cargo build --release` must run before `--profile acceptance` — stale binary causes false failures.
 - **acceptance-entrypoint-generator**: requires `--steps <steps-file>` (basename only) for non-scaffold features; omitting it defaults to `scaffold_cli_steps.rs` and silently generates the wrong entrypoint.
 - **cargo-mutants `--exclude`**: patterns match absolute paths, not CWD-relative. Use `**/filename.rs` form, not `src/filename.rs`.
