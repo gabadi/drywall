@@ -141,6 +141,7 @@ pub fn collect_from_directory(
     functions: &mut Vec<FunctionInfo>,
     errors: &mut Vec<String>,
 ) {
+    let mut walk_errors: Vec<String> = Vec::new();
     let file_paths: Vec<(std::path::PathBuf, Lang)> = WalkBuilder::new(path)
         .filter_entry(|e| {
             e.file_type().map(|ft| !ft.is_dir()).unwrap_or(true) || !is_builtin_excluded(e.path())
@@ -155,9 +156,14 @@ pub fn collect_from_directory(
                     None
                 }
             }
-            _ => None,
+            Ok(_) => None,
+            Err(err) => {
+                walk_errors.push(format!("walk error: {}", err));
+                None
+            }
         })
         .collect();
+    errors.extend(walk_errors);
 
     let results: Vec<(Vec<FunctionInfo>, Vec<String>)> = file_paths
         .into_par_iter()

@@ -87,8 +87,8 @@ pub fn validate_lang(lang: &str) -> Result<Lang, String> {
     }
 }
 
-/// Jaccard similarity for two sorted, deduplicated slices.
-/// Uses a two-pointer merge — no heap allocation.
+/// Jaccard over sorted slices; two-pointer merge with set semantics, no allocation.
+/// Duplicate runs in either slice are counted as one unique element.
 pub fn jaccard(a: &[u64], b: &[u64]) -> f64 {
     if a.is_empty() && b.is_empty() {
         return 1.0;
@@ -96,18 +96,36 @@ pub fn jaccard(a: &[u64], b: &[u64]) -> f64 {
     let (mut i, mut j) = (0, 0);
     let (mut intersection, mut union) = (0usize, 0usize);
     while i < a.len() && j < b.len() {
-        union += 1;
         match a[i].cmp(&b[j]) {
-            std::cmp::Ordering::Less => i += 1,
-            std::cmp::Ordering::Greater => j += 1,
+            std::cmp::Ordering::Less => {
+                union += 1;
+                let v = a[i];
+                while i < a.len() && a[i] == v { i += 1; }
+            }
+            std::cmp::Ordering::Greater => {
+                union += 1;
+                let v = b[j];
+                while j < b.len() && b[j] == v { j += 1; }
+            }
             std::cmp::Ordering::Equal => {
                 intersection += 1;
-                i += 1;
-                j += 1;
+                union += 1;
+                let v = a[i];
+                while i < a.len() && a[i] == v { i += 1; }
+                while j < b.len() && b[j] == v { j += 1; }
             }
         }
     }
-    union += (a.len() - i) + (b.len() - j);
+    while i < a.len() {
+        union += 1;
+        let v = a[i];
+        while i < a.len() && a[i] == v { i += 1; }
+    }
+    while j < b.len() {
+        union += 1;
+        let v = b[j];
+        while j < b.len() && b[j] == v { j += 1; }
+    }
     if union == 0 {
         return 0.0;
     }
