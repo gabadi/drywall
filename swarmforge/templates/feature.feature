@@ -46,7 +46,8 @@ Feature: <feature name>
   #   - <what must be updated>
   #
   # SCOPE:
-  # Ask: what is this feature explicitly NOT doing that callers might assume?
+  # Ask: transfer fog exclusions from the frontier brief as `Does NOT:` entries.
+  #      What is this feature explicitly NOT doing that callers might assume?
   #      What assumptions were made that are not stated in the requirements?
   # Format:
   #   - Does NOT: <exclusion>
