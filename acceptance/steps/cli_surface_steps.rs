@@ -45,6 +45,7 @@ pub fn dispatch(step_text: &str, world: &mut World, example: &Example) -> StepRe
     try_step!(step_given_git_work_tree);
     try_step!(step_given_gitignore_entry);
     try_step!(step_given_no_git_executable);
+    try_step!(step_given_not_inside_git_work_tree);
     try_step!(step_given_project_source_dir);
     try_step!(step_when_run_drywall_with_args);
     try_step!(step_when_run_drywall_twice_with_args);
@@ -138,6 +139,16 @@ fn step_given_no_git_executable(step: &str, _world: &mut World) -> Option<StepRe
     }
     GIT_ABSENT.with(|f| *f.borrow_mut() = true);
     Some(StepResult::ok())
+}
+
+fn step_given_not_inside_git_work_tree(step: &str, _world: &mut World) -> Option<StepResult> {
+    if step != "a directory that is not inside a git work tree" {
+        return None;
+    }
+    match ensure_fixture_dir() {
+        Ok(_) => Some(StepResult::ok()),
+        Err(e) => Some(e),
+    }
 }
 
 fn step_given_project_source_dir(step: &str, _world: &mut World) -> Option<StepResult> {
