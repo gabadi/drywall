@@ -51,8 +51,11 @@ exercises it by controlling the on-disk git state of the fixture tree.
 - **GIT-FIXTURE**: a fixture tree that is its own git work tree (`git init`),
   with a `.gitignore` whose contents QA controls, so `git check-ignore` resolves
   deterministically for the fixture paths.
-- **NO-GIT-FIXTURE**: a STRUCTURAL-TWIN in a directory that is NOT a git work
-  tree (no `.git`, no ancestor repo), used to exercise the git-absent fallback.
+- **NO-GIT-EXEC-FIXTURE**: a STRUCTURAL-TWIN scanned with NO `git` executable
+  reachable on `PATH`, used to exercise the no-executable fallback.
+- **NOT-A-WORKTREE-FIXTURE**: a STRUCTURAL-TWIN in a directory that is NOT a git
+  work tree (no `.git`, no ancestor repo) while a `git` executable IS available,
+  used to exercise the not-a-repo fallback (`git rev-parse` fails there).
 
 ## User-visible workflows
 
@@ -62,13 +65,17 @@ Run once per built-in excluded directory name:
 
 - Setup: HIDDEN-TWIN(`<dir>`) under `<scratch>/auto/<dir>/`, with the left file
   at `<root>/src/alpha.rs` and the right twin at `<root>/<dir>/beta.rs`.
-- Input: `drywall <root>/src` (scan only the non-excluded root) — and
-  additionally `drywall <root>` (scan the parent that contains the excluded dir).
-- Expected exit code: `0` for both invocations.
+- Input: `drywall <root>` — the scanned path is the PARENT that contains both the
+  `src` twin and the excluded `<dir>`, so the excluded directory is genuinely
+  reachable under the scanned path and exclusion (not unreachability) is what
+  suppresses the pair.
+- Expected exit code: `0`.
 - Expected stdout: no `DUPLICATE` line.
 - Expected stderr: empty.
-- Rationale: the twin inside the built-in excluded directory is never scanned.
-  The seven directory names are each a distinct case.
+- Rationale: the twin inside the built-in excluded directory is never scanned
+  even though it sits under the scanned path. The seven directory names are each
+  a distinct case; testing only a path that cannot reach `<dir>` would pass for
+  the wrong reason (the twin would be out of scope regardless of exclusion).
 
 ### QA-2 — Passing the parent does not re-include a built-in excluded subdir (exit 0)
 - Setup: HIDDEN-TWIN(`node_modules`) under `<scratch>/parent/proj/`, twin at
@@ -140,13 +147,23 @@ Run once per built-in excluded directory name:
 - Rationale: gitignore-awareness must only subtract ignored paths; non-ignored
   source in a repo is still analyzed. Guards against over-exclusion via git.
 
-### QA-10 — Gitignore-awareness silently no-ops when not in a repo (exit 1)
-- Setup: NO-GIT-FIXTURE — a STRUCTURAL-TWIN in a scratch directory with NO `.git`
-  and no ancestor git work tree (verify `git rev-parse` fails there).
-- Input: `drywall <scratch>/no-git/src`
+### QA-10 — Gitignore-awareness silently no-ops with no git executable (exit 1)
+- Setup: NO-GIT-EXEC-FIXTURE — a STRUCTURAL-TWIN at `<scratch>/no-git-exec/src/`;
+  run drywall with no `git` executable reachable on `PATH`.
+- Input: `drywall <scratch>/no-git-exec/src`
 - Expected exit code: `1`; stdout reports the pair; stderr empty.
-- Rationale: outside a work tree, gitignore resolution no-ops without error; only
-  built-in and user exclusion apply, so the visible twin is still reported.
+- Rationale: with no git executable, gitignore resolution no-ops without error;
+  only built-in and user exclusion apply, so the visible twin is still reported.
+
+### QA-12 — Gitignore-awareness silently no-ops outside a git work tree (exit 1)
+- Setup: NOT-A-WORKTREE-FIXTURE — a STRUCTURAL-TWIN in a scratch directory with
+  NO `.git` and no ancestor git work tree (verify `git rev-parse` fails there)
+  while a `git` executable IS available on `PATH`.
+- Input: `drywall <scratch>/not-a-worktree/src`
+- Expected exit code: `1`; stdout reports the pair; stderr empty.
+- Rationale: a DISTINCT failure mode from QA-10 — here git exists but the path is
+  not a repo. Gitignore resolution still no-ops without error; only built-in and
+  user exclusion apply, so the visible twin is still reported.
 
 ### QA-11 — Dogfood stays clean with gitignore-awareness on (exit 0)
 - Input: `drywall ./src` run from the drywall project root (a git work tree with
@@ -162,7 +179,8 @@ Run once per built-in excluded directory name:
 |---|---|
 | Twin excluded (built-in / gitignore / `--exclude`) | exit code `0` AND no `DUPLICATE` block |
 | Twin visible (not excluded) | exit code `1` AND ≥ 1 `DUPLICATE` block |
-| Git-absent fallback | in a non-repo, a visible twin is still reported; stderr empty |
+| Git-absent fallback (no executable) | with no `git` on `PATH`, a visible twin is still reported; stderr empty |
+| Git-absent fallback (not a work tree) | with git present but outside a repo, a visible twin is still reported; stderr empty |
 | Built-in determinism | identical input run twice yields byte-identical stdout |
 
 ## Out of scope for this suite

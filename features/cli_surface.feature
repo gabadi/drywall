@@ -92,23 +92,26 @@ Feature: CLI surface exclusions auto built-in gitignore and repeatable exclude
   # Design artifacts: none
 
   # cli-surface-1
-  # A built-in excluded directory is never scanned, so a twin hidden inside it forms no pair.
-  Scenario Outline: Built-in excluded directory is never scanned
+  # A built-in excluded directory under the scanned path is never scanned, so a twin
+  # hidden inside it forms no pair. The scanned path ("." — the parent) DOES contain the
+  # excluded directory, so exclusion is what suppresses the pair, not unreachability.
+  Scenario Outline: Built-in excluded directory under the scanned path is never scanned
     Given a Rust file "<left_file>" containing a function with structure "accumulate_sum" and identifiers "a,b,sum"
     And a Rust file "<right_file>" containing a function with structure "accumulate_sum" and identifiers "x,y,total"
     When I run drywall with the arguments "<args>"
     Then the exit code is "<exit_code>"
     And no duplicate pair is reported
+    And stderr is empty
 
     Examples:
-      | left_file    | right_file           | args  | exit_code |
-      | src/alpha.rs | .git/beta.rs         | ./src | 0         |
-      | src/alpha.rs | target/beta.rs       | ./src | 0         |
-      | src/alpha.rs | node_modules/beta.rs | ./src | 0         |
-      | src/alpha.rs | __pycache__/beta.rs  | ./src | 0         |
-      | src/alpha.rs | vendor/beta.rs       | ./src | 0         |
-      | src/alpha.rs | dist/beta.rs         | ./src | 0         |
-      | src/alpha.rs | .next/beta.rs        | ./src | 0         |
+      | left_file    | right_file           | args | exit_code |
+      | src/alpha.rs | .git/beta.rs         | .    | 0         |
+      | src/alpha.rs | target/beta.rs       | .    | 0         |
+      | src/alpha.rs | node_modules/beta.rs | .    | 0         |
+      | src/alpha.rs | __pycache__/beta.rs  | .    | 0         |
+      | src/alpha.rs | vendor/beta.rs       | .    | 0         |
+      | src/alpha.rs | dist/beta.rs         | .    | 0         |
+      | src/alpha.rs | .next/beta.rs        | .    | 0         |
 
   # cli-surface-2
   # Built-in exclusion wins even when the excluded dir is reached only via an explicitly passed parent.
@@ -177,6 +180,7 @@ Feature: CLI surface exclusions auto built-in gitignore and repeatable exclude
     When I run drywall with the arguments "<args>"
     Then the exit code is "<exit_code>"
     And no duplicate pair is reported
+    And stderr is empty
 
     Examples:
       | ignore_pattern | left_file    | right_file       | args  | exit_code |
@@ -196,9 +200,10 @@ Feature: CLI surface exclusions auto built-in gitignore and repeatable exclude
       | ./src | 0         |
 
   # cli-surface-8
-  # Without git (no executable or not a repo), gitignore-awareness no-ops: only built-in and
+  # QA-10: with no git executable on PATH, gitignore-awareness no-ops: only built-in and
   # user exclusion apply, and a non-ignored twin is still reported. No error is raised.
-  Scenario Outline: Gitignore-awareness silently no-ops when git is unavailable
+  # The not-a-work-tree variant of this no-op is a distinct mode, covered by cli-surface-11.
+  Scenario Outline: Gitignore-awareness silently no-ops when no git executable is available
     Given no git executable is available
     And a Rust file "<left_file>" containing a function with structure "accumulate_sum" and identifiers "a,b,sum"
     And a Rust file "<right_file>" containing a function with structure "accumulate_sum" and identifiers "x,y,total"
@@ -226,6 +231,24 @@ Feature: CLI surface exclusions auto built-in gitignore and repeatable exclude
     Examples:
       | ignore_pattern | left_file    | right_file  | args  | exit_code |
       | generated/     | src/alpha.rs | src/beta.rs | ./src | 1         |
+
+  # cli-surface-11
+  # QA-12: gitignore-awareness also no-ops when git IS available but the scanned path is
+  # NOT inside a git work tree (no .git, no ancestor repo). This is a DISTINCT failure mode
+  # from cli-surface-8 (no git executable at all); both fall back to built-in + user
+  # exclusion only, so a non-ignored twin is still reported, with no error.
+  Scenario Outline: Gitignore-awareness silently no-ops outside a git work tree
+    Given a directory that is not inside a git work tree
+    And a Rust file "<left_file>" containing a function with structure "accumulate_sum" and identifiers "a,b,sum"
+    And a Rust file "<right_file>" containing a function with structure "accumulate_sum" and identifiers "x,y,total"
+    When I run drywall with the arguments "<args>"
+    Then the exit code is "<exit_code>"
+    And stdout reports a duplicate pair for "<left_file>" and "<right_file>"
+    And stderr is empty
+
+    Examples:
+      | left_file    | right_file  | args  | exit_code |
+      | src/alpha.rs | src/beta.rs | ./src | 1         |
 
   # cli-surface-10
   # QA-7: built-in exclusion is environment-independent and deterministic; running the
