@@ -23,3 +23,13 @@ Update AGENTS.md from now on any execution of mutation must be run_in_bacgkround
 <status>failed</status>
 <summary>Background command "Run Gherkin soft mutation for cli_surface feature" failed with exit code 1</summary>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>b4pmy5xwo</task-id>
+<tool-use-id>toolu_01UQoLemuYX6optmqAYFvNYi</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-gabadi-workspace-addi-drywall--worktrees-hardender/4f8de8c0-c7b4-4540-8c6e-49a95865272e/tasks/b4pmy5xwo.output</output-file>
+<status>failed</status>
+<summary>Background command "Run Gherkin soft mutation for cli_surface" failed with exit code 1</summary>
+</task-notification>
