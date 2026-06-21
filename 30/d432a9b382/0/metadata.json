@@ -1,0 +1,187 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "30d432a9b382",
+  "session_id": "c5e8d278-c766-4ef8-ac17-9ebc08f308c7",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T16:31:25.218386Z",
+  "branch": "main",
+  "checkpoints_count": 6,
+  "files_touched": [
+    "acceptance/scripts/runner-adapter-jsts-detection",
+    "start",
+    "tmp/handoff-qa.txt"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "764d2923051f",
+  "checkpoint_transcript_start": 1436,
+  "transcript_lines_at_start": 1436,
+  "token_usage": {
+    "input_tokens": 48,
+    "cache_creation_tokens": 21655,
+    "cache_read_tokens": 4799315,
+    "output_tokens": 8632,
+    "api_call_count": 35
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-21T08:19:06.019159Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "3027e87ce63e",
+      "timestamp": "2026-06-21T08:19:06.019159Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_011DqvSN9C7uo2y9QeqBmuSA",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "764d2923051f",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 22,
+        "end": 23,
+        "entry_ids": [
+          "aff64575-8ba5-4ffb-9fec-527356552cc2"
+        ],
+        "tool_use_id": "toolu_011DqvSN9C7uo2y9QeqBmuSA"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_011DqvSN9C7uo2y9QeqBmuSA"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: swarm-persona",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01QhXJC5yirFQL4V8CyoHkzP",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "agent-retro"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "764d2923051f",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 1491,
+        "end": 1492,
+        "entry_ids": [
+          "cc83b728-de1c-4ac2-9ea7-3a108adc91b1"
+        ],
+        "tool_use_id": "toolu_01QhXJC5yirFQL4V8CyoHkzP"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01QhXJC5yirFQL4V8CyoHkzP"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: agent-retro",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T16:31:25.165511Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 255,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 255,
+    "total_lines_changed": 270,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 22,
+      "user_lines_removed": 0,
+      "agent_lines_added": 27846,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 22,
+      "user_lines_removed": 0,
+      "agent_lines_added": 27846,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 22,
+      "user_lines_removed": 0,
+      "agent_lines_added": 27846,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 22,
+      "user_lines_removed": 0,
+      "agent_lines_added": 27846,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 22,
+      "user_lines_removed": 0,
+      "agent_lines_added": 27846,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 22
+      }
+    }
+  ]
+}
