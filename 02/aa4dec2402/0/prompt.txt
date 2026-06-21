@@ -1,0 +1,9 @@
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
+
+---
+
+Why this session is so expensive so far? answer this while we wait the shell completition
+
+---
+
+ok, lets include this in the review of the agent retro later on, lets not change anything now, now lets wait
