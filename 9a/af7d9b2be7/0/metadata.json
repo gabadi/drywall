@@ -1,0 +1,73 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "9aaf7d9b2be7",
+  "session_id": "9d87abdf-5b08-4f27-88c7-2ff866150f67",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T00:34:03.205565Z",
+  "branch": "swarmforge-cleaner",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "acceptance/steps/shared.rs",
+    "acceptance/steps/cli_surface_steps.rs",
+    "acceptance/steps/duplicate_detection_steps.rs"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "b5db4180f801",
+  "token_usage": {
+    "input_tokens": 74,
+    "cache_creation_tokens": 98487,
+    "cache_read_tokens": 5606724,
+    "output_tokens": 21661,
+    "api_call_count": 72
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-swarm-persona-2026-06-21T00:23:10.011325Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "swarm-persona"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "b5db4180f801",
+      "timestamp": "2026-06-21T00:23:10.011325Z",
+      "native": {
+        "command": "/swarm-persona"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/swarm-persona",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T00:34:03.184776Z",
+    "agent_lines": 491,
+    "agent_removed": 157,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 491,
+    "total_lines_changed": 648,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 7,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 7
+      }
+    }
+  ]
+}
