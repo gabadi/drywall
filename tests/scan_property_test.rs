@@ -171,8 +171,7 @@ proptest! {
         prop_assume!(!matches!(ext.as_str(), "rs" | "js" | "jsx" | "ts" | "tsx" | "py"));
         let path = format!("src/{}.{}", stem, ext);
         let gs = build_glob_set(&[]).unwrap();
-        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| false, None));
-        prop_assert!(!should_scan_file(Path::new(&path), &gs, &|_| true, None));
+        prop_assert!(!should_scan_file(Path::new(&path), &gs, None));
     }
 
     #[test]
@@ -183,19 +182,8 @@ proptest! {
         let path = format!("{}/{}.rs", excluded, stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            !should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            !should_scan_file(Path::new(&path), &gs, None),
             "builtin-excluded path must not scan: {}",
-            path
-        );
-    }
-
-    #[test]
-    fn should_scan_file_git_ignored_never_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
-        let path = format!("src/{}.rs", stem);
-        let gs = build_glob_set(&[]).unwrap();
-        prop_assert!(
-            !should_scan_file(Path::new(&path), &gs, &|_| true, None),
-            "git-ignored file must not scan: {}",
             path
         );
     }
@@ -205,7 +193,7 @@ proptest! {
         let path = format!("acceptance/{}.rs", stem);
         let gs = build_glob_set(&["acceptance/**".to_string()]).unwrap();
         prop_assert!(
-            !should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            !should_scan_file(Path::new(&path), &gs, None),
             "glob-excluded file must not scan: {}",
             path
         );
@@ -213,11 +201,11 @@ proptest! {
 
     #[test]
     fn should_scan_file_clean_rs_path_scanned(stem in "[a-z][a-z0-9_]{0,8}") {
-        // A .rs file in src/ with no exclusions and not git-ignored must scan
+        // A .rs file in src/ with no exclusions must scan
         let path = format!("src/{}.rs", stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            should_scan_file(Path::new(&path), &gs, None),
             "clean .rs file must scan: {}",
             path
         );
@@ -259,7 +247,7 @@ proptest! {
         let path = format!("src/{}.js", stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            should_scan_file(Path::new(&path), &gs, None),
             "clean .js file must scan: {}",
             path
         );
@@ -270,7 +258,7 @@ proptest! {
         let path = format!("src/{}.ts", stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            should_scan_file(Path::new(&path), &gs, None),
             "clean .ts file must scan: {}",
             path
         );
@@ -281,7 +269,7 @@ proptest! {
         let path = format!("src/{}.py", stem);
         let gs = build_glob_set(&[]).unwrap();
         prop_assert!(
-            should_scan_file(Path::new(&path), &gs, &|_| false, None),
+            should_scan_file(Path::new(&path), &gs, None),
             "clean .py file must scan: {}",
             path
         );
