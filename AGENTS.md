@@ -25,10 +25,16 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 | Unit tests | `cargo nextest run --profile unit` |
 | Property tests | `cargo nextest run --profile property` |
 | Acceptance tests | `cargo nextest run --profile acceptance` |
+| Language mutation | `cargo mutants --test-tool nextest -j 8 --no-shuffle -- --profile mutation` |
+| Gherkin mutation | `gherkin-mutator --level soft <feature>` |
 | Coverage (≥90% lines) | `mise exec -- cargo llvm-cov nextest --profile unit --lcov --output-path lcov.info --fail-under-lines 90` |
 | CRAP (threshold ≤6) | `cargo crap --lcov lcov.info --exclude 'acceptance/**' --exclude 'src/main.rs' --threshold 6 --fail-above` |
 | Build release binary | `cargo build --release` |
 | DRY self-check | `./target/release/drywall ./src` |
+
+## Mutation runs
+
+**Always launch mutation commands with `run_in_background: true`.** Do not block waiting for mutation output — it takes several minutes. Check results when the background notification arrives.
 
 ## Tooling notes
 
