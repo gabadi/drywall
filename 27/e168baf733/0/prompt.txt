@@ -1,0 +1,28 @@
+its an upstream project bug?
+
+---
+
+Make a research with a single subagent
+
+---
+
+<task-notification>
+<task-id>a0f7cfbac5170b1d7</task-id>
+<output-file>/private/tmp/claude-501/-Users-gabadi-workspace-addi-drywall--worktrees-curator/cd539689-6f5e-42db-986b-1c1f1249857f/tasks/a0f7cfbac5170b1d7.output</output-file>
+<status>completed</status>
+<summary>Agent "Research gherkin-mutator feature path bug" came to rest</summary>
+<note>A task-notification fires each time this agent comes to rest with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Research complete. Here are the findings:
+
+**Verdict: By design — the `--feature` flag exists and works.**
+
+From `cmd/gherkin-mutator/main.go` line 23:
+```go
+flags.StringVar(&amp;featurePath, "feature", "features/a-feature.feature", "Gherkin feature file to parse and mutate")
+```
+
+The tool accepts `--feature &lt;path&gt;` to override the feature file. The value `features/a-feature.feature` is simply the default when no flag is passed. The repo has no open or closed issues or PRs on this topic.
+
+**Implication for this project:** Any call to `gherkin-mutator` that omits `--feature` will silently fall back to `features/a-feature.feature` regardless of which feature is actually under test. That is a caller-side bug — the flag must be passed explicitly on every invocation.</result>
+<usage><subagent_tokens>13122</subagent_tokens><tool_uses>1</tool_uses><duration_ms>55024</duration_ms></usage>
+</task-notification>
