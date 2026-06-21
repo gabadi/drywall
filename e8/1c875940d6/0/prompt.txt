@@ -1,0 +1,13 @@
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
+
+---
+
+BE en retrospective mode, why did you run the handoff before the retro?
+
+---
+
+so, the done was not executed before the retro?/clear
+
+---
+
+/swarm-persona You have new handoff mail. If idle, run ready_for_next.sh.
