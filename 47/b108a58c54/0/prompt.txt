@@ -1,0 +1,17 @@
+/verify this PR
+
+---
+
+Can't we use a fixed minor version for rayon in Cargo.toml? what about other dependencies? What about the findings? anytihing to fix?
+
+---
+
+We must fix the minor version, this is a bug, must be fixed, fix it to the last stable version
+
+---
+
+I've said minor, not major
+
+---
+
+Again, FIXED minor, not aproxminor

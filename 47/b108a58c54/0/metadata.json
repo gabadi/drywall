@@ -1,0 +1,145 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "47b108a58c54",
+  "session_id": "d82cc8b6-542d-4645-9d86-56fbaa43349e",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-21T22:13:17.333246Z",
+  "branch": "perf/parallel-comparison-and-sorted-jaccard",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "Cargo.toml"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "8166b07fc9ba",
+  "token_usage": {
+    "input_tokens": 283,
+    "cache_creation_tokens": 38621,
+    "cache_read_tokens": 1464830,
+    "output_tokens": 17509,
+    "api_call_count": 34
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-verify-2026-06-21T21:51:58.2419Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "verify"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "fddbeada2cde",
+      "timestamp": "2026-06-21T21:51:58.2419Z",
+      "native": {
+        "command": "/verify"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/verify",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01YZwNqjqZBBJQJHPqv5xRKG",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "run-drywall"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "8166b07fc9ba",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 39,
+        "end": 40,
+        "entry_ids": [
+          "fb641aeb-f405-4032-998d-4bae014596f7"
+        ],
+        "tool_use_id": "toolu_01YZwNqjqZBBJQJHPqv5xRKG"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01YZwNqjqZBBJQJHPqv5xRKG"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: run-drywall",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-21T22:13:17.174641Z",
+    "agent_lines": 14,
+    "agent_removed": 14,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 14,
+    "total_lines_changed": 28,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1,
+      "agent_lines_removed": 1,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 14,
+      "agent_lines_removed": 14,
+      "user_added_per_file": {
+        "start/.gitignore": 2
+      }
+    }
+  ]
+}
