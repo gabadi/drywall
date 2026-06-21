@@ -4,7 +4,9 @@
 use drywall::ast::{
     build_normalized_subtree, extract_functions, extract_let_declaration, make_parser,
 };
+use drywall::scan::{build_glob_set, collect_from_directory};
 use drywall::{FunctionInfo, find_duplicate_pairs, jaccard, source_lines};
+use std::fs;
 
 fn parse_and_extract(source: &str) -> Vec<FunctionInfo> {
     let tree = make_parser().parse(source, None).unwrap();
@@ -269,4 +271,33 @@ fn source_lines_counts_correctly() {
 fn source_lines_single_line() {
     let fi = make_fi(5, 5, vec![]);
     assert_eq!(source_lines(&fi), 1);
+}
+
+// --- scan.rs:146 --- collect_from_directory filter_entry: delete first ! in
+// `!e.file_type().is_dir() || !is_builtin_excluded(e.path())`
+// Mutation: `e.file_type().is_dir() || !is_builtin_excluded(e.path())`
+// With mutation: a builtin-excluded directory satisfies `is_dir()`, so filter_entry returns true
+// and WalkDir recurses into it. The guard: a .rs file inside a builtin-excluded dir must NOT
+// appear in results.
+#[test]
+fn collect_from_directory_skips_builtin_excluded_dirs() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let target_dir = dir.path().join("target");
+    fs::create_dir(&target_dir).expect("create target/");
+    let rs_file = target_dir.join("hidden.rs");
+    fs::write(&rs_file, "fn inside_excluded() {}\n").expect("write rs");
+    let empty_glob = build_glob_set(&[]).expect("glob");
+    let mut functions = Vec::new();
+    let mut errors = Vec::new();
+    collect_from_directory(dir.path(), &empty_glob, &mut functions, &mut errors);
+    assert!(
+        errors.is_empty(),
+        "unexpected errors: {:?}",
+        errors
+    );
+    assert!(
+        functions.is_empty(),
+        "expected no functions from builtin-excluded dir, got: {:?}",
+        functions
+    );
 }

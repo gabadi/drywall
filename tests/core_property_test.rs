@@ -1,6 +1,6 @@
 use drywall::{
     DuplicatePair, FunctionInfo, PairEndpoint, find_duplicate_pairs, format_json, format_text,
-    jaccard,
+    jaccard, source_lines,
 };
 use proptest::prelude::*;
 
@@ -126,5 +126,61 @@ proptest! {
         };
         let text = format_text(&[pair]);
         prop_assert!(text.contains("DUPLICATE score="), "format_text must include DUPLICATE header");
+    }
+
+    #[test]
+    fn source_lines_at_least_one_when_end_gte_start(
+        start in 1usize..500,
+        extra in 0usize..500,
+    ) {
+        let end = start + extra;
+        let fi = FunctionInfo { file: "f.rs".to_string(), start_line: start, end_line: end, node_hashes: vec![] };
+        prop_assert!(source_lines(&fi) >= 1, "source_lines must be >= 1 when end >= start");
+    }
+
+    #[test]
+    fn jaccard_subset_monotone(
+        shared in prop::collection::vec(1u64..500, 1..15),
+        extra_b in prop::collection::vec(500u64..1000, 0..10),
+    ) {
+        // score(shared, shared) >= score(shared, shared ∪ extra_b)
+        // Adding elements to B that are not in A reduces or preserves the score.
+        let a = shared.clone();
+        let b_small = shared.clone();
+        let b_large: Vec<u64> = shared.iter().copied().chain(extra_b.iter().copied()).collect();
+        let score_small = jaccard(&a, &b_small);
+        let score_large = jaccard(&a, &b_large);
+        prop_assert!(
+            score_small >= score_large - 1e-9,
+            "adding non-overlapping elements to B must not increase jaccard score: small={} large={}",
+            score_small, score_large
+        );
+    }
+
+    #[test]
+    fn find_duplicate_pairs_endpoint_order_stable(
+        seed in 1u64..50,
+        start_a in 1usize..20,
+        start_b in 21usize..40,
+    ) {
+        // Pairs produced from (f_a, f_b) and (f_b, f_a) must have the same left/right assignment.
+        let hashes: Vec<u64> = (seed..seed + 15).collect();
+        let f_a = make_fn("alpha.rs", start_a, start_a + 9, hashes.clone());
+        let f_b = make_fn("beta.rs", start_b, start_b + 9, hashes.clone());
+
+        let pairs_ab = find_duplicate_pairs(&[f_a.clone(), f_b.clone()], 0.0, 1, 1);
+        let pairs_ba = find_duplicate_pairs(&[f_b.clone(), f_a.clone()], 0.0, 1, 1);
+
+        prop_assert_eq!(pairs_ab.len(), pairs_ba.len(), "pair count must be same regardless of input order");
+        if !pairs_ab.is_empty() {
+            prop_assert_eq!(
+                &pairs_ab[0].left.file, &pairs_ba[0].left.file,
+                "left endpoint must be consistent regardless of input order"
+            );
+            prop_assert_eq!(
+                &pairs_ab[0].right.file, &pairs_ba[0].right.file,
+                "right endpoint must be consistent regardless of input order"
+            );
+        }
     }
 }
