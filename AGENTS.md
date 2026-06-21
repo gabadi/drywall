@@ -39,7 +39,7 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 ## Tooling notes
 
 - **gherkin-ir-dry-checker output**: use `rtk json <report>` to read the JSON report compactly rather than dumping full JSON into context.
-- **gherkin-mutator**: always pass `--feature <path>` explicitly — omitting it silently falls back to `features/a-feature.feature` and mutates the wrong file. Flags `--feature-file` and `--feature-path` are wrong names and silently run 0 mutations.
+- **gherkin-mutator**: `--feature-file` and `--feature-path` are wrong flag names and silently run 0 mutations; use `--feature`.
 - **Build release binary before acceptance**: `cargo build --release` must run before `--profile acceptance` — stale binary causes false failures.
 - **acceptance-entrypoint-generator**: requires `--steps <steps-file>` (basename only) for non-scaffold features; omitting it defaults to `scaffold_cli_steps.rs` and silently generates the wrong entrypoint.
 - **cargo-mutants `--exclude`**: patterns match absolute paths, not CWD-relative. Use `**/filename.rs` form, not `src/filename.rs`.
