@@ -18,8 +18,8 @@ language's [function forms](#function-form).
 
 Selecting which [grammar](#grammar) parses a file from the file's extension,
 with no `--lang` flag supplied. `.rs` → Rust; `.js` / `.jsx` → JavaScript;
-`.ts` / `.tsx` → TypeScript. Auto-detection is the default; `--lang` overrides
-it. See [language override](#language-override).
+`.ts` / `.tsx` → TypeScript; `.py` → Python. Auto-detection is the default;
+`--lang` overrides it. See [language override](#language-override).
 
 ## Candidate
 
@@ -54,11 +54,17 @@ recognized forms per language:
   `const` or `let` binding, class methods, and exported named functions (the
   same underlying forms reached through an `export`). JSX and TSX files
   (`.jsx`, `.tsx`) are included and use the JS/TS grammars respectively.
+- **Python**: `def` functions, `async def` functions, and class methods. All
+  three are the same grammar node (`function_definition`); `async def` carries an
+  `async` keyword and a method is a `function_definition` nested in a class body,
+  so they are observably distinct forms even though the extractor recognizes one
+  node kind.
 
 ## Grammar
 
 A tree-sitter parser for one source language: `tree-sitter-rust`,
-`tree-sitter-javascript`, `tree-sitter-typescript`. drywall parses every
+`tree-sitter-javascript`, `tree-sitter-typescript`, `tree-sitter-python`.
+drywall parses every
 language through tree-sitter's generic `Node` type, so one shared
 [normalization](#normalization) and [Jaccard](#jaccard-similarity) pipeline
 serves all grammars. JSX is parsed by the JavaScript grammar; TSX by the
@@ -83,15 +89,17 @@ dependency plus one LangConfig entry; the rest of the pipeline is unchanged.
 ## Language override
 
 Forcing a specific [grammar](#grammar) via `--lang`, regardless of file
-extension. Accepted values for the current slices: `rust`, `js`, `ts`. Used to
-analyze files with non-standard extensions or to disambiguate a mixed-language
-directory. Overrides [auto-detection](#auto-detection). An unsupported value is
-an argument error (exit 2).
+extension. Accepted values for the current slices: `rust`, `js`, `ts`, `py`.
+Used to analyze files with non-standard extensions or to disambiguate a
+mixed-language directory. Overrides [auto-detection](#auto-detection). An
+unsupported value is an argument error (exit 2). (The full-word `rust` versus the
+short `js` / `ts` / `py` spelling is a known inconsistency, tracked for a future
+unification; it does not affect this slice.)
 
 ## Mixed-language directory
 
 A scanned directory containing source files of more than one supported language
-(e.g. `.rs` and `.ts` together). Without `--lang`, each file is parsed with the
+(e.g. `.rs`, `.ts`, and `.py` together). Without `--lang`, each file is parsed with the
 [grammar](#grammar) its own extension selects, and the
 [duplicate pairs](#duplicate-pair) from all languages are merged into one
 [sorted](#sorted-output) output stream — a single invocation, a single report.
@@ -137,9 +145,8 @@ identical input yields byte-identical output. Holds across languages in a
 
 ## Terms intentionally NOT in drywall's language (this slice)
 
-- **Cross-language duplicate** — a Rust function matching a TypeScript function.
-  Out of scope; each file is compared only within its own grammar's hash space.
+- **Cross-language duplicate** — a Rust function matching a Python or TypeScript
+  function. Out of scope; each file is compared only within its own grammar's
+  hash space.
 - **Block-level duplicate** — sub-function duplication. Out of scope; only
   whole-function pairs are detected.
-- **Python target** — `def`, async `def`, Python class methods. Tracked
-  separately (not this slice); `--lang py` is not accepted yet.
