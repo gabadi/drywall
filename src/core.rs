@@ -1,5 +1,5 @@
+use rayon::prelude::*;
 use serde::Serialize;
-use std::collections::HashSet;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Lang {
@@ -87,14 +87,57 @@ pub fn validate_lang(lang: &str) -> Result<Lang, String> {
     }
 }
 
+/// Jaccard over sorted slices; two-pointer merge with set semantics, no allocation.
+/// Duplicate runs in either slice are counted as one unique element.
 pub fn jaccard(a: &[u64], b: &[u64]) -> f64 {
     if a.is_empty() && b.is_empty() {
         return 1.0;
     }
-    let set_a: HashSet<u64> = a.iter().copied().collect();
-    let set_b: HashSet<u64> = b.iter().copied().collect();
-    let intersection = set_a.intersection(&set_b).count();
-    let union = set_a.union(&set_b).count();
+    let (mut i, mut j) = (0, 0);
+    let (mut intersection, mut union) = (0usize, 0usize);
+    while i < a.len() && j < b.len() {
+        match a[i].cmp(&b[j]) {
+            std::cmp::Ordering::Less => {
+                union += 1;
+                let v = a[i];
+                while i < a.len() && a[i] == v {
+                    i += 1;
+                }
+            }
+            std::cmp::Ordering::Greater => {
+                union += 1;
+                let v = b[j];
+                while j < b.len() && b[j] == v {
+                    j += 1;
+                }
+            }
+            std::cmp::Ordering::Equal => {
+                intersection += 1;
+                union += 1;
+                let v = a[i];
+                while i < a.len() && a[i] == v {
+                    i += 1;
+                }
+                while j < b.len() && b[j] == v {
+                    j += 1;
+                }
+            }
+        }
+    }
+    while i < a.len() {
+        union += 1;
+        let v = a[i];
+        while i < a.len() && a[i] == v {
+            i += 1;
+        }
+    }
+    while j < b.len() {
+        union += 1;
+        let v = b[j];
+        while j < b.len() && b[j] == v {
+            j += 1;
+        }
+    }
     if union == 0 {
         return 0.0;
     }
@@ -139,23 +182,26 @@ pub fn find_duplicate_pairs(
         .filter(|f| source_lines(f) >= min_lines && f.node_hashes.len() >= min_nodes)
         .collect();
 
-    let mut pairs: Vec<DuplicatePair> = Vec::new();
+    let mut pairs: Vec<DuplicatePair> = candidates
+        .par_iter()
+        .enumerate()
+        // flat_map_iter: inner ~n/2 loop runs sequentially per outer task — avoids O(n²) Rayon task overhead
+        .flat_map_iter(|(i, a)| {
+            candidates[i + 1..].iter().filter_map(move |b| {
+                if is_same_location(a, b) {
+                    return None;
+                }
+                let score = jaccard(&a.node_hashes, &b.node_hashes);
+                if score >= threshold {
+                    Some(make_pair(a, b, score))
+                } else {
+                    None
+                }
+            })
+        })
+        .collect();
 
-    for i in 0..candidates.len() {
-        for j in (i + 1)..candidates.len() {
-            let a = candidates[i];
-            let b = candidates[j];
-            if is_same_location(a, b) {
-                continue;
-            }
-            let score = jaccard(&a.node_hashes, &b.node_hashes);
-            if score >= threshold {
-                pairs.push(make_pair(a, b, score));
-            }
-        }
-    }
-
-    pairs.sort_by(|a, b| {
+    pairs.sort_unstable_by(|a, b| {
         b.score
             .partial_cmp(&a.score)
             .unwrap_or(std::cmp::Ordering::Equal)
@@ -311,6 +357,49 @@ mod tests {
     fn jaccard_both_empty_returns_one() {
         let score = jaccard(&[], &[]);
         assert!((score - 1.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn jaccard_one_empty_returns_zero() {
+        let a = vec![1u64, 2, 3];
+        let score = jaccard(&a, &[]);
+        assert!(score < 1e-9);
+        let score2 = jaccard(&[], &a);
+        assert!(score2 < 1e-9);
+    }
+
+    #[test]
+    fn jaccard_single_shared_element() {
+        let a = vec![5u64];
+        let b = vec![5u64];
+        let score = jaccard(&a, &b);
+        assert!((score - 1.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn jaccard_large_a_subset_of_b() {
+        // a=[1,2,3], b=[1,2,3,4,5] → intersection=3, union=5
+        let a = vec![1u64, 2, 3];
+        let b = vec![1u64, 2, 3, 4, 5];
+        let score = jaccard(&a, &b);
+        assert!((score - 3.0 / 5.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn jaccard_duplicate_runs() {
+        // [1,1,2] and [1,2,2] both represent {1,2} — skip-run logic must treat runs as one element
+        let same_set_score = jaccard(&[1u64, 1, 2], &[1u64, 2, 2]);
+        assert!(
+            (same_set_score - 1.0).abs() < 1e-9,
+            "same unique sets must score 1.0, got {same_set_score}"
+        );
+
+        // [1,1,3] → {1,3}, [1,2,3] → {1,2,3} → intersection=2, union=3
+        let partial_score = jaccard(&[1u64, 1, 3], &[1u64, 2, 3]);
+        assert!(
+            (partial_score - 2.0 / 3.0).abs() < 1e-9,
+            "expected 2/3, got {partial_score}"
+        );
     }
 
     #[test]

@@ -649,6 +649,26 @@ mod tests {
     }
 
     #[test]
+    fn ts_unicode_property_key_parses_ok() {
+        // µs (U+00B5 MICRO SIGN) and μs (U+03BC GREEK MU) as unquoted object property keys
+        let src = "const X: Record<string, number> = { \u{00B5}s: 1e3, \u{03BC}s: 1e3 };\n";
+        assert!(
+            parse_source_tree_for(src, Lang::TypeScript).is_ok(),
+            "tree-sitter-typescript should accept Unicode identifier property keys"
+        );
+    }
+
+    #[test]
+    fn ts_unicode_in_regex_parses_ok() {
+        // µs and μs inside a regex literal
+        let src = "const re = /^(ns|\u{00B5}s|\u{03BC}s|ms)$/;\n";
+        assert!(
+            parse_source_tree_for(src, Lang::TypeScript).is_ok(),
+            "tree-sitter-typescript should accept Unicode chars inside regex literals"
+        );
+    }
+
+    #[test]
     fn tsx_grammar_parses_jsx_markup() {
         // LANGUAGE_TSX accepts JSX return syntax; LANGUAGE_TYPESCRIPT does not
         let src = "function Render(x: number): JSX.Element { return <span>{x}</span>; }\n";

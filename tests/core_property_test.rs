@@ -13,12 +13,19 @@ fn make_fn(file: &str, start: usize, end: usize, hashes: Vec<u64>) -> FunctionIn
     }
 }
 
+fn sorted(mut v: Vec<u64>) -> Vec<u64> {
+    v.sort_unstable();
+    v
+}
+
 proptest! {
     #[test]
     fn jaccard_symmetry(
         a in prop::collection::vec(0u64..1000, 0..20),
         b in prop::collection::vec(0u64..1000, 0..20),
     ) {
+        let a = sorted(a);
+        let b = sorted(b);
         let score_ab = jaccard(&a, &b);
         let score_ba = jaccard(&b, &a);
         prop_assert!((score_ab - score_ba).abs() < 1e-9);
@@ -26,6 +33,7 @@ proptest! {
 
     #[test]
     fn jaccard_identity_nonempty(a in prop::collection::vec(1u64..1000, 1..20)) {
+        let a = sorted(a);
         let score = jaccard(&a, &a);
         prop_assert!((score - 1.0).abs() < 1e-9);
     }
@@ -35,6 +43,8 @@ proptest! {
         a in prop::collection::vec(0u64..1000, 0..20),
         b in prop::collection::vec(0u64..1000, 0..20),
     ) {
+        let a = sorted(a);
+        let b = sorted(b);
         let score = jaccard(&a, &b);
         prop_assert!(score >= 0.0 && score <= 1.0);
     }
@@ -145,9 +155,11 @@ proptest! {
     ) {
         // score(shared, shared) >= score(shared, shared ∪ extra_b)
         // Adding elements to B that are not in A reduces or preserves the score.
-        let a = shared.clone();
-        let b_small = shared.clone();
-        let b_large: Vec<u64> = shared.iter().copied().chain(extra_b.iter().copied()).collect();
+        let a = sorted(shared.clone());
+        let b_small = a.clone();
+        let b_large: Vec<u64> = sorted(
+            shared.iter().copied().chain(extra_b.iter().copied()).collect()
+        );
         let score_small = jaccard(&a, &b_small);
         let score_large = jaccard(&a, &b_large);
         prop_assert!(
