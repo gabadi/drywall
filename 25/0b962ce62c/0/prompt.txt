@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>byzuemgzd</task-id>
+<tool-use-id>toolu_01AkqgoKBwdgJP94DG1soGuK</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-gabadi-workspace-addi-drywall/94a98bee-d74f-4b75-b860-e82cb524caa8/tasks/byzuemgzd.output</output-file>
+<status>failed</status>
+<summary>Background command "Watch release workflow" failed with exit code 1</summary>
+</task-notification>
