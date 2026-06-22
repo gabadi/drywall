@@ -1,0 +1,74 @@
+We need to add a deployment option, so we can a. install it locally for linux/mac and include in any CI. Did gthub issue #7 solved that?
+
+---
+
+Maybe, but frame basedon the question i've made
+
+---
+
+Ok, thats what we need, we need to resolve the distribution for local and CI, WDYT? and compare with dry4go dry4clj, how are used in unclebob https://github.com/unclebob/swarm-forge/tree/main/swarmforge and https://github.com/unclebob/experiment-htw-clj-swarm as a hard limit for DRY? do we already have that implemented? or do we need something else to port?
+
+---
+
+Ok, thats what we need, we need to resolve the distribution for local and CI, WDYT? and compare with dry4go dry4clj, how are used in unclebob https://github.com/unclebob/swarm-forge/tree/main/swarmforge and https://github.com/unclebob/experiment-htw-clj-swarm as a hard limit for DRY? do we already have that implemented? or do we need something else to port? so we can add it as a standard CI check
+
+---
+
+<task-notification>
+<task-id>ad63dd15521933337</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-gabadi-workspace-addi-drywall/94a98bee-d74f-4b75-b860-e82cb524caa8/tasks/ad63dd15521933337.output</output-file>
+<status>completed</status>
+<summary>Agent "Research dry4go/dry4clj usage in unclebob repos" came to rest</summary>
+<note>A task-notification fires each time this agent comes to rest with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>---
+
+**Task**: Research dry4go/dry4clj CI usage in unclebob repos.
+
+**Findings:**
+
+**How they're installed (by agents, not CI):**
+- `go install github.com/unclebob/dry4go@latest`
+- `clj -M:dry4clj src` (via deps.edn alias)
+- Swarmforge constitution mandates agents install these at startup — no GitHub Actions CI exists in either repo
+
+**How invoked:**
+- `dry4go [--threshold 0.82] [--min-lines 4] [--min-nodes 20] ./src`
+- `clj -M:dry4clj [same flags] src`
+- Algorithm: Jaccard similarity over normalized AST fingerprints; default threshold 0.82
+
+**Exit code behavior (critical):**
+- dry4go exits **0 whether or not duplicates are found**. Only exits 1 on I/O error, 2 on bad args.
+- No `--fail` flag. To use as a hard CI gate you'd have to pipe to `grep DUPLICATE` or check JSON `candidates` length.
+- Not used as a CI gate at all in unclebob's repos — agents read the output and review it manually.
+
+**No config files** — all options are CLI flags.
+
+**drywall comparison:**
+- drywall already exits **1 when duplicates are found** (exit 0 = clean, exit 1 = duplicates, exit 2 = arg error) — already a harder CI gate than dry4go
+- drywall has CI (every push), dogfood gate, and acceptance tests
+- What drywall is missing: **release binaries** — there's no way to `curl`-install drywall in an external CI pipeline without Rust toolchain
+
+**Conclusion**: drywall's CI integration design is actually stronger than dry4go's (proper exit codes). The only gap is distribution — no cross-compiled binaries for Linux/Mac means it can't be used as a standard CI check in other projects yet.</result>
+<usage><subagent_tokens>42813</subagent_tokens><tool_uses>29</tool_uses><duration_ms>117855</duration_ms></usage>
+</task-notification>
+
+---
+
+ok, but the release must be explicit, not on any marge to main/master
+
+---
+
+Use hash versions, not version general. And lets add a clear release note in AGENTS.md and a clear distribution notes in the README.md
+
+---
+
+Mine question regarding DRY ours implementation vs uncle bob, how can we run it in CI, for example set a 0.1 max target?`## Releasing`  TLDR, if we need more documentation create a reference doc and point to it
+
+---
+
+Mine question regarding DRY ours implementation vs uncle bob, how can we run it in CI, for example set a 0.1 max target?`## Releasing`  TLDR, if we need more documentation create a reference doc and point to it
+
+---
+
+Mine question regarding DRY ours implementation vs uncle bob, how can we run it in CI, for example set a 0.1 max target?`## Releasing`  TLDR, if we need more documentation create a reference doc and point to it
