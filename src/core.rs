@@ -108,8 +108,14 @@ fn merge_counts(a: &[u64], b: &[u64]) -> (usize, usize) {
     let (mut intersection, mut union) = (0usize, 0usize);
     while i < a.len() && j < b.len() {
         match a[i].cmp(&b[j]) {
-            std::cmp::Ordering::Less => { union += 1; skip_run(a, &mut i); }
-            std::cmp::Ordering::Greater => { union += 1; skip_run(b, &mut j); }
+            std::cmp::Ordering::Less => {
+                union += 1;
+                skip_run(a, &mut i);
+            }
+            std::cmp::Ordering::Greater => {
+                union += 1;
+                skip_run(b, &mut j);
+            }
             std::cmp::Ordering::Equal => {
                 intersection += 1;
                 union += 1;
