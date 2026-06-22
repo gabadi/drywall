@@ -34,7 +34,7 @@ gherkin-ir-dry-checker [--include-exact] <ir.json> <report>
 
 ## Releasing
 
-Tag-triggered only (`git tag v0.x.0 && git push origin v0.x.0`). See [README.md](README.md) for binaries, install, and CI usage.
+Tag-triggered only (`git tag v0.1.0 && git push origin v0.1.0`). Tag must match `v*.*.*`. See [README.md](README.md) for binaries, install, and CI usage.
 
 ## Mutation runs
 
